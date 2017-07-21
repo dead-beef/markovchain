@@ -39,7 +39,7 @@ optional arguments:
 ### Text
 
 ```
-usage: __main__.py text [-h] {create,update,settings,generate} ...
+usage: markovchain text [-h] {create,update,settings,generate} ...
 
 positional arguments:
   {create,update,settings,generate}
@@ -130,7 +130,7 @@ optional arguments:
 ### Image
 
 ```
-usage: markovchain.py image [-h]
+usage: markovchain image [-h]
                          {convert,create,update,settings,generate,filter} ...
 
 positional arguments:
