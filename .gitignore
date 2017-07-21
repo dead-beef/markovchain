@@ -1,0 +1,12 @@
+/env
+/data
+/in
+/out
+/*.egg-info
+__pycache__
+*.pyc
+*.bak
+*.png
+*.db
+*.json
+*.json.bz2
