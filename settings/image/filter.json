@@ -1,0 +1,29 @@
+{
+    "separator": " ",
+    "palette": [ 8, 4, 8 ],
+    "levels": 5,
+    "parser": {
+        "__class__": "Parser",
+        "state_sizes": [ 16, 4 ],
+        "reset_on_sentence_end": true
+    },
+    "scanner": {
+        "__class__": "ImageScanner",
+        "resize": null,
+        "convert_type": 1,
+        "dither": true,
+        "scale": "BICUBIC",
+        "palette": [ 8, 4, 8 ],
+        "level_scale": [ 3, 3, 3, 3 ],
+        "traversal": [
+            {
+                "__class__": "HLines",
+                "reverse": 2
+            },
+            {
+                "__class__": "Spiral",
+                "reverse": false
+            }
+        ]
+    }
+}

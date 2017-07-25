@@ -1,0 +1,13 @@
+{
+    "separator": "",
+    "parser": {
+        "__class__": "Parser",
+        "state_sizes": [ 4 ],
+        "reset_on_sentence_end": true
+    },
+    "scanner": {
+        "__class__": "CharScanner",
+        "end_chars": ".?!\n",
+        "default_end": "."
+    }
+}
