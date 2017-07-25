@@ -7,6 +7,9 @@ __pycache__
 *.pyc
 *.bak
 *.png
+*.jpg
+*.gif
 *.db
 *.json
 *.json.bz2
+!settings/**/*.json
