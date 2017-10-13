@@ -1,6 +1,9 @@
 from unittest import TestCase
 
-from markovchain.util import SaveLoad, fill, load, extend, to_list, truncate
+from markovchain.util import (
+    SaveLoad, ObjectWrapper, const,
+    fill, load, extend, to_list, truncate
+)
 
 
 class TestSaveLoad(TestCase):
@@ -34,6 +37,50 @@ class TestSaveLoad(TestCase):
         loaded = self.SaveLoadTest.load(saved)
         self.assertIsInstance(loaded, self.SaveLoadTest)
         self.assertEqual(loaded, test)
+
+
+class TestObjectWrapper(TestCase):
+    class ObjectTest:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+        def f(self):
+            return self.x + self.y
+        def g(self):
+            return self.x - self.y
+
+    class ObjectWrapperTest(ObjectWrapper):
+        def __init__(self, obj, z):
+            super().__init__(obj)
+            self.y *= 2
+            self.z = z
+        def f(self):
+            return super().f() + self.z
+
+    def testWrap(self):
+        obj = self.ObjectTest(1, 2)
+        wrapped = ObjectWrapper(obj)
+        self.assertIsInstance(wrapped, self.ObjectTest)
+        self.assertEqual(wrapped.__dict__, obj.__dict__)
+        self.assertEqual(wrapped.f(), 3)
+        self.assertEqual(wrapped.g(), -1)
+
+    def testOverride(self):
+        obj = self.ObjectTest(1, 2)
+        wrapped = self.ObjectWrapperTest(obj, 3)
+        self.assertIsInstance(wrapped, self.ObjectTest)
+        self.assertEqual(wrapped.x, 1)
+        self.assertEqual(wrapped.y, 4)
+        self.assertEqual(wrapped.z, 3)
+        self.assertEqual(wrapped.f(), 8)
+        self.assertEqual(wrapped.g(), -3)
+
+
+class TestConst(TestCase):
+    def test(self):
+        func = const('x')
+        self.assertEqual(func(), 'x')
+        self.assertEqual(func(1, [2], None), 'x')
 
 
 class TestToList(TestCase):
@@ -123,6 +170,8 @@ class TestExtend(TestCase):
             (({'x': 0}, {'y': 1}, {'x': 1}), {'x': 1, 'y': 1}),
             (({'x': {'y': 0}}, {'x': {'z': 1}}), {'x': {'y': 0, 'z': 1}}),
             (({'x': {'y': 0}}, {'x': 1}), {'x': 1}),
+            (({'x': 1}, {'x': {'y': 0}}), {'x': {'y': 0}}),
+            (({}, {'x': {'y': 0}}), {'x': {'y': 0}}),
         ]
         for test, res in tests:
             self.assertEqual(extend(*test), res)
