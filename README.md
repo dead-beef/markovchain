@@ -30,8 +30,8 @@ coverage run --include 'markovchain/*' setup.py test
 
 ## Usage
 
-[`Text settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/text)
-[`Image settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/image)
+- [`Text settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/text)
+- [`Image settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/image)
 
 ```
 > markovchain -h
