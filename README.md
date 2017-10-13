@@ -24,9 +24,17 @@ pip install -e .[image]
 python setup.py test
 ```
 
+```
+coverage run --include 'markovchain/*' setup.py test
+```
+
 ## Usage
 
+[`Text settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/text)
+[`Image settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/image)
+
 ```
+> markovchain -h
 usage: markovchain [-h] {text,image} ...
 
 positional arguments:
@@ -39,6 +47,7 @@ optional arguments:
 ### Text
 
 ```
+> markovchain text -h
 usage: markovchain text [-h] {create,update,settings,generate} ...
 
 positional arguments:
@@ -51,6 +60,7 @@ optional arguments:
 #### create
 
 ```
+> markovchain text create -h
 usage: markovchain text create [-h] [-P] [-s SETTINGS] [-o OUTPUT]
                                [input [input ...]]
 
@@ -69,6 +79,7 @@ optional arguments:
 #### update
 
 ```
+> markovchain text update -h
 usage: markovchain text update [-h] [-P] [-s SETTINGS] [-o OUTPUT]
                                state [input [input ...]]
 
@@ -88,6 +99,7 @@ optional arguments:
 #### generate
 
 ```
+> markovchain text generate -h
 usage: markovchain text generate [-h] [-P] [-s SETTINGS] [-ss STATE_SIZE]
                                  [-st START] [-w WORDS] [-ws WORD_SEPARATOR]
                                  [-S SENTENCES] [-o OUTPUT]
@@ -118,6 +130,7 @@ optional arguments:
 #### settings
 
 ```
+> markovchain text settings -h
 usage: markovchain text settings [-h] state
 
 positional arguments:
@@ -130,6 +143,7 @@ optional arguments:
 ### Image
 
 ```
+> markovchain image -h
 usage: markovchain image [-h]
                          {convert,create,update,settings,generate,filter} ...
 
@@ -138,12 +152,12 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-
 ```
 
 #### convert
 
 ```
+> markovchain image convert -h
 usage: markovchain image convert [-h] [-p HUES SATURATIONS VALUES] [-c {0,1}]
                                  [-d] [-r WIDTH HEIGHT]
                                  input [input ...]
@@ -165,6 +179,7 @@ optional arguments:
 #### create
 
 ```
+> markovchain image create -h
 usage: markovchain image create [-h] [-P] [-s SETTINGS] [-o OUTPUT]
                                 [input [input ...]]
 
@@ -183,6 +198,7 @@ optional arguments:
 #### update
 
 ```
+> markovchain image update -h
 usage: markovchain image update [-h] [-P] [-s SETTINGS] [-o OUTPUT]
                                 state [input [input ...]]
 
@@ -202,6 +218,7 @@ optional arguments:
 #### generate
 
 ```
+> markovchain image generate -h
 usage: markovchain image generate [-h] [-P] [-s SETTINGS]
                                   [-ss STATE_SIZE [STATE_SIZE ...]]
                                   [-S WIDTH HEIGHT] [-l LEVEL] [-c COUNT]
@@ -229,6 +246,7 @@ optional arguments:
 #### filter
 
 ```
+> markovchain image filter -h
 usage: markovchain image filter [-h] [-P] [-t {json,sqlite}] [-s SETTINGS]
                                 [-S STATE] [-ss STATE_SIZE [STATE_SIZE ...]]
                                 [-l LEVEL] [-c COUNT]
@@ -258,6 +276,7 @@ optional arguments:
 #### settings
 
 ```
+> markovchain image settings -h
 usage: markovchain image settings [-h] state
 
 positional arguments:
@@ -269,4 +288,4 @@ optional arguments:
 
 ## Licenses
 
-* [`markovchain`](LICENSE)
+* [`markovchain`](https://github.com/dead-beef/markovchain/blob/master/LICENSE)
