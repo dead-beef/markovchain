@@ -2,7 +2,10 @@
 /data
 /in
 /out
+/build
+/dist
 /*.egg-info
+/README.rst
 __pycache__
 *.pyc
 *.bak
@@ -13,3 +16,4 @@ __pycache__
 *.json
 *.json.bz2
 !settings/**/*.json
+.coverage
