@@ -81,14 +81,14 @@ class MarkovBase:
         pass
 
     def links(self, links):
-        raise NotImplementedError()
+        raise NotImplementedError('missing data mixin')
 
     def random_link(self, state):
-        raise NotImplementedError()
+        raise NotImplementedError('missing data mixin')
 
     @classmethod
     def load(cls, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError('missing data mixin')
 
     def save(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError('missing data mixin')
