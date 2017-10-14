@@ -10,7 +10,7 @@ class TestParser(TestCase):
         return [(separator.join(src), dst)
                 for src, dst in parser(scanner(data, part), part)]
 
-    def testProperties(self):
+    def test_properties(self):
         parser = Parser()
 
         with self.assertRaises(ValueError):
@@ -33,7 +33,7 @@ class TestParser(TestCase):
         parser.state_sizes = [3]
         self.assertEqual(list(parser.state), ['', '', ''])
 
-    def testProperties2(self):
+    def test_properties_parse(self):
         scanner = Scanner(lambda x: x)
         parser = Parser(state_sizes=[2],
                         reset_on_sentence_end=False)
@@ -43,7 +43,7 @@ class TestParser(TestCase):
         self.assertEqual(self.parse(parser, scanner, 'c', separator='::'),
                          [('a::b', 'c')])
 
-    def testDefault(self):
+    def test_default_parse(self):
         scanner = Scanner(lambda x: x)
         parser = Parser()
 
@@ -59,7 +59,7 @@ class TestParser(TestCase):
                          [('', 'a'), ('', 'c')])
         self.assertEqual(self.parse(parser, scanner, [Scanner.END] * 4), [])
 
-    def testStateSize(self):
+    def test_state_size(self):
         scanner = Scanner(lambda x: x)
         parser = Parser(state_sizes=[3])
 
@@ -75,7 +75,7 @@ class TestParser(TestCase):
                          [('  ', 'a'), ('  a', 'b'), (' a b', 'c'),
                           ('  d', 'e')])
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         parser = Parser(state_sizes=[1, 2, 3],
                         reset_on_sentence_end=False)
         saved = parser.save()
@@ -84,7 +84,7 @@ class TestParser(TestCase):
 
 
 class TestLevelParser(TestCase):
-    class Parser(ParserBase):
+    class ParserTest(ParserBase):
         def __init__(self, parse=None):
             super().__init__(parse)
             self.is_reset = False
@@ -92,51 +92,53 @@ class TestLevelParser(TestCase):
         def reset(self):
             self.is_reset = True
 
-    def testProperties(self):
-        p = LevelParser()
-        self.assertEqual(p.levels, 1)
-        self.assertEqual(p.parsers, [Parser()])
+    def test_properties(self):
+        parser = LevelParser()
+        self.assertEqual(parser.levels, 1)
+        self.assertEqual(parser.parsers, [Parser()])
 
         with self.assertRaises(ValueError):
-            p.levels = 0
+            parser.levels = 0
         with self.assertRaises(ValueError):
-            p.levels = -1
-        self.assertEqual(p.levels, 1)
+            parser.levels = -1
+        self.assertEqual(parser.levels, 1)
 
-        p.levels = 2
-        self.assertEqual(p.parsers, [Parser(), Parser()])
+        parser.levels = 2
+        self.assertEqual(parser.parsers, [Parser(), Parser()])
 
-        pp = Parser(state_sizes=[2, 3])
-        p.parsers = pp
-        self.assertEqual(p.parsers, [pp, pp])
+        level = Parser(state_sizes=[2, 3])
+        parser.parsers = level
+        self.assertEqual(parser.parsers, [level, level])
 
-        p.parsers = [Parser(), pp, Parser()]
-        self.assertEqual(p.parsers, [Parser(), pp])
+        parser.parsers = [Parser(), level, Parser()]
+        self.assertEqual(parser.parsers, [Parser(), level])
 
-        p.levels = 1
-        self.assertEqual(p.parsers, [Parser()])
+        parser.levels = 1
+        self.assertEqual(parser.parsers, [Parser()])
 
-        p.levels = 2
-        self.assertIs(p.parsers[1], pp)
+        parser.levels = 2
+        self.assertIs(parser.parsers[1], level)
 
-    def testReset(self):
-        p = LevelParser(levels=2, parsers=[self.Parser(), self.Parser()])
-        self.assertEqual([pp.is_reset for pp in p.parsers], [False, False])
-        p.reset()
-        self.assertEqual([pp.is_reset for pp in p.parsers], [True, True])
+    def test_reset(self):
+        parser = LevelParser(levels=2,
+                             parsers=[self.ParserTest(), self.ParserTest()])
+        self.assertEqual([x.is_reset for x in parser.parsers], [False, False]) # pylint:disable=no-member
+        parser.reset()
+        self.assertEqual([x.is_reset for x in parser.parsers], [True, True]) # pylint:disable=no-member
 
-    def testParse(self):
-        p = LevelParser(
+    def test_parse(self):
+        parser = LevelParser(
             levels=2,
-            parsers=[self.Parser(lambda x: [0]), self.Parser(lambda x: [1])]
+            parsers=[self.ParserTest(lambda x: [0]),
+                     self.ParserTest(lambda x: [1])]
         )
-        self.assertEqual(list(p([[0], [1]])), [0, 1])
-        self.assertEqual(list(p([[0]] * 5)), [0, 1])
-        self.assertEqual(list(p([])), [])
+        self.assertEqual(list(parser([[0], [1]])), [0, 1])
+        self.assertEqual(list(parser([[0]] * 5)), [0, 1])
+        self.assertEqual(list(parser([])), [])
 
-    def testSaveLoad(self):
-        pp = Parser(state_sizes=[2, 3])
-        p = LevelParser(levels=3, parsers=[pp, Parser()])
-        saved = p.save()
+    def test_save_load(self):
+        level = Parser(state_sizes=[2, 3])
+        parser = LevelParser(levels=3, parsers=[level, Parser()])
+        saved = parser.save()
         loaded = Parser.load(saved)
-        self.assertEqual(p, loaded)
+        self.assertEqual(parser, loaded)

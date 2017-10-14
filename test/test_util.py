@@ -21,7 +21,7 @@ class TestSaveLoad(TestCase):
             data['value'] = self.value
             return data
 
-    def testAddRemove(self):
+    def test_add_remove(self):
         self.SaveLoadTest.add_class(self.SaveLoadTest)
         self.assertIs(self.SaveLoadTest.classes['SaveLoadTest'],
                       self.SaveLoadTest)
@@ -30,7 +30,7 @@ class TestSaveLoad(TestCase):
         with self.assertRaises(KeyError):
             raise AssertionError(self.SaveLoadTest.classes['SaveLoadTest'])
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         self.SaveLoadTest.add_class(self.SaveLoadTest)
         test = self.SaveLoadTest(0)
         saved = test.save()
@@ -44,9 +44,9 @@ class TestObjectWrapper(TestCase):
         def __init__(self, x, y):
             self.x = x
             self.y = y
-        def f(self):
+        def method(self):
             return self.x + self.y
-        def g(self):
+        def method2(self):
             return self.x - self.y
 
     class ObjectWrapperTest(ObjectWrapper):
@@ -54,26 +54,26 @@ class TestObjectWrapper(TestCase):
             super().__init__(obj)
             self.y *= 2
             self.z = z
-        def f(self):
-            return super().f() + self.z
+        def method(self):
+            return super().method() + self.z
 
-    def testWrap(self):
+    def test_wrap(self):
         obj = self.ObjectTest(1, 2)
         wrapped = ObjectWrapper(obj)
         self.assertIsInstance(wrapped, self.ObjectTest)
         self.assertEqual(wrapped.__dict__, obj.__dict__)
-        self.assertEqual(wrapped.f(), 3)
-        self.assertEqual(wrapped.g(), -1)
+        self.assertEqual(wrapped.method(), 3)
+        self.assertEqual(wrapped.method2(), -1)
 
-    def testOverride(self):
+    def test_override(self):
         obj = self.ObjectTest(1, 2)
         wrapped = self.ObjectWrapperTest(obj, 3)
         self.assertIsInstance(wrapped, self.ObjectTest)
         self.assertEqual(wrapped.x, 1)
         self.assertEqual(wrapped.y, 4)
         self.assertEqual(wrapped.z, 3)
-        self.assertEqual(wrapped.f(), 8)
-        self.assertEqual(wrapped.g(), -3)
+        self.assertEqual(wrapped.method(), 8)
+        self.assertEqual(wrapped.method2(), -3)
 
 
 class TestConst(TestCase):
@@ -96,7 +96,7 @@ class TestToList(TestCase):
 
 
 class TestFill(TestCase):
-    def testEmpty(self):
+    def test_empty(self):
         tests = [
             (None, -1),
             ([], 0),
@@ -107,7 +107,7 @@ class TestFill(TestCase):
         with self.assertRaises(ValueError):
             fill([], 1)
 
-    def testSingle(self):
+    def test_single(self):
         tests = [
             ((1, 1), [1]),
             ((1, 5), [1] * 5)
@@ -115,7 +115,7 @@ class TestFill(TestCase):
         for test, res in tests:
             self.assertEqual(fill(*test), res)
 
-    def testMultiple(self):
+    def test_multiple(self):
         tests = [
             ((range(10), 2), [0, 1]),
             ((range(3), 5), [0, 1, 2, 2, 2])
@@ -123,7 +123,7 @@ class TestFill(TestCase):
         for test, res in tests:
             self.assertEqual(fill(*test), res)
 
-    def testNoCopy(self):
+    def test_no_copy(self):
         tests = [
             ([], 0),
             (list(range(3)), 3)
@@ -131,7 +131,7 @@ class TestFill(TestCase):
         for lst, sz in tests:
             self.assertIs(fill(lst, sz), lst)
 
-    def testCopy(self):
+    def test_copy(self):
         tests = [
             ([[0], [1]], 4)
         ]
@@ -146,8 +146,8 @@ class TestFill(TestCase):
 class TestLoad(TestCase):
     class LoadTest:
         @staticmethod
-        def load(d):
-            return d['x']
+        def load(data):
+            return data['x']
 
     def testDefault(self):
         x = load(None, self.LoadTest, lambda: 0)

@@ -3,6 +3,7 @@ from PIL import Image
 
 from markovchain import Scanner
 from markovchain.image import ImageScanner, HLines, VLines
+from markovchain.image.util import palette as default_palette
 
 
 class TestImageScanner(TestCase):
@@ -19,11 +20,11 @@ class TestImageScanner(TestCase):
         cls.image = Image.frombytes('RGB', (2, 2), data, 'raw', 'RGB')
         cls.palette = palette
 
-    def testProperties(self):
+    def test_properties(self):
         scan = ImageScanner()
 
-        self.assertIsNone(scan.palette)
-        self.assertIsNone(scan.palette_image)
+        self.assertEqual(scan.palette, default_palette(8, 4, 8))
+        self.assertIsNotNone(scan.palette_image)
         self.assertIsNotNone(scan.levels)
         self.assertIsNotNone(scan.min_size)
         self.assertIsInstance(scan.level_scale, list)
@@ -59,13 +60,13 @@ class TestImageScanner(TestCase):
         self.assertEqual(scan.level_scale, [])
         self.assertEqual(scan.min_size, 1)
 
-        tr = [HLines(), VLines()]
-        scan.traversal = tr
+        traversal = [HLines(), VLines()]
+        scan.traversal = traversal
         scan.levels = 2
-        self.assertIs(scan.traversal, tr)
+        self.assertIs(scan.traversal, traversal)
         self.assertEqual(scan.level_scale, [2])
 
-    def testInput(self):
+    def test_input(self):
         tests = [(1, 1), (4, 1), (1, 4)]
         for test in tests:
             scan = ImageScanner(palette=self.palette, resize=test)
@@ -79,7 +80,7 @@ class TestImageScanner(TestCase):
             self.assertEqual(img.size, (1, 1))
             self.assertIn(list(img.getdata()), [[0], [1]])
 
-    def testInputLevels(self):
+    def test_input_levels(self):
         scan = ImageScanner(palette=self.palette, levels=2, level_scale=2)
 
         img = scan.input(self.image)
@@ -99,21 +100,22 @@ class TestImageScanner(TestCase):
         with self.assertRaises(ValueError):
             scan.input(self.image)
 
-    def testInputLevelScale(self):
+    def test_input_level_scale(self):
         img = Image.new(mode='RGB', size=(48, 48))
-        scan = ImageScanner(palette=self.palette, levels=4, level_scale=[2, 3, 4])
+        scan = ImageScanner(palette=self.palette,
+                            levels=4, level_scale=[2, 3, 4])
 
         img = scan.input(img)
         size = [scan.level(img, level).size for level in range(scan.levels)]
 
         self.assertEqual(size, [(2, 2), (4, 4), (12, 12), (48, 48)])
 
-    def testScan(self):
+    def test_scan(self):
         scan = ImageScanner(palette=self.palette, traversal=HLines())
         self.assertEqual([list(level) for level in scan(self.image)],
                          [['00', '02', '03', '01', scan.END]])
 
-    def testScanLevels(self):
+    def test_scan_levels(self):
         scan = ImageScanner(palette=self.palette,
                             levels=2, level_scale=2,
                             traversal=[HLines(), VLines()])
@@ -135,7 +137,7 @@ class TestImageScanner(TestCase):
             ]
         )
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         tests = [
             (),
             ((4, 4), 0, True, self.palette, 2, 2,

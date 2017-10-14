@@ -4,18 +4,22 @@ from markovchain.scanner import Scanner, CharScanner, RegExpScanner
 
 
 class TestScanner(TestCase):
-    def testId(self):
+    def test_id(self):
         scan = Scanner(lambda x: x)
         test = 'ab c.d'
         self.assertEqual(''.join(scan(test)), test)
 
 
-class TestCharScanner(TestCase):
+class ScannerTestCase(TestCase):
     @staticmethod
-    def scanStr(scan, data, part=False, sep=''):
-        return sep.join(word for word in scan(data, part) if word is not None)
+    def scan_str(scanner, data, part=False, sep=''):
+        return sep.join(word
+                        for word in scanner(data, part)
+                        if word != scanner.END)
 
-    def testId(self):
+
+class TestCharScanner(ScannerTestCase):
+    def test_id(self):
         scan = CharScanner(None, None)
         test = 'ab c.d'
         self.assertEqual(list(scan('', True)), [])
@@ -23,7 +27,7 @@ class TestCharScanner(TestCase):
         self.assertEqual(list(scan(test, True)), list(test))
         self.assertEqual(list(scan(test, False)), list(test) + [None])
 
-    def testDefault(self):
+    def test_default(self):
         scan = CharScanner()
 
         self.assertEqual(list(scan('ab..c')),
@@ -39,12 +43,12 @@ class TestCharScanner(TestCase):
 
         self.assertEqual(list(scan('...')), [])
 
-        self.assertEqual(self.scanStr(scan, 'abc.de?!f'), 'abc.de?!f.')
-        self.assertEqual(self.scanStr(scan, '.?!.a'), 'a.')
-        self.assertEqual(self.scanStr(scan, '.?!.a', True), 'a')
-        self.assertEqual(self.scanStr(scan, 'a.'), 'a.')
+        self.assertEqual(self.scan_str(scan, 'abc.de?!f'), 'abc.de?!f.')
+        self.assertEqual(self.scan_str(scan, '.?!.a'), 'a.')
+        self.assertEqual(self.scan_str(scan, '.?!.a', True), 'a')
+        self.assertEqual(self.scan_str(scan, 'a.'), 'a.')
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         tests = [(), (None, None), ('ab', 'cd')]
         for test in tests:
             scanner = CharScanner(*test)
@@ -53,12 +57,8 @@ class TestCharScanner(TestCase):
             self.assertEqual(scanner, loaded)
 
 
-class TestRegExp(TestCase):
-    @staticmethod
-    def scanStr(scan, data, part=False, sep=''):
-        return sep.join(word for word in scan(data, part) if word != scan.END)
-
-    def testId(self):
+class TestRegExp(ScannerTestCase):
+    def test_id(self):
         scan = RegExpScanner('.', None)
         test = 'ab c.d'
         self.assertEqual(list(scan('', True)), [])
@@ -66,7 +66,7 @@ class TestRegExp(TestCase):
         self.assertEqual(list(scan(test, True)), list(test))
         self.assertEqual(list(scan(test, False)), list(test) + [scan.END])
 
-    def testDefault(self):
+    def test_default(self):
         scan = RegExpScanner()
 
         self.assertEqual(list(scan('ab..c')),
@@ -79,12 +79,12 @@ class TestRegExp(TestCase):
 
         self.assertEqual(list(scan('... .. . ! \n ? ?!  ')), [])
 
-        self.assertEqual(self.scanStr(scan, 'a\t\nb\nc.d   e ?!f'),
+        self.assertEqual(self.scan_str(scan, 'a\t\nb\nc.d   e ?!f'),
                          'abc.de?!f.')
-        self.assertEqual(self.scanStr(scan, '.?!.a', True), 'a')
-        self.assertEqual(self.scanStr(scan, 'a.'), 'a.')
+        self.assertEqual(self.scan_str(scan, '.?!.a', True), 'a')
+        self.assertEqual(self.scan_str(scan, 'a.'), 'a.')
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         tests = [(), ('.*', None)]
         for test in tests:
             scanner = RegExpScanner(*test)

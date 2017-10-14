@@ -9,17 +9,17 @@ class TestMarkovJson(TestCase):
     class Markov(MarkovJsonMixin, MarkovBase):
         pass
 
-    def testEmpty(self):
+    def test_empty(self):
         m = self.Markov()
         self.assertFalse(m.nodes)
 
-    def testProperties(self):
+    def test_properties(self):
         m = self.Markov(scanner=Scanner(lambda x: x))
         m.links([(('x', 'y'), 'z')])
         m.separator = '::'
         self.assertEqual(list(m.nodes.keys()), ['x::y'])
 
-    def testAddLinks(self):
+    def test_add_links(self):
         m = self.Markov()
         m.links([(('x',), 'y'), (('y',), 'z'), (('x',), 'y')])
         self.assertEqual(
@@ -39,7 +39,7 @@ class TestMarkovJson(TestCase):
             }
         )
 
-    def testGenerateEmpty(self):
+    def test_generate_empty(self):
         m = self.Markov()
         self.assertEqual(''.join(m.generate(10)), '')
         m = self.Markov()
@@ -49,7 +49,7 @@ class TestMarkovJson(TestCase):
         m.parser = None
         self.assertEqual(''.join(m.generate(10, state_size=4)), '')
 
-    def testGenerate(self):
+    def test_generate(self):
         m = self.Markov(scanner=Scanner(lambda x: x))
         m.data(['x', 'y'])
         self.assertEqual(''.join(m.generate(1, start='')), 'x')
@@ -57,7 +57,7 @@ class TestMarkovJson(TestCase):
         self.assertEqual(''.join(m.generate(10, start='y')), '')
         self.assertIn(''.join(m.generate(10)), ['y', 'xy'])
 
-    def testGenerateStateSize(self):
+    def test_generate_state_size(self):
         m = self.Markov(separator=':',
                         parser=Parser(state_sizes=[2, 3]),
                         scanner=Scanner(lambda x: x))
@@ -65,7 +65,7 @@ class TestMarkovJson(TestCase):
         self.assertEqual(''.join(m.generate(10, state_size=2)), 'xyz')
         self.assertEqual(''.join(m.generate(10, state_size=3)), 'xyz')
 
-    def testSaveLoad(self):
+    def test_save_load(self):
         m = self.Markov(separator=':',
                         parser=Parser(state_sizes=[2, 3]),
                         scanner=Scanner(lambda x: x))
