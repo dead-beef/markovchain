@@ -102,13 +102,12 @@ class ImageScanner(Scanner):
 
     @palette.setter
     def palette(self, palette):
-        if palette is not None:
-            if len(palette) == 3:
-                palette = default_palette(*palette)
-            self.palette_image = Image.new('P', (1, 1))
-            self.palette_image.putpalette(palette)
-        else:
-            self.palette_image = None
+        if palette is None:
+            palette = [8, 4, 8]
+        if len(palette) == 3:
+            palette = default_palette(*palette)
+        self.palette_image = Image.new('P', (1, 1))
+        self.palette_image.putpalette(palette)
         self._palette = palette
 
     def input(self, img):
