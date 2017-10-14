@@ -28,10 +28,67 @@ python setup.py test
 coverage run --include 'markovchain/*' setup.py test
 ```
 
-## Usage
+## Module usage
 
-- [`Text settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/text)
-- [`Image settings examples`](https://github.com/dead-beef/markovchain/tree/master/settings/image)
+### Examples
+
+#### Text
+
+```python
+from markovchain import MarkovBase, MarkovSqliteMixin
+
+class Markov(MarkovSqliteMixin, MarkovBase):
+    pass
+
+markov = Markov(db='markov.db')
+
+with open('data.txt') as fp:
+    markov.data(fp.read())
+
+with open('data2.txt') as fp:
+    for line in fp:
+        markov.data(line, True)
+markov.data('', False)
+
+words = markov.generate(16) # generator
+print(*words)
+
+words = markov.generate(16, start=['sentence', 'start'])
+print(*words)
+
+markov.save()
+
+markov = Markov.load('markov.db')
+```
+
+#### Image
+
+```python
+from PIL import Image
+
+from markovchain import MarkovBase, MarkovJsonMixin
+from markovchain.image import MarkovImageMixin
+
+class Markov(MarkovImageMixin, MarkovJsonMixin, MarkovBase):
+    pass
+
+markov = Markov()
+
+markov.data(Image.open('data.png'))
+
+width = 32
+height = 16
+img = markov.image(width, height) # PIL image
+with open('generated.png', 'wb') as fp:
+    img.save(fp)
+
+with open('markov.json', 'w') as fp:
+    markov.save(fp)
+
+markov = Markov.load('markov.json')
+```
+
+## CLI usage
 
 ```
 > markovchain -h
@@ -43,6 +100,29 @@ positional arguments:
 optional arguments:
   -h, --help    show this help message and exit
 ```
+
+### Data types
+
+| State file | File type             | Data mixin used   |
+|------------|-----------------------|-------------------|
+| stdout     | JSON                  | MarkovJsonMixin   |
+| *.json     | JSON                  | MarkovJsonMixin   |
+| *.json.bz2 | bzip2 compressed JSON | MarkovJsonMixin   |
+| Other      | SQLite 3 database     | MarkovSqliteMixin |
+
+### Examples
+
+```bash
+markovchain text create -o text.db input1.txt input2.txt
+markovchain text update text.db input3.txt input4.txt
+markovchain text generate text.db
+markovchain text generate -S 16 -st 'sentence start' text.db
+```
+
+#### Settings
+
+- [`Text`](https://github.com/dead-beef/markovchain/tree/master/settings/text)
+- [`Image`](https://github.com/dead-beef/markovchain/tree/master/settings/image)
 
 ### Text
 
