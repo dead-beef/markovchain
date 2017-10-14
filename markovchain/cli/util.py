@@ -142,7 +142,7 @@ def set_args(args, base):
             except AttributeError:
                 fname = '.json'
 
-    if fname.endswith('.json') or fname.endswith('.bz2'):
+    if fname is None or fname.endswith('.json') or fname.endswith('.bz2'):
         args.type = JSON
     else:
         args.type = SQLITE
