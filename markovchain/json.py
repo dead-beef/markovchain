@@ -86,6 +86,10 @@ class MarkovJsonMixin:
 
     @classmethod
     def load(cls, fp, override=None):
+        if isinstance(fp, str):
+            with open(fp, 'r') as fp2:
+                return cls.load(fp2, override)
+
         x = fp.read(1)
         fp.seek(0)
 
