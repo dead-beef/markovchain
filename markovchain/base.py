@@ -1,20 +1,20 @@
 from collections import deque
 from itertools import chain, repeat
 
-from .scanner import Scanner, CharScanner
-from .parser import Parser
+from .scanner import Scanner, RegExpScanner
+from .parser import ParserBase, Parser
 from .util import load
 
 
 class MarkovBase:
-    DEFAULT_SCANNER = CharScanner
+    DEFAULT_SCANNER = RegExpScanner
     DEFAULT_PARSER = Parser
 
     def __init__(self, separator=' ', scanner=None, parser=None):
         self._separator = None
         self.separator = separator
         self.scanner = load(scanner, Scanner, self.DEFAULT_SCANNER)
-        self.parser = load(parser, Parser, self.DEFAULT_PARSER)
+        self.parser = load(parser, ParserBase, self.DEFAULT_PARSER)
 
     @property
     def separator(self):
