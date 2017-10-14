@@ -6,19 +6,81 @@ from .scanner import Scanner
 
 
 class ParserBase(SaveLoad):
+    """Base parser class.
+
+    Attributes
+    ----------
+    classes : dict
+        Parser class group.
+
+    Examples
+    --------
+    >>> parse = ParserBase(lambda data: zip(data, data[1:]))
+    >>> list(parse(['a', 'b', 'c']))
+    [('a', 'b'), ('b', 'c')]
+    """
+
     classes = {}
 
     def __init__(self, parse=None):
+        """Base parser constructor.
+
+        Parameters
+        ----------
+        parse : function, optional
+        """
         if parse is not None:
             self.parse = parse
 
     def __call__(self, data, part=False):
+        """Parse data.
+
+        Parameters
+        ----------
+        data
+            Data to parse.
+        part : bool, optional
+            True if data is partial (default: False).
+
+        Returns
+        -------
+            self.parse(data)
+        """
         return self.parse(data)
 
 
 class Parser(ParserBase):
+    """Default parser class.
+
+    Attributes
+    ----------
+    state : deque
+        Parser state.
+    state_size : int
+        Maximum parser state size.
+    reset_on_sentence_end : bool
+        Reset parser state on `Scanner.END` token.
+    end : bool
+        True if a sentence is not started.
+
+    Examples
+    --------
+    >>> scan = RegExpScanner()
+    >>> parse = Parser()
+    >>> [(' '.join(state), next) for state, next in parse(scan('a b c. d'))]
+    [('', 'a'), ('a', 'b'), ('b', 'c'), ('c', '.'), ('', 'd'), ('d', '.')]
+    """
     def __init__(self, state_sizes=None,
                  reset_on_sentence_end=True):
+        """Default parser constructor.
+
+        Parameters
+        ----------
+        state_sizes : list or int, optional
+            Parser state size(s) (default: [1]).
+        reset_on_sentence_end : bool, optional
+            Reset parser state on `Scanner.END` token (default: True).
+        """
         super().__init__()
         self.state = None
         self.state_size = None
@@ -29,18 +91,29 @@ class Parser(ParserBase):
 
     @property
     def state_sizes(self):
+        """Parser state sizes.
+        """
         return self._state_sizes
 
     @state_sizes.setter
     def state_sizes(self, state_sizes):
+        state_sizes = to_list(state_sizes)
         if self.state is None or self._state_sizes != state_sizes:
             if any(s <= 0 for s in state_sizes):
-                raise ValueError('parser state size <= 0: {0}'.format(state_sizes))
+                raise ValueError('parser state size <= 0: {0}'
+                                 .format(state_sizes))
             self.state_size = max(state_sizes)
             self._state_sizes = state_sizes
             self.reset(True)
 
     def reset(self, state_size_changed=False):
+        """Reset parser state.
+
+        Parameters
+        ----------
+        state_size_changed : bool, optional
+            True if maximum state size changed (default: False).
+        """
         if state_size_changed:
             self.state = deque(repeat('', self.state_size),
                                maxlen=self.state_size)
@@ -49,6 +122,20 @@ class Parser(ParserBase):
         self.end = True
 
     def __call__(self, data, part=False):
+        """Parse tokens.
+
+        Parameters
+        ----------
+        data : generator of tokens
+            Tokens to parse.
+        part : bool, optional
+            True if data is partial (default: False).
+
+        Returns
+        -------
+        generator of (islice, str)
+            Link generator.
+        """
         for word in data:
             if isinstance(word, tuple):
                 cmd, arg = word
@@ -77,6 +164,13 @@ class Parser(ParserBase):
                 and self.state_size == parser.state_size)
 
     def save(self):
+        """Convert the parser to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         data = super().save()
         data['state_sizes'] = self.state_sizes
         data['reset_on_sentence_end'] = self.reset_on_sentence_end
@@ -84,7 +178,18 @@ class Parser(ParserBase):
 
 
 class LevelParser(ParserBase):
+    """Multilevel parser class.
+    """
     def __init__(self, levels=1, parsers=None):
+        """Multilevel parser constructor.
+
+        Parameters
+        ----------
+        levels : int
+            Number of levels.
+        parsers : list of ParserBase
+            Level parsers.
+        """
         super().__init__()
         self._parsers = None
         self._parsers_max = None
@@ -94,6 +199,8 @@ class LevelParser(ParserBase):
 
     @property
     def parsers(self):
+        """Level parsers.
+        """
         return self._parsers
 
     @parsers.setter
@@ -113,6 +220,8 @@ class LevelParser(ParserBase):
 
     @property
     def levels(self):
+        """Number of levels.
+        """
         return self._levels
 
     @levels.setter
@@ -124,12 +233,28 @@ class LevelParser(ParserBase):
             self.parsers = self._parsers_max
 
     def reset(self):
+        """Reset parser state.
+        """
         for parser in self.parsers:
             parser.reset()
 
     def __call__(self, data, part=False):
-        if part:
-            raise NotImplementedError()
+        """Parse tokens.
+
+        Parameters
+        ----------
+        data : generator of generators
+            Levels to parse.
+        part : bool, optional
+            True if data is partial (default: False).
+
+        Returns
+        -------
+        generator of (islice, str)
+            Link generator.
+        """
+        #if part:
+        #    raise NotImplementedError()
         for level, parser in zip(data, self.parsers):
             yield from parser(level, part)
 
@@ -138,6 +263,13 @@ class LevelParser(ParserBase):
                 and self.parsers == parser.parsers)
 
     def save(self):
+        """Convert the parser to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         data = super().save()
         data['levels'] = self.levels
         if self.parsers is None:

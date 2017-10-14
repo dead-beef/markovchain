@@ -16,7 +16,19 @@ from .util import extend
 
 
 class MarkovJsonMixin:
+    """Markov chain JSON data mixin.
+
+    Attributes
+    ----------
+    nodes : dict of ((list, list) or (str, str))
+    """
     def __init__(self, nodes=None, *args, **kwargs):
+        """Markov chain JSON data constructor.
+
+        Attributes
+        ----------
+            nodes : dict of ((list, list) or (str, str)), optional
+        """
         super().__init__(*args, **kwargs)
         if not nodes:
             self.nodes = {}
@@ -28,6 +40,13 @@ class MarkovJsonMixin:
                 and super().__eq__(markov))
 
     def replace_state_separator(self, old_separator, new_separator):
+        """Replace state separator.
+
+        Parameters
+        ----------
+        old_separator : str
+        new_separator : str
+        """
         self.nodes = dict(
             (k.replace(old_separator, new_separator), v)
             for k, v in self.nodes.items()
@@ -43,6 +62,13 @@ class MarkovJsonMixin:
         #        )
 
     def links(self, links):
+        """Update links.
+
+        Parameters
+        ----------
+        links : generator of (islice, str)
+            Links to add.
+        """
         for src, dst in links:
             src = self.separator.join(src)
             try:
@@ -64,6 +90,18 @@ class MarkovJsonMixin:
                 self.nodes[src] = [dst, 1]
 
     def random_link(self, state):
+        """Get a random link.
+
+        Parameters
+        ----------
+        state : deque of str
+            Link source.
+
+        Returns
+        -------
+        str, deque of str
+            Link value and updated state.
+        """
         try:
             node = self.nodes[self.separator.join(state)]
             if not isinstance(node[0], list):
@@ -86,6 +124,19 @@ class MarkovJsonMixin:
 
     @classmethod
     def load(cls, fp, override=None):
+        """Load a generator.
+
+        Parameters
+        ----------
+        fp : file or str
+            Input file or file path.
+        override : dict or None, optional
+            Changes to loaded data (default: None).
+
+        Returns
+        -------
+        Loaded generator.
+        """
         if isinstance(fp, str):
             with open(fp, 'r') as fp2:
                 return cls.load(fp2, override)
@@ -109,9 +160,23 @@ class MarkovJsonMixin:
         return cls(**data)
 
     def save(self, fp):
+        """Save the generator.
+
+        Parameters
+        ----------
+        fp : file
+            Output file.
+        """
         json.dump(self.get_save_data(), fp, ensure_ascii=False)
 
     def get_save_data(self):
+        """Convert the generator to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         data = super().get_save_data()
         data['nodes'] = self.nodes
         return data

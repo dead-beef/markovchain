@@ -3,15 +3,63 @@ from copy import deepcopy
 
 
 class SaveLoad:
+    """Base class for converting to/from JSON.
+
+    Attributes
+    ----------
+    classes : dict
+        Class group.
+
+    Examples
+    --------
+    >>> class SaveLoadGroup(SaveLoad):
+    ...     classes = {}
+    ...
+    >>> class SaveLoadObject(SaveLoadGroup):
+    ...     def __init__(self, attr=None):
+    ...         self.attr = attr
+    ...     def save(self):
+    ...         data = super().save()
+    ...         data['attr'] = self.attr
+    ...         return data
+    ...
+    >>> SaveLoadGroup.add_class(SaveLoadObject)
+    >>> SaveLoadGroup.classes
+    {'SaveLoadObject': <class '__main__.SaveLoadObject'>}
+    >>> obj = SaveLoadObject(0)
+    >>> data = obj.save()
+    >>> data
+    {'attr': 0, '__class__': 'SaveLoadObject'}
+    >>> obj2 = SaveLoadGroup.load(data)
+    >>> type(obj2)
+    <class '__main__.SaveLoadObject'>
+    >>> obj2.attr
+    0
+    """
+
     classes = {}
 
     @classmethod
     def add_class(cls, *args):
+        """Add classes to the group.
+
+        Parameters
+        ----------
+        *args : type
+            Classes to add.
+        """
         for cls2 in args:
             cls.classes[cls2.__name__] = cls2
 
     @classmethod
     def remove_class(cls, *args):
+        """Remove classes from the group.
+
+        Parameters
+        ----------
+        *args : type
+            Classes to remove.
+        """
         for cls2 in args:
             try:
                 del cls.classes[cls2.__name__]
@@ -20,6 +68,24 @@ class SaveLoad:
 
     @classmethod
     def load(cls, data):
+        """Create an object from JSON data.
+
+        Parameters
+        ----------
+        data : dict
+            JSON data.
+
+        Returns
+        ----------
+        object
+            Created object.
+
+        Raises
+        ------
+        KeyError
+            If `data` does not have the '__class__' key
+            or the necessary class is not in the class group.
+        """
         ret = cls.classes[data['__class__']]
         data_cls = data['__class__']
         del data['__class__']
@@ -30,12 +96,36 @@ class SaveLoad:
         return ret
 
     def save(self):
+        """Convert an object to JSON.
+
+        Returns
+        ----------
+        dict
+            JSON data.
+        """
         return {
             '__class__': self.__class__.__name__
         }
 
 
 class ObjectWrapper: # pylint:disable=too-few-public-methods
+    """Base class for wrapping objects.
+
+    Example
+    -------
+    >>> class Object:
+    ...     def method(self):
+    ...         return 2
+    ...
+    >>> class Wrapper(ObjectWrapper):
+    ...     def method(self):
+    ...         return super().method() * 2
+    ...
+    >>> obj = Object()
+    >>> wrapped = Wrapper(obj)
+    >>> wrapped.method()
+    4
+    """
     def __init__(self, obj):
         self.__class__ = type(
             obj.__class__.__name__,
@@ -46,9 +136,45 @@ class ObjectWrapper: # pylint:disable=too-few-public-methods
 
 
 def const(x):
+    """Return a function that takes any arguments and returns the specified value.
+
+    Parameters
+    ----------
+    x
+        Value to return.
+
+    Returns
+    -------
+    function
+    """
     return lambda *args: x
 
 def to_list(x):
+    """Convert a value to a list.
+
+    Parameters
+    ----------
+    x
+        Value.
+
+    Returns
+    -------
+    list
+
+    Examples
+    --------
+    >>> to_list(0)
+    [0]
+    >>> to_list({'x': 0})
+    [{'x': 0}]
+    >>> to_list(x ** 2 for x in range(3))
+    [0, 1, 4]
+    >>> x = [1, 2, 3]
+    >>> to_list(x)
+    [1, 2, 3]
+    >>> _ is x
+    True
+    """
     if isinstance(x, list):
         return x
     if not isinstance(x, dict):
@@ -59,6 +185,50 @@ def to_list(x):
     return [x]
 
 def fill(xs, length, copy=False):
+    """Convert a value to a list of specified length.
+
+    If the input is too short, fill it with its last element.
+
+    Parameters
+    ----------
+    xs
+        Input list/value.
+    length : int
+        Output list length.
+    copy : bool, optional
+        Deep copy the last element to fill the list (default: False).
+
+    Returns
+    -------
+    list
+
+    Raises
+    ------
+    ValueError
+        If `xs` is empty and `length` > 0
+
+    Examples
+    --------
+    >>> fill(0, 3)
+    [0, 0, 0]
+    >>> fill((x ** 2 for x in range(3)), 1)
+    [0]
+    >>> x = [{'x': 0}, {'x': 1}]
+    >>> y = fill(x, 4)
+    >>> y
+    [{'x': 0}, {'x': 1}, {'x': 1}, {'x': 1}]
+    >>> y[2] is y[1]
+    True
+    >>> y[3] is y[2]
+    True
+    >>> y = fill(x, 4, True)
+    >>> y
+    [{'x': 0}, {'x': 1}, {'x': 1}, {'x': 1}]
+    >>> y[2] is y[1]
+    False
+    >>> y[3] is y[2]
+    False
+    """
     if isinstance(xs, list) and len(xs) == length:
         return xs
 
@@ -82,6 +252,18 @@ def fill(xs, length, copy=False):
     return xs
 
 def load(obj, cls, default_factory):
+    """Create or load an object if necessary.
+
+    Parameters
+    ----------
+    obj : object or dict or None
+    cls : type
+    default_factory : function
+
+    Returns
+    -------
+    object
+    """
     if obj is None:
         return default_factory()
     if isinstance(obj, dict):
@@ -103,11 +285,58 @@ def _extend(dst, src):
             dst[key] = val
 
 def extend(dst, *args):
+    """Recursively update a dictionary.
+
+    Parameters
+    ----------
+    dst : dict
+        Dictionary to update.
+    *args : dict
+
+    Returns
+    -------
+    dict
+        Updated dictionary.
+
+    Examples
+    --------
+    >>> extend({'x': {'y': 0}}, {'x': {'z': 1}})
+    {'x': {'y': 0, 'z': 1}}
+    """
     for src in args:
         _extend(dst, src)
     return dst
 
 def truncate(string, maxlen, end=True):
+    """Truncate a string.
+
+    Parameters
+    ----------
+    string : str
+    maxlen : int
+        Maximum string length.
+    end : boolean, optional
+        Remove characters from the end (default: True).
+
+    Returns
+    -------
+    str
+        Truncated string.
+
+    Raises
+    ------
+    ValueError
+        If `maxlen` <= 3.
+
+    Examples
+    --------
+    >>> truncate('str', 6)
+    'str'
+    >>> truncate('long string', 8)
+    'long ...'
+    >>> truncate('long string', 8, False)
+    '...tring'
+    """
     if maxlen <= 3:
         raise ValueError('maxlen <= 3')
 

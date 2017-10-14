@@ -7,10 +7,32 @@ from .util import load
 
 
 class MarkovBase:
+    """Base markov chain generator class.
+
+    Attributes
+    ----------
+    DEFAULT_SCANNER : type
+        Default scanner class.
+    DEFAULT_PARSER : type
+        Default parser class.
+    scanner : Scanner
+    parser : ParserBase
+    """
     DEFAULT_SCANNER = RegExpScanner
     DEFAULT_PARSER = Parser
 
     def __init__(self, separator=' ', scanner=None, parser=None):
+        """Base markov chain generator constructor.
+
+        Attributes
+        ----------
+        separator : str, optional
+            State separator (default: ' ').
+        scanner : dict or Scanner, optional
+            Scanner (default: MarkovBase.DEFAULT_SCANNER()).
+        parser : dict or ParserBase, optional
+            Parser (default: MarkovBase.DEFAULT_PARSER()).
+        """
         self._separator = None
         self.separator = separator
         self.scanner = load(scanner, Scanner, self.DEFAULT_SCANNER)
@@ -18,6 +40,8 @@ class MarkovBase:
 
     @property
     def separator(self):
+        """State separator.
+        """
         return self._separator
 
     @separator.setter
@@ -33,18 +57,43 @@ class MarkovBase:
                 and self.parser == markov.parser)
 
     def data(self, data, part=False):
-        if self.parser is None:
-            raise ValueError('no parser')
+        """Parse data and update links.
+
+        Parameters
+        ----------
+        data
+            Data to parse.
+        part : bool, optional
+            True if data is partial (default: False).
+        """
+        #if self.parser is None:
+        #    raise ValueError('no parser')
 
         self.links(self.parser(self.scanner(data, part), part))
 
     def generate(self, maxlength, state_size=None, start=None):
+        """Generate a sentence.
+
+        Parameters
+        ----------
+        maxlength : int
+            Maximum sentence length.
+        state_size : int, optional
+            State size (default: parser.state_sizes[0]).
+        start : list of str, optional
+            Starting state (default: []).
+
+        Returns
+        -------
+        generator
+            Word generator.
+        """
         if maxlength <= 0:
             return
 
         if state_size is None:
-            if self.parser is None:
-                raise ValueError('parser is None and state_size is None')
+            #if self.parser is None:
+            #    raise ValueError('parser is None and state_size is None')
             try:
                 state_size = next(iter(self.parser.state_sizes))
             except StopIteration:
@@ -71,24 +120,76 @@ class MarkovBase:
             yield link
 
     def get_save_data(self):
+        """Convert the generator to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         return {
             'separator': self.separator,
             'scanner': None if self.scanner is None else self.scanner.save(),
             'parser': None if self.parser is None else self.parser.save()
         }
 
-    def replace_node_separator(self, old_separator, new_separator):
+    def replace_state_separator(self, old_separator, new_separator):
+        """Replace state separator.
+
+        Parameters
+        ----------
+        old_separator : str
+        new_separator : str
+        """
         pass
 
     def links(self, links):
+        """Update links.
+
+        Parameters
+        ----------
+        links : generator of (islice, str)
+            Links to add.
+
+        Raises
+        -------
+        NotImplementedError
+            If data mixin is missing.
+        """
         raise NotImplementedError('missing data mixin')
 
     def random_link(self, state):
+        """Get a random link.
+
+        Parameters
+        ----------
+        state
+            Link source.
+
+        Raises
+        -------
+        NotImplementedError
+            If data mixin is missing.
+        """
         raise NotImplementedError('missing data mixin')
 
     @classmethod
     def load(cls, *args, **kwargs):
+        """Load a generator.
+
+        Raises
+        -------
+        NotImplementedError
+            If data mixin is missing.
+        """
         raise NotImplementedError('missing data mixin')
 
     def save(self, *args, **kwargs):
+        """Save the generator.
+
+        Raises
+        -------
+        NotImplementedError
+            If data mixin is missing.
+        """
         raise NotImplementedError('missing data mixin')

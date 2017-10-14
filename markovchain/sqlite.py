@@ -6,7 +6,23 @@ from itertools import chain, islice
 from .util import extend
 
 class MarkovSqliteMixin:
+    """Markov chain SQLite data mixin.
+
+    Attributes
+    ----------
+    db
+        Database connection.
+    cursor
+        Database cursor.
+    """
     def __init__(self, db=':memory:', *args, **kwargs):
+        """Markov chain SQLite data constructor.
+
+        Parameters
+        ----------
+        db : str or sqlite3.Connection, optional
+            Database path or connection (default: ':memory:').
+        """
         super().__init__(*args, **kwargs)
         if isinstance(db, str):
             db = sqlite3.connect(db, isolation_level='IMMEDIATE')
@@ -18,12 +34,26 @@ class MarkovSqliteMixin:
         return super().__eq__(markov)
 
     def replace_state_separator(self, old_separator, new_separator):
+        """Replace state separator.
+
+        Parameters
+        ----------
+        old_separator : str
+        new_separator : str
+        """
         self.cursor.execute(
             'UPDATE nodes SET value = replace(value, ?, ?)',
             (old_separator, new_separator)
         )
 
     def links(self, links):
+        """Update links.
+
+        Parameters
+        ----------
+        links : generator of (islice, str)
+            Links to add.
+        """
         for src, dst in links:
             src = list(src)
             source = self.get_node(self.separator.join(src))
@@ -42,6 +72,18 @@ class MarkovSqliteMixin:
             )
 
     def random_link(self, state):
+        """Get a random link.
+
+        Parameters
+        ----------
+        state : int or deque of str
+            Link source ID or name.
+
+        Returns
+        -------
+        str, int
+            Link value and next source ID.
+        """
         if not isinstance(state, int):
             self.cursor.execute(
                 'SELECT id FROM nodes WHERE value=?',
@@ -69,12 +111,33 @@ class MarkovSqliteMixin:
         raise RuntimeError('no link')
 
     def get_tables(self):
+        """Get all table names.
+
+        Returns
+        -------
+        set of str
+        """
         self.cursor.execute(
             'SELECT name FROM sqlite_master WHERE type="table"'
         )
         return set(x[0] for x in self.cursor.fetchall())
 
     def get_node(self, value):
+        """Get node ID by value.
+
+        If a node with the specified value does not exist,
+        create it and return its ID.
+
+        Parameters
+        ----------
+        value : str
+            Node value.
+
+        Returns
+        -------
+        int
+            Node ID.
+        """
         while True:
             self.cursor.execute(
                 'SELECT id FROM nodes WHERE value=?',
@@ -89,6 +152,8 @@ class MarkovSqliteMixin:
             )
 
     def update_main_table(self):
+        """Write generator settings to database.
+        """
         data = (json.dumps(self.get_save_data()),)
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS main (
@@ -102,6 +167,8 @@ class MarkovSqliteMixin:
             self.cursor.execute('UPDATE main SET settings=?', data)
 
     def create_node_tables(self):
+        """Create node and link tables if they don't exist.
+        """
         self.cursor.execute('PRAGMA foreign_keys=1')
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS nodes (
@@ -129,6 +196,19 @@ class MarkovSqliteMixin:
 
     @classmethod
     def load(cls, fp, override=None):
+        """Load a generator.
+
+        Parameters
+        ----------
+        fp : file or str
+            Input file or file path.
+        override : dict or None, optional
+            Changes to loaded data (default: None).
+
+        Returns
+        -------
+        Loaded generator.
+        """
         if not isinstance(fp, str):
             fp.close()
             fp = fp.name
@@ -151,5 +231,7 @@ class MarkovSqliteMixin:
         return cls(**args)
 
     def save(self):
+        """Save the generator.
+        """
         self.update_main_table()
         self.db.commit()
