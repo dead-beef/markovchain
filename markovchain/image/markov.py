@@ -38,16 +38,16 @@ class MarkovImageMixin:
             self.parser.levels = levels
         self._levels = levels
 
-    def _generate(self, width, height, state_size=None, start=None):
+    def _imgdata(self, width, height, state_size=None, start=None):
         maxlength = width * height
         if maxlength > 0 and start is not None:
             yield int(start[-2:], 16)
             maxlength -= 1
         while maxlength > 0:
             prevmaxlength = maxlength
-            for pixel in super().generate(maxlength=maxlength,
-                                          state_size=state_size,
-                                          start=start):
+            for pixel in self.generate(maxlength=maxlength,
+                                       state_size=state_size,
+                                       start=start):
                 yield int(pixel[-2:], 16)
                 maxlength -= 1
             if prevmaxlength == maxlength:
@@ -57,10 +57,10 @@ class MarkovImageMixin:
                 else:
                     raise RuntimeError('empty generator')
 
-    def generate(self, width, height,
-                 state_size=None,
-                 start=None, levels=None,
-                 start_level=-1, start_image=None):
+    def image(self, width, height,
+              state_size=None,
+              start=None, levels=None,
+              start_level=-1, start_image=None):
         if levels is None:
             levels = self.scanner.levels
         elif levels <= 0 or levels > self.levels:
@@ -108,7 +108,7 @@ class MarkovImageMixin:
 
             if prev is None:
                 tr = self.scanner.traversal[0](width, height, ends=False)
-                data = self._generate(width, height, state_size, start)
+                data = self._imgdata(width, height, state_size, start)
                 for xy, pixel in zip(tr, data):
                     ret.putpixel(xy, pixel)
             else:
@@ -122,7 +122,7 @@ class MarkovImageMixin:
                     x0, y0 = xy
                     x0 *= scale
                     y0 *= scale
-                    data = self._generate(scale, scale, state_size, start)
+                    data = self._imgdata(scale, scale, state_size, start)
                     blk = self.scanner.traversal[level](scale, scale, False)
                     for pixel, (x1, y1) in zip(data, blk):
                         ret.putpixel((x0 + x1, y0 + y1), pixel)
