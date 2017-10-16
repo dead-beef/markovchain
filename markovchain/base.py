@@ -85,7 +85,7 @@ class MarkovBase:
 
         Returns
         -------
-        generator
+        generator of str
             Word generator.
         """
         if maxlength <= 0:
@@ -120,7 +120,7 @@ class MarkovBase:
             yield link
 
     def get_save_data(self):
-        """Convert the generator to JSON.
+        """Convert generator settings to JSON.
 
         Returns
         -------

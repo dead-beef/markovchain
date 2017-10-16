@@ -13,6 +13,14 @@ from ..cli.util import cmd_settings # pylint:disable=unused-import
 BASE = ()
 
 def create_arg_parser(parent):
+    """Create command subparsers.
+
+    Parameters
+    ----------
+    parent : ArgumentParser
+        Command parser.
+    """
+
     arg1 = parent.add_subparsers(dest='command')
 
     arg2 = arg1.add_parser('create')
@@ -76,6 +84,17 @@ def create_arg_parser(parent):
                       help='state file')
 
 def read(fnames, markov, progress):
+    """Read data files and update a generator.
+
+    Parameters
+    ----------
+    fnames : list of str
+        File paths.
+    markov : MarkovBase
+        Generator to update.
+    progress : bool
+        Show progress bar.
+    """
     with infiles(fnames, progress) as fnames:
         for fname in fnames:
             with open(fname, 'r') as fp:
@@ -108,6 +127,13 @@ def read(fnames, markov, progress):
                 markov.data('', False)
 
 def cmd_create(args):
+    """Create a generator.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     if args.type == SQLITE:
         if args.output is not None and path.exists(args.output):
             remove(args.output)
@@ -118,6 +144,13 @@ def cmd_create(args):
     save(markov, args.output, args)
 
 def cmd_update(args):
+    """Update a generator.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     args.output = None
 
     markov = load(args.markov, args.state, args)
@@ -134,6 +167,13 @@ def cmd_update(args):
         save(markov, args.output, args)
 
 def cmd_generate(args):
+    """Generate text.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     ispunct = lambda s: (s.isprintable()
                          and not s.isalnum()
                          and not s.isspace())

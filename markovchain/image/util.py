@@ -3,6 +3,28 @@ from math import floor
 
 
 def palette(hues, saturations, values):
+    """Generate a palette.
+
+    Parameters
+    ----------
+    hues : int
+        Number of hues.
+    saturations : int
+        Number of saturations.
+    values : int
+        Number of values.
+
+    Raises
+    ------
+    ValueError
+        If hues * saturations * values > 256
+        or min(hues, saturations, values) < 1.
+
+    Returns
+    -------
+    list of int
+        Palette for PIL.Image.putpalette().
+    """
     size = hues * saturations * values
     if size > 256:
         raise ValueError('palette size > 256: {0}'.format(size))
@@ -34,6 +56,29 @@ def palette(hues, saturations, values):
 
 
 def convert(ctype, img, palette_img, dither=False):
+    """Convert an image to palette type.
+
+    Parameters
+    ----------
+    ctype : int
+        Conversion type.
+    img : Image
+        Image to convert.
+    palette_img : Image
+        Palette source image.
+    dither : bool, optional
+        Enable dithering (default: False).
+
+    Raises
+    ------
+    ValueError
+        If palette_img has no palette.
+
+    Returns
+    -------
+    Image
+        Converted image.
+    """
     if ctype == 0:
         img2 = img.convert(mode='P')
         img2.putpalette(palette_img.getpalette())

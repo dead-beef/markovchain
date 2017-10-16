@@ -8,6 +8,9 @@ from ..util import fill
 
 
 class MarkovImageMixin:
+    """Markov chain image generator mixin.
+    """
+
     DEFAULT_SCANNER = ImageScanner
     DEFAULT_PARSER = LevelParser
 
@@ -15,6 +18,15 @@ class MarkovImageMixin:
                  levels=1,
                  palette=None,
                  *args, **kwargs):
+        """Markov chain image generator constructor.
+
+        Parameters
+        ----------
+        levels : int, optional
+            Number of levels.
+        palette : list of int, optional
+            Image palette (default: `markovchain.image.util.palette(8, 4, 8)`).
+        """
         super().__init__(*args, **kwargs)
         if palette is None:
             try:
@@ -28,6 +40,8 @@ class MarkovImageMixin:
 
     @property
     def levels(self):
+        """int : Number of levels.
+        """
         return self._levels
 
     @levels.setter
@@ -39,6 +53,29 @@ class MarkovImageMixin:
         self._levels = levels
 
     def _imgdata(self, width, height, state_size=None, start=None):
+        """Generate image pixels.
+
+        Parameters
+        ----------
+        width : int
+            Image width.
+        height : int
+            Image height.
+        state_size : int or None, optional
+            State size to use for generation (default: None).
+        start : str or None, optional
+            Initial state (default: None).
+
+        Raises
+        ------
+        RuntimeError
+            If generator is empty.
+
+        Returns
+        -------
+        generator of int
+            Pixel generator.
+        """
         maxlength = width * height
         if maxlength > 0 and start is not None:
             yield int(start[-2:], 16)
@@ -61,6 +98,30 @@ class MarkovImageMixin:
               state_size=None,
               start=None, levels=None,
               start_level=-1, start_image=None):
+        """Generate an image.
+
+        Parameters
+        ----------
+        width : int
+            Image width.
+        height : int
+            Image height.
+        state_size : int or None, optional
+            State size to use for generation (default: None).
+        start : str or None, optional
+            Initial state (default: None).
+        levels : int, optional
+            Number of generated levels (default: self.scanner.levels).
+        start_level : int, optional
+            Initial level (default: -1).
+        start_image : Image or None
+            Initial level image (default: None).
+
+        Returns
+        -------
+        Image
+            Generated image.
+        """
         if levels is None:
             levels = self.scanner.levels
         elif levels <= 0 or levels > self.levels:
@@ -132,6 +193,15 @@ class MarkovImageMixin:
         return ret
 
     def data(self, data, part=False):
+        """Parse data and update links.
+
+        Parameters
+        ----------
+        data : Image
+            Data to parse.
+        part : bool, optional
+            True if data is partial (default: False).
+        """
         if isinstance(self.parser, LevelParser):
             self.links(self.parser(self.scanner(data, part), part))
         else:
@@ -139,6 +209,13 @@ class MarkovImageMixin:
             self.links(self.parser(data, part))
 
     def get_save_data(self):
+        """Convert generator settings to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         data = super().get_save_data()
         data['palette'] = self.palette
         data['levels'] = self.levels

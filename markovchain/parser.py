@@ -65,10 +65,22 @@ class Parser(ParserBase):
 
     Examples
     --------
-    >>> scan = RegExpScanner()
+    >>> tokens = ['a', 'b', '.', Scanner.END, 'c', '.', Scanner.END]
     >>> parse = Parser()
-    >>> [(' '.join(state), next) for state, next in parse(scan('a b c. d'))]
-    [('', 'a'), ('a', 'b'), ('b', 'c'), ('c', '.'), ('', 'd'), ('d', '.')]
+    >>> [(list(state), next) for state, next in parse(tokens)]
+    [([''], 'a'), (['a'], 'b'), (['b'], '.'),
+     ([''], 'c'), (['c'], '.')]
+    >>> parse.state_sizes = 2
+    >>> [(list(state), next) for state, next in parse(tokens)]
+    [(['', ''], 'a'), (['', 'a'], 'b'), (['a', 'b'], '.'),
+     (['', ''], 'c'), (['', 'c'], '.')]
+    >>> parse.state_sizes = [1, 2]
+    >>> [(list(state), next) for state, next in parse(tokens)]
+    [([''], 'a'), (['', ''], 'a'),
+     (['a'], 'b'), (['', 'a'], 'b'),
+     (['b'], '.'), (['a', 'b'], '.'),
+     ([''], 'c'), (['', ''], 'c'),
+     (['c'], '.'), (['', 'c'], '.')]
     """
     def __init__(self, state_sizes=None,
                  reset_on_sentence_end=True):

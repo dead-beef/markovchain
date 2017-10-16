@@ -117,9 +117,8 @@ class CharScanner(Scanner):
 
         Returns
         -------
-        generator
+        generator of (str or Scanner.END)
             Token generator.
-            Tokens are characters or `Scanner.END`.
         """
         if not self.end_chars:
             yield from data
@@ -224,9 +223,8 @@ class RegExpScanner(Scanner):
 
         Returns
         -------
-        generator
+        generator of (str or Scanner.END)
             Token generator.
-            Tokens are strings or `Scanner.END`.
         """
         if not self.expr.groups:
             for match in self.expr.finditer(data):

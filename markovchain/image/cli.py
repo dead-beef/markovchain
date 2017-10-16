@@ -21,6 +21,14 @@ BASE = (MarkovImageMixin,)
 
 
 def create_arg_parser(parent):
+    """Create command subparsers.
+
+    Parameters
+    ----------
+    parent : ArgumentParser
+        Command parser.
+    """
+
     arg1 = parent.add_subparsers(dest='command')
 
     arg2 = arg1.add_parser('convert')
@@ -126,6 +134,15 @@ def create_arg_parser(parent):
 
 
 class TraversalProgressWrapper(ObjectWrapper): # pylint: disable=too-few-public-methods
+    """Traversal object wrapper.
+
+    Shows image traversal progress.
+
+    Attributes
+    ----------
+    pbar_parent : tqdm
+        Parent progress bar.
+    """
     def __init__(self, obj, parent=None):
         super().__init__(obj)
         self.pbar_parent = parent
@@ -152,6 +169,19 @@ class TraversalProgressWrapper(ObjectWrapper): # pylint: disable=too-few-public-
 
 
 def read(fnames, markov, progress, leave=True):
+    """Read data files and update a generator.
+
+    Parameters
+    ----------
+    fnames : list of str
+        File paths.
+    markov : MarkovBase
+        Generator to update.
+    progress : bool
+        Show progress bar.
+    leave : bool, optional
+        Leave progress bars (default: True).
+    """
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):
         tr[0] = TraversalProgressWrapper(tr[0])
@@ -170,6 +200,21 @@ def read(fnames, markov, progress, leave=True):
                 pbar.close()
 
 def outfiles(markov, fmt, nfiles, progress, start=0):
+    """Get output file paths.
+
+    Parameters
+    ----------
+    markov : MarkovBase
+        Markov chain generator.
+    fmt : str
+        File path format string.
+    nfiles : int
+        Number of files.
+    progress : bool
+        Show progress bars.
+    start : int, optional
+        Initial image level (default: 0).
+    """
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):
         tr[0] = TraversalProgressWrapper(tr[0])
@@ -188,6 +233,13 @@ def outfiles(markov, fmt, nfiles, progress, start=0):
                 pbar.close()
 
 def cmd_convert(args):
+    """Convert an image.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     scanner = ImageScanner(
         levels=1,
         resize=tuple(args.resize) if args.resize else None,
@@ -205,6 +257,13 @@ def cmd_convert(args):
             img.save(fp)
 
 def cmd_create(args):
+    """Create a generator.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     if args.type == SQLITE:
         if path.exists(args.output):
             remove(args.output)
@@ -215,6 +274,13 @@ def cmd_create(args):
     save(markov, args.output, args)
 
 def cmd_update(args):
+    """Update a generator.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     if args.type == SQLITE and args.output is not None:
         copyfile(args.state, args.output)
         args.state = args.output
@@ -235,6 +301,13 @@ def cmd_update(args):
         save(markov, args.output, args)
 
 def cmd_generate(args):
+    """Generate images.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     check_output_format(args.output, args.count)
 
     markov = load(args.markov, args.state, args)
@@ -268,6 +341,13 @@ def cmd_generate(args):
             img.save(fp)
 
 def cmd_filter(args):
+    """Filter an image.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command arguments.
+    """
     check_output_format(args.output, args.count)
 
     img = Image.open(args.input)

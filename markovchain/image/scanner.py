@@ -9,6 +9,21 @@ from .util import convert, palette as default_palette
 from .traversal import Traversal, HLines
 
 class ImageScanner(Scanner):
+    """Image scanner class.
+
+    Attributes
+    ----------
+    palette_image : Image or None
+        Palette source image.
+    resize : (int, int) or None
+        If not None, resize images before scanning.
+    min_size : int
+        Minimum image size.
+    convert : int
+        Image conversion type.
+    dither : bool
+        If True, enable image dithering.
+    """
     def __init__(self,
                  resize=None,
                  convert_type=1,
@@ -18,6 +33,27 @@ class ImageScanner(Scanner):
                  level_scale=4,
                  scale=Image.BICUBIC,
                  traversal=None):
+        """Image scanner constructor.
+
+        Parameters
+        ----------
+        resize : (int, int) or None, optional
+            If not None, resize images before scanning (default: None).
+        convert_type : int, optional
+            Image conversion type (default: 1).
+        dither : bool
+            If True, enable image dithering (default: False).
+        palette : list of int, optional
+            Image palette (default: `markovchain.image.util.palette(8, 4, 8)`).
+        levels : int, optional
+            Number of scanner levels (default: 1).
+        level_scale : int or list of int
+            Level scale factors.
+        scale : int
+            Scale quality.
+        traversal : dict or Traversal or list of (dict or Traversal)
+            Level traversals.
+        """
         super().__init__()
         self._levels = None
         self._level_scale = None
@@ -40,6 +76,8 @@ class ImageScanner(Scanner):
 
     @property
     def traversal(self):
+        """Traversal: Image traversal.
+        """
         return self._traversal
 
     @traversal.setter
@@ -59,6 +97,8 @@ class ImageScanner(Scanner):
 
     @property
     def levels(self):
+        """int: Number of levels.
+        """
         return self._levels
 
     @levels.setter
@@ -73,6 +113,8 @@ class ImageScanner(Scanner):
 
     @property
     def level_scale(self):
+        """list of int: Level scale factors.
+        """
         return self._level_scale
 
     @level_scale.setter
@@ -98,6 +140,8 @@ class ImageScanner(Scanner):
 
     @property
     def palette(self):
+        """Image palette.
+        """
         return self._palette
 
     @palette.setter
@@ -111,6 +155,23 @@ class ImageScanner(Scanner):
         self._palette = palette
 
     def input(self, img):
+        """Resize input image if necessary.
+
+        Parameters
+        ----------
+        img : Image
+            Input image.
+
+        Raises
+        ------
+        ValueError
+            If input image is too small.
+
+        Returns
+        -------
+        Image
+            Resized image or input image.
+        """
         img_width, img_height = img.size
 
         if self.resize:
@@ -127,9 +188,35 @@ class ImageScanner(Scanner):
         return img
 
     def set_palette(self, img):
+        """Set image palette.
+
+        Parameters
+        ----------
+        img : Image
+            Input image.
+
+        Returns
+        -------
+        Image
+            Converted image.
+        """
         return convert(self.convert, img, self.palette_image, self.dither)
 
     def level(self, img, level):
+        """Get image level.
+
+        Parameters
+        ----------
+        img : Image
+            Input image.
+        level : int
+            Level number.
+
+        Returns
+        -------
+        Image
+            Converted image.
+        """
         if level < self.levels - 1:
             width, height = img.size
             scale = reduce(lambda x, y: x * y,
@@ -139,6 +226,22 @@ class ImageScanner(Scanner):
         return self.set_palette(img)
 
     def _scan_level(self, level, prev, img):
+        """Scan a level.
+
+        Parameters
+        ----------
+        level : int
+            Level number.
+        prev : Image or None
+            Previous level image or None if level == 0.
+        img : Image
+            Current level image.
+
+        Returns
+        -------
+        generator of (str or Scanner.END or (Scanner.START, str))
+            Token generator.
+        """
         if level == 0:
             width, height = img.size
         else:
@@ -171,6 +274,25 @@ class ImageScanner(Scanner):
                 yield self.END
 
     def __call__(self, img, part=False):
+        """Scan an image.
+
+        Parameters
+        ----------
+        img : Image
+            Image to scan.
+        part : bool, optional
+            True if data is partial.
+
+        Raises
+        ------
+        NotImplementedError
+            If part is True.
+
+        Returns
+        -------
+        generator of (str or Scanner.END or (Scanner.START, str))
+            Token generator.
+        """
         if part:
             raise NotImplementedError()
 
@@ -193,6 +315,13 @@ class ImageScanner(Scanner):
                 and self.scale == scanner.scale)
 
     def save(self):
+        """Convert to JSON.
+
+        Returns
+        -------
+        dict
+            JSON data.
+        """
         data = super().save()
         data['resize'] = list(self.resize) if self.resize is not None else None
         data['convert_type'] = self.convert
