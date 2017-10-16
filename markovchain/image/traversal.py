@@ -9,8 +9,8 @@ class Traversal(SaveLoad):
 
 
 class Lines(Traversal): # pylint: disable=abstract-method
-    def __init__(self, reverse=0, line_sentences=False, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, reverse=0, line_sentences=False):
+        super().__init__()
         self.reverse = reverse
         self.line_sentences = line_sentences
 
@@ -56,8 +56,7 @@ class VLines(Lines):
 
 
 class Spiral(Traversal):
-    def __init__(self, reverse=False, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__()
         self.reverse = reverse
 
     def __eq__(self, t):
@@ -151,9 +150,8 @@ class Blocks(Traversal):
                  block_size=(16, 16),
                  block_sentences=False,
                  traverse_image=None,
-                 traverse_block=None,
-                 **kwargs):
-        super().__init__(**kwargs)
+                 traverse_block=None):
+        super().__init__()
         self.block_size = tuple(block_size)
         self.block_sentences = block_sentences
         self.traverse_image = load(traverse_image, Traversal, HLines)

@@ -138,7 +138,12 @@ class ImageScanner(Scanner):
 
         return self.set_palette(img)
 
-    def _scan_level(self, level, prev, img, width, height):
+    def _scan_level(self, level, prev, img):
+        if level == 0:
+            width, height = img.size
+        else:
+            width, height = prev.size
+
         tr = self.traversal[0](width, height, ends=(level == 0))
         if level == 0:
             for xy in tr:
@@ -174,14 +179,7 @@ class ImageScanner(Scanner):
 
         for level in range(self.levels):
             img = self.level(resized, level)
-
-            if level == 0:
-                width, height = img.size
-            else:
-                width, height = prev.size
-
-            yield self._scan_level(level, prev, img, width, height)
-
+            yield self._scan_level(level, prev, img)
             prev = img
 
     def __eq__(self, scanner):
