@@ -18,6 +18,10 @@ python setup.py install
 pip install -e .[image]
 ```
 
+```
+pip install -e .[dev]
+```
+
 ## Testing
 
 ```
@@ -103,12 +107,12 @@ optional arguments:
 
 ### Data types
 
-| State file | File type             | Data mixin used   |
-|------------|-----------------------|-------------------|
-| stdout     | JSON                  | MarkovJsonMixin   |
-| *.json     | JSON                  | MarkovJsonMixin   |
-| *.json.bz2 | bzip2 compressed JSON | MarkovJsonMixin   |
-| Other      | SQLite 3 database     | MarkovSqliteMixin |
+| State file  | File type             | Data mixin used   |
+|-------------|-----------------------|-------------------|
+| stdout      | JSON                  | MarkovJsonMixin   |
+| \*.json     | JSON                  | MarkovJsonMixin   |
+| \*.json.bz2 | bzip2 compressed JSON | MarkovJsonMixin   |
+| Other       | SQLite 3 database     | MarkovSqliteMixin |
 
 ### Examples
 
