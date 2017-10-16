@@ -19,7 +19,7 @@ setup(name='markovchain',
       description='Markov chain generator',
       long_description=README,
       classifiers=[
-          'Development Status :: 4 - Beta',
+          'Development Status :: 3 - Alpha',
           'Environment :: Console',
           'Intended Audience :: Developers',
           'Intended Audience :: End Users/Desktop',
@@ -43,7 +43,8 @@ setup(name='markovchain',
       test_suite='setup.tests',
       install_requires=['tqdm', 'ijson'],
       extras_require={
-          'image': ['pillow']
+          'image': ['pillow'],
+          'dev': ['coverage', 'sphinx', 'sphinx_bootstrap_theme']
       },
       python_requires='>=3',
       include_package_data=True,
