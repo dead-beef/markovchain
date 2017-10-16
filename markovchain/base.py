@@ -92,8 +92,8 @@ class MarkovBase:
             return
 
         if state_size is None:
-            #if self.parser is None:
-            #    raise ValueError('parser is None and state_size is None')
+            if self.parser is None:
+                raise ValueError('parser is None and state_size is None')
             try:
                 state_size = next(iter(self.parser.state_sizes))
             except StopIteration:
