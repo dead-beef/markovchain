@@ -5,7 +5,7 @@ from unittest import TestLoader
 from setuptools import setup, find_packages
 
 def tests():
-    return TestLoader().discover('test')
+    return TestLoader().discover('tests')
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 try:

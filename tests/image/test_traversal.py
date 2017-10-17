@@ -2,7 +2,7 @@ from unittest import TestCase
 from itertools import product
 
 from markovchain.image.traversal import (
-    Traversal, Lines, HLines, VLines, Spiral, Blocks
+    Traversal, Lines, HLines, VLines, Spiral, Hilbert, Blocks
 )
 
 
@@ -107,6 +107,21 @@ class TestSpiral(TestCase):
             saved = test.save()
             loaded = Traversal.load(saved)
             self.assertEqual(test, loaded)
+
+
+class TestHilbert(TestCase):
+    def test_traverse(self):
+        test = Hilbert()
+        tests = product(range(1, 7), range(1, 7))
+        for width, height in tests:
+            res = list(test(width, height))
+            self.assertCountEqual(res, product(range(width), range(height)))
+
+    def test_save_load(self):
+        test = Hilbert()
+        saved = test.save()
+        loaded = Traversal.load(saved)
+        self.assertEqual(test, loaded)
 
 
 class TestBlocks(TestCase):
