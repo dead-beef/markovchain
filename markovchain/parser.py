@@ -10,7 +10,7 @@ class ParserBase(SaveLoad):
 
     Attributes
     ----------
-    classes : dict
+    classes : `dict`
         Parser class group.
 
     Examples
@@ -27,7 +27,7 @@ class ParserBase(SaveLoad):
 
         Parameters
         ----------
-        parse : function, optional
+        parse : `function`, optional
         """
         if parse is not None:
             self.parse = parse
@@ -39,8 +39,8 @@ class ParserBase(SaveLoad):
         ----------
         data
             Data to parse.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            True if data is partial (default: `False`).
 
         Returns
         -------
@@ -54,13 +54,13 @@ class Parser(ParserBase):
 
     Attributes
     ----------
-    state : deque
+    state : `deque` of `str`
         Parser state.
-    state_size : int
+    state_size : `int`
         Maximum parser state size.
-    reset_on_sentence_end : bool
-        Reset parser state on `Scanner.END` token.
-    end : bool
+    reset_on_sentence_end : `bool`
+        Reset parser state on `markovchain.scanner.Scanner.END` token.
+    end : `bool`
         True if a sentence is not started.
 
     Examples
@@ -88,10 +88,10 @@ class Parser(ParserBase):
 
         Parameters
         ----------
-        state_sizes : list or int, optional
+        state_sizes : `int` or `list` of `int`, optional
             Parser state size(s) (default: [1]).
-        reset_on_sentence_end : bool, optional
-            Reset parser state on `Scanner.END` token (default: True).
+        reset_on_sentence_end : `bool`, optional
+            Reset parser state on `markovchain.scanner.Scanner.END` token (default: `True`).
         """
         super().__init__()
         self.state = None
@@ -103,7 +103,7 @@ class Parser(ParserBase):
 
     @property
     def state_sizes(self):
-        """Parser state sizes.
+        """`list` of `int` : Parser state sizes.
         """
         return self._state_sizes
 
@@ -123,8 +123,8 @@ class Parser(ParserBase):
 
         Parameters
         ----------
-        state_size_changed : bool, optional
-            True if maximum state size changed (default: False).
+        state_size_changed : `bool`, optional
+            `True` if maximum state size changed (default: `False`).
         """
         if state_size_changed:
             self.state = deque(repeat('', self.state_size),
@@ -138,14 +138,16 @@ class Parser(ParserBase):
 
         Parameters
         ----------
-        data : generator of tokens
+        data : `generator` of (`str` \
+                                or `markovchain.scanner.Scanner.END` \
+                                or (`markovchain.scanner.Scanner.START`, `str`))
             Tokens to parse.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            `True` if data is partial (default: `False`).
 
         Returns
         -------
-        generator of (islice, str)
+        generator of `(islice, str)`
             Link generator.
         """
         for word in data:
@@ -176,11 +178,11 @@ class Parser(ParserBase):
                 and self.state_size == parser.state_size)
 
     def save(self):
-        """Convert the parser to JSON.
+        """Convert to JSON.
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()
@@ -197,9 +199,9 @@ class LevelParser(ParserBase):
 
         Parameters
         ----------
-        levels : int
+        levels : `int`
             Number of levels.
-        parsers : list of ParserBase
+        parsers : `list` of `markovchain.parser.ParserBase`
             Level parsers.
         """
         super().__init__()
@@ -211,7 +213,7 @@ class LevelParser(ParserBase):
 
     @property
     def parsers(self):
-        """Level parsers.
+        """`list` of `markovchain.parser.ParserBase` : Level parsers.
         """
         return self._parsers
 
@@ -232,7 +234,7 @@ class LevelParser(ParserBase):
 
     @property
     def levels(self):
-        """Number of levels.
+        """`int` : Number of levels.
         """
         return self._levels
 
@@ -255,14 +257,18 @@ class LevelParser(ParserBase):
 
         Parameters
         ----------
-        data : generator of generators
+        data : `generator` of `generator` of ( \
+                    `str` \
+                    or `markovchain.scanner.Scanner.END` \
+                    or (`markovchain.scanner.Scanner.START`, `str`) \
+                )
             Levels to parse.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            `True` if data is partial (default: `False`).
 
         Returns
         -------
-        generator of (islice, str)
+        `generator` of `(islice, str)`
             Link generator.
         """
         #if part:
@@ -275,11 +281,11 @@ class LevelParser(ParserBase):
                 and self.parsers == parser.parsers)
 
     def save(self):
-        """Convert the parser to JSON.
+        """Convert to JSON.
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()

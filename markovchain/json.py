@@ -20,14 +20,14 @@ class MarkovJsonMixin:
 
     Attributes
     ----------
-    nodes : dict of ((list, list) or (str, str))
+    nodes : `dict` of (`(list of str, list of int)` or `(str, str)`)
     """
     def __init__(self, nodes=None, *args, **kwargs):
         """Markov chain JSON data constructor.
 
         Attributes
         ----------
-            nodes : dict of ((list, list) or (str, str)), optional
+            nodes : `dict` of (`(list of str, list of int)` or `(str, int)`), optional
         """
         super().__init__(*args, **kwargs)
         if not nodes:
@@ -44,8 +44,10 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        old_separator : str
-        new_separator : str
+        old_separator : `str`
+            Old state separator.
+        new_separator : `str`
+            New state separator.
         """
         self.nodes = dict(
             (k.replace(old_separator, new_separator), v)
@@ -66,7 +68,7 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        links : generator of (islice, str)
+        links : `generator` of `(islice, str)`
             Links to add.
         """
         for src, dst in links:
@@ -94,12 +96,17 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        state : deque of str
+        state : `deque` of `str`
             Link source.
+
+        Raises
+        ------
+        ValueError
+            If link count is invalid.
 
         Returns
         -------
-        str, deque of str
+        (`str`, `deque` of `str`)
             Link value and updated state.
         """
         try:
@@ -128,14 +135,15 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        fp : file or str
+        fp : `file` or `str`
             Input file or file path.
-        override : dict or None, optional
-            Changes to loaded data (default: None).
+        override : `dict` or `None`, optional
+            Changes to loaded data (default: `None`).
 
         Returns
         -------
-        Loaded generator.
+        `markovchain.base.MarkovBase`
+            Loaded generator.
         """
         if isinstance(fp, str):
             with open(fp, 'r') as fp2:
@@ -164,7 +172,7 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        fp : file
+        fp : `file`
             Output file.
         """
         json.dump(self.get_save_data(), fp, ensure_ascii=False)
@@ -174,7 +182,7 @@ class MarkovJsonMixin:
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().get_save_data()

@@ -10,7 +10,7 @@ class MarkovSqliteMixin:
 
     Attributes
     ----------
-    db
+    db : `sqlite3.Connection`
         Database connection.
     cursor
         Database cursor.
@@ -20,7 +20,7 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        db : str or sqlite3.Connection, optional
+        db : `str` or `sqlite3.Connection`, optional
             Database path or connection (default: ':memory:').
         """
         super().__init__(*args, **kwargs)
@@ -38,8 +38,10 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        old_separator : str
-        new_separator : str
+        old_separator : `str`
+            Old state separator.
+        new_separator : `str`
+            New state separator.
         """
         self.cursor.execute(
             'UPDATE nodes SET value = replace(value, ?, ?)',
@@ -51,7 +53,7 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        links : generator of (islice, str)
+        links : `generator` of `(islice, str)`
             Links to add.
         """
         for src, dst in links:
@@ -76,12 +78,12 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        state : int or deque of str
+        state : `int` or `deque` of `str`
             Link source ID or name.
 
         Returns
         -------
-        str, int
+        (`str`, `int`)
             Link value and next source ID.
         """
         if not isinstance(state, int):
@@ -115,7 +117,7 @@ class MarkovSqliteMixin:
 
         Returns
         -------
-        set of str
+        `set` of `str`
         """
         self.cursor.execute(
             'SELECT name FROM sqlite_master WHERE type="table"'
@@ -130,12 +132,12 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        value : str
+        value : `str`
             Node value.
 
         Returns
         -------
-        int
+        `int`
             Node ID.
         """
         while True:
@@ -200,10 +202,10 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        fp : file or str
+        fp : `file` or `str`
             Input file or file path.
-        override : dict or None, optional
-            Changes to loaded data (default: None).
+        override : `dict` or `None`, optional
+            Changes to loaded data (default: `None`).
 
         Returns
         -------

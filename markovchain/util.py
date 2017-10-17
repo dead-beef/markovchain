@@ -7,7 +7,7 @@ class SaveLoad:
 
     Attributes
     ----------
-    classes : dict
+    classes : `dict`
         Class group.
 
     Examples
@@ -45,7 +45,7 @@ class SaveLoad:
 
         Parameters
         ----------
-        *args : type
+        *args : `type`
             Classes to add.
         """
         for cls2 in args:
@@ -57,7 +57,7 @@ class SaveLoad:
 
         Parameters
         ----------
-        *args : type
+        *args : `type`
             Classes to remove.
         """
         for cls2 in args:
@@ -72,12 +72,12 @@ class SaveLoad:
 
         Parameters
         ----------
-        data : dict
+        data : `dict`
             JSON data.
 
         Returns
         ----------
-        object
+        `object`
             Created object.
 
         Raises
@@ -100,7 +100,7 @@ class SaveLoad:
 
         Returns
         ----------
-        dict
+        `dict`
             JSON data.
         """
         return {
@@ -145,7 +145,7 @@ def const(x):
 
     Returns
     -------
-    function
+    `function`
     """
     return lambda *args: x
 
@@ -159,7 +159,7 @@ def to_list(x):
 
     Returns
     -------
-    list
+    `list`
 
     Examples
     --------
@@ -192,15 +192,15 @@ def fill(xs, length, copy=False):
     Parameters
     ----------
     xs
-        Input list/value.
-    length : int
+        Input list or value.
+    length : `int`
         Output list length.
-    copy : bool, optional
+    copy : `bool`, optional
         Deep copy the last element to fill the list (default: False).
 
     Returns
     -------
-    list
+    `list`
 
     Raises
     ------
@@ -256,13 +256,13 @@ def load(obj, cls, default_factory):
 
     Parameters
     ----------
-    obj : object or dict or None
-    cls : type
-    default_factory : function
+    obj : `object` or `dict` or `None`
+    cls : `type`
+    default_factory : `function`
 
     Returns
     -------
-    object
+    `object`
     """
     if obj is None:
         return default_factory()
@@ -289,13 +289,13 @@ def extend(dst, *args):
 
     Parameters
     ----------
-    dst : dict
+    dst : `dict`
         Dictionary to update.
-    *args : dict
+    *args : `dict`
 
     Returns
     -------
-    dict
+    `dict`
         Updated dictionary.
 
     Examples
@@ -312,21 +312,22 @@ def truncate(string, maxlen, end=True):
 
     Parameters
     ----------
-    string : str
-    maxlen : int
+    string : `str`
+        String to truncate.
+    maxlen : `int`
         Maximum string length.
-    end : boolean, optional
-        Remove characters from the end (default: True).
-
-    Returns
-    -------
-    str
-        Truncated string.
+    end : `boolean`, optional
+        Remove characters from the end (default: `True`).
 
     Raises
     ------
     ValueError
         If `maxlen` <= 3.
+
+    Returns
+    -------
+    `str`
+        Truncated string.
 
     Examples
     --------

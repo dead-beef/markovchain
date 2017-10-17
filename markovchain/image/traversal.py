@@ -6,7 +6,7 @@ class Traversal(SaveLoad):
 
     Attributes
     ----------
-    classes : dict
+    classes : `dict`
         Image traversal class group.
     """
     classes = {}
@@ -16,12 +16,12 @@ class Traversal(SaveLoad):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Image width.
-        height : int
+        height : `int`
             Image height.
-        ends : bool, optional
-            Generate block ends (default: True).
+        ends : `bool`, optional
+            Generate block ends (default: `True`).
 
         Raises
         ------
@@ -29,7 +29,7 @@ class Traversal(SaveLoad):
 
         Returns
         -------
-        generator of ((int, int) or None)
+        `generator` of (`(int, int)` or `None`)
             Points and block ends.
         """
         raise NotImplementedError()
@@ -40,9 +40,9 @@ class Lines(Traversal): # pylint: disable=abstract-method
 
     Attributes
     ----------
-    reverse : int
+    reverse : `int`
         If greater than 0, reverse every nth line.
-    line_sentences : bool
+    line_sentences : `bool`
         Generate a block end after each line.
     """
     def __init__(self, reverse=0, line_sentences=False):
@@ -50,10 +50,10 @@ class Lines(Traversal): # pylint: disable=abstract-method
 
         Parameters
         ----------
-        reverse : int, optional
+        reverse : `int`, optional
             If greater than 0, reverse every nth line (default: 0).
-        line_sentences : bool, optional
-            Generate a block end after each line (default: False).
+        line_sentences : `bool`, optional
+            Generate a block end after each line (default: `False`).
         """
         super().__init__()
         self.reverse = reverse
@@ -102,16 +102,16 @@ class HLines(Lines):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Image width.
-        height : int
+        height : `int`
             Image height.
-        ends : bool, optional
-            Generate block ends (default: True).
+        ends : `bool`, optional
+            Generate block ends (default: `True`).
 
         Returns
         -------
-        generator of ((int, int) or None)
+        `generator` of (`(int, int)` or `None`)
             Points and block ends.
         """
         for y in range(height):
@@ -152,16 +152,16 @@ class VLines(Lines):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Image width.
-        height : int
+        height : `int`
             Image height.
-        ends : bool, optional
-            Generate block ends (default: True).
+        ends : `bool`, optional
+            Generate block ends (default: `True`).
 
         Returns
         -------
-        generator of ((int, int) or None)
+        generator of (`(int, int)` or `None`)
             Points and block ends.
         """
         for x in range(width):
@@ -182,7 +182,7 @@ class Spiral(Traversal):
 
     Attributes
     ----------
-    reverse : bool
+    reverse : `bool`
         Reverse traversal order.
 
     Examples
@@ -199,8 +199,8 @@ class Spiral(Traversal):
 
         Parameters
         ----------
-        reverse : bool, optional
-            Reverse traversal order (default: False).
+        reverse : `bool`, optional
+            Reverse traversal order (default: `False`).
         """
         super().__init__()
         self.reverse = reverse
@@ -226,14 +226,14 @@ class Spiral(Traversal):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Spiral width.
-        height : int
+        height : `int`
             Spiral height.
 
         Returns
         -------
-        generator of (int, int)
+        `generator` of `(int, int)`
             Spiral points.
         """
 
@@ -270,14 +270,14 @@ class Spiral(Traversal):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Spiral width.
-        height : int
+        height : `int`
             Spiral height.
 
         Returns
         -------
-        generator of (int, int)
+        `generator` of `(int, int)`
             Spiral points.
         """
 
@@ -326,16 +326,16 @@ class Spiral(Traversal):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Image width.
-        height : int
+        height : `int`
             Image height.
-        ends : bool, optional
-            Unused (default: True).
+        ends : `bool`, optional
+            Unused (default: `True`).
 
         Returns
         -------
-        generator of ((int, int) or None)
+        `generator` of (`(int, int)` or `None`)
             Points and block ends.
         """
         if self.reverse:
@@ -349,13 +349,13 @@ class Blocks(Traversal):
 
     Attributes
     ----------
-    block_size : (int, int)
+    block_size : `(int, int)`
         Block size.
-    block_sentences : bool
+    block_sentences : `bool`
         Generate a block end after each block.
-    traverse_image : Traversal
+    traverse_image : `markovchain.image.traversal.Traversal`
         Image traversal.
-    traverse_block : Traversal
+    traverse_block : `markovchain.image.traversal.Traversal`
         Block traversal.
 
     Examples
@@ -378,13 +378,15 @@ class Blocks(Traversal):
 
         Parameters
         ----------
-        block_size : (int, int), optional
+        block_size : `(int, int)`, optional
             Block size (default: (16, 16)).
-        block_sentences : bool, optional
+        block_sentences : `bool`, optional
             Generate a block end after each block (default: False).
-        traverse_image : Traversal or dict, optional
+        traverse_image : `markovchain.image.traversal.Traversal` \
+                          or `dict`, optional
             Image traversal object or JSON data (default: HLines()).
-        traverse_block : Traversal or dict, optional
+        traverse_block : `markovchain.image.traversal.Traversal` \
+                         or `dict`, optional
             Block traversal object or JSON data (default: HLines()).
         """
         super().__init__()
@@ -398,16 +400,16 @@ class Blocks(Traversal):
 
         Parameters
         ----------
-        width : int
+        width : `int`
             Image width.
-        height : int
+        height : `int`
             Image height.
-        ends : bool, optional
-            Generate block ends (default: True).
+        ends : `bool`, optional
+            Generate block ends (default: `True`).
 
         Returns
         -------
-        generator of ((int, int) or None)
+        `generator` of (`(int, int)` or `None`)
             Points and block ends.
         """
         block_width, block_height = self.block_size
@@ -429,7 +431,7 @@ class Blocks(Traversal):
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()

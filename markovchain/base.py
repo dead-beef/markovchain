@@ -11,12 +11,12 @@ class MarkovBase:
 
     Attributes
     ----------
-    DEFAULT_SCANNER : type
+    DEFAULT_SCANNER : `type`
         Default scanner class.
-    DEFAULT_PARSER : type
+    DEFAULT_PARSER : `type`
         Default parser class.
-    scanner : Scanner
-    parser : ParserBase
+    scanner : `markovchain.scanner.Scanner`
+    parser : `markovchain.parser.ParserBase`
     """
     DEFAULT_SCANNER = RegExpScanner
     DEFAULT_PARSER = Parser
@@ -26,12 +26,12 @@ class MarkovBase:
 
         Attributes
         ----------
-        separator : str, optional
+        separator : `str`, optional
             State separator (default: ' ').
-        scanner : dict or Scanner, optional
-            Scanner (default: MarkovBase.DEFAULT_SCANNER()).
-        parser : dict or ParserBase, optional
-            Parser (default: MarkovBase.DEFAULT_PARSER()).
+        scanner : `dict` or `markovchain.scanner.Scanner`, optional
+            Scanner (default: `MarkovBase.DEFAULT_SCANNER`()).
+        parser : `dict` or `markovchain.parser.ParserBase`, optional
+            Parser (default: `MarkovBase.DEFAULT_PARSER`()).
         """
         self._separator = None
         self.separator = separator
@@ -40,7 +40,7 @@ class MarkovBase:
 
     @property
     def separator(self):
-        """State separator.
+        """`str` : State separator.
         """
         return self._separator
 
@@ -63,7 +63,7 @@ class MarkovBase:
         ----------
         data
             Data to parse.
-        part : bool, optional
+        part : `bool`, optional
             True if data is partial (default: False).
         """
         #if self.parser is None:
@@ -76,16 +76,16 @@ class MarkovBase:
 
         Parameters
         ----------
-        maxlength : int
+        maxlength : `int`
             Maximum sentence length.
-        state_size : int, optional
+        state_size : `int`, optional
             State size (default: parser.state_sizes[0]).
-        start : list of str, optional
+        start : `list` of `str`, optional
             Starting state (default: []).
 
         Returns
         -------
-        generator of str
+        `generator` of `str`
             Word generator.
         """
         if maxlength <= 0:
@@ -124,7 +124,7 @@ class MarkovBase:
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         return {
@@ -138,8 +138,10 @@ class MarkovBase:
 
         Parameters
         ----------
-        old_separator : str
-        new_separator : str
+        old_separator : `str`
+            Old state separator.
+        new_separator : `str`
+            New state separator.
         """
         pass
 
@@ -148,7 +150,7 @@ class MarkovBase:
 
         Parameters
         ----------
-        links : generator of (islice, str)
+        links : `generator` of `(islice, str)`
             Links to add.
 
         Raises

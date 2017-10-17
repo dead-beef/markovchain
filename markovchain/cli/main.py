@@ -10,6 +10,8 @@ except ImportError:
     image = None
 
 def main():
+    """CLI main function.
+    """
     parser = ArgumentParser()
     parsers = parser.add_subparsers(dest='dtype')
 

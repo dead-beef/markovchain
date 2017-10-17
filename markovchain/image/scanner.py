@@ -13,15 +13,15 @@ class ImageScanner(Scanner):
 
     Attributes
     ----------
-    palette_image : Image or None
+    palette_image : `PIL.Image` or `None`
         Palette source image.
-    resize : (int, int) or None
+    resize : `(int, int)` or `None`
         If not None, resize images before scanning.
-    min_size : int
+    min_size : `int`
         Minimum image size.
-    convert : int
+    convert : `int`
         Image conversion type.
-    dither : bool
+    dither : `bool`
         If True, enable image dithering.
     """
     def __init__(self,
@@ -37,22 +37,25 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        resize : (int, int) or None, optional
-            If not None, resize images before scanning (default: None).
-        convert_type : int, optional
+        resize : `(int, int)` or `None`, optional
+            If not `None`, resize images before scanning (default: `None`).
+        convert_type : `int`, optional
             Image conversion type (default: 1).
-        dither : bool
-            If True, enable image dithering (default: False).
-        palette : list of int, optional
+        dither : `bool`
+            If `True`, enable image dithering (default: `False`).
+        palette : `list` of `int`, optional
             Image palette (default: `markovchain.image.util.palette(8, 4, 8)`).
-        levels : int, optional
+        levels : `int`, optional
             Number of scanner levels (default: 1).
-        level_scale : int or list of int
+        level_scale : `int` or `list` of `int`
             Level scale factors.
-        scale : int
-            Scale quality.
-        traversal : dict or Traversal or list of (dict or Traversal)
-            Level traversals.
+        scale : `int`, optional
+            Scale quality (default: `PIL.Image.BICUBIC`).
+        traversal : `dict` \
+                    or `markovchain.image.traversal.Traversal` \
+                    or `list` of (`dict` or `markovchain.image.traversal.Traversal`), \
+                    optional
+            Level traversals (default: `markovchain.image.traversal.HLines()`).
         """
         super().__init__()
         self._levels = None
@@ -76,7 +79,7 @@ class ImageScanner(Scanner):
 
     @property
     def traversal(self):
-        """Traversal: Image traversal.
+        """`markovchain.image.traversal.Traversal`: Image traversal.
         """
         return self._traversal
 
@@ -97,7 +100,7 @@ class ImageScanner(Scanner):
 
     @property
     def levels(self):
-        """int: Number of levels.
+        """`int`: Number of levels.
         """
         return self._levels
 
@@ -113,7 +116,7 @@ class ImageScanner(Scanner):
 
     @property
     def level_scale(self):
-        """list of int: Level scale factors.
+        """`list` of `int`: Level scale factors.
         """
         return self._level_scale
 
@@ -140,7 +143,7 @@ class ImageScanner(Scanner):
 
     @property
     def palette(self):
-        """Image palette.
+        """`list` of `int` : Image palette.
         """
         return self._palette
 
@@ -159,7 +162,7 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        img : Image
+        img : `PIL.Image`
             Input image.
 
         Raises
@@ -169,7 +172,7 @@ class ImageScanner(Scanner):
 
         Returns
         -------
-        Image
+        `PIL.Image`
             Resized image or input image.
         """
         img_width, img_height = img.size
@@ -192,12 +195,12 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        img : Image
+        img : `PIL.Image`
             Input image.
 
         Returns
         -------
-        Image
+        `PIL.Image`
             Converted image.
         """
         return convert(self.convert, img, self.palette_image, self.dither)
@@ -207,14 +210,14 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        img : Image
+        img : `PIL.Image`
             Input image.
-        level : int
+        level : `int`
             Level number.
 
         Returns
         -------
-        Image
+        `PIL.Image`
             Converted image.
         """
         if level < self.levels - 1:
@@ -230,16 +233,18 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        level : int
+        level : `int`
             Level number.
-        prev : Image or None
+        prev : `PIL.Image` or None
             Previous level image or None if level == 0.
-        img : Image
+        img : `PIL.Image`
             Current level image.
 
         Returns
         -------
-        generator of (str or Scanner.END or (Scanner.START, str))
+        `generator` of (`str` \
+                        or `markovchain.scanner.Scanner.END` \
+                        or (`markovchain.scanner.Scanner.START`, `str`))
             Token generator.
         """
         if level == 0:
@@ -278,9 +283,9 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        img : Image
+        img : `PIL.Image`
             Image to scan.
-        part : bool, optional
+        part : `bool`, optional
             True if data is partial.
 
         Raises
@@ -290,7 +295,9 @@ class ImageScanner(Scanner):
 
         Returns
         -------
-        generator of (str or Scanner.END or (Scanner.START, str))
+        `generator` of (`str` \
+                        or `markovchain.scanner.Scanner.END` \
+                        or (`markovchain.scanner.Scanner.START`, `str`))
             Token generator.
         """
         if part:
@@ -319,7 +326,7 @@ class ImageScanner(Scanner):
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()

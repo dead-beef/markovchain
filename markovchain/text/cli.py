@@ -19,7 +19,7 @@ def create_arg_parser(parent):
 
     Parameters
     ----------
-    parent : ArgumentParser
+    parent : `argparse.ArgumentParser`
         Command parser.
     """
 
@@ -90,11 +90,11 @@ def read(fnames, markov, progress):
 
     Parameters
     ----------
-    fnames : list of str
+    fnames : `list` of `str`
         File paths.
-    markov : MarkovBase
+    markov : `markovchain.base.MarkovBase`
         Generator to update.
-    progress : bool
+    progress : `bool`
         Show progress bar.
     """
     with infiles(fnames, progress) as fnames:
@@ -133,7 +133,7 @@ def cmd_create(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     if args.type == SQLITE:
@@ -150,7 +150,7 @@ def cmd_update(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     args.output = None
@@ -173,7 +173,7 @@ def cmd_generate(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
 

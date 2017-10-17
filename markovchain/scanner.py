@@ -8,7 +8,7 @@ class Scanner(SaveLoad):
 
     Attributes
     ----------
-    classes : dict
+    classes : `dict`
         Scanner class group.
     START
         Sentence start token.
@@ -32,7 +32,7 @@ class Scanner(SaveLoad):
 
         Parameters
         ----------
-        scan : function, optional
+        scan : `function`, optional
         """
         if scan is not None:
             self.scan = scan
@@ -44,8 +44,8 @@ class Scanner(SaveLoad):
         ----------
         data
             Data to scan.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            `True` if data is partial (default: `False`).
 
         Returns
         -------
@@ -64,13 +64,13 @@ class CharScanner(Scanner):
 
     Attributes
     ----------
-    end_chars : str
+    end_chars : `str`
         Sentence ending characters.
-    default_end : str
+    default_end : `str`
         Default sentence ending character.
-    start : bool
+    start : `bool`
         True if current sentence is started.
-    end : bool
+    end : `bool`
         True if current sentence is ended.
 
     Examples
@@ -88,9 +88,9 @@ class CharScanner(Scanner):
 
         Parameters
         ----------
-        end_chars : str, optional
+        end_chars : `str`, optional
             Sentence ending characters (default: '.?!').
-        default_end : str, optional
+        default_end : `str`, optional
             Default sentence ending character (default: '.').
         """
         super().__init__()
@@ -110,14 +110,14 @@ class CharScanner(Scanner):
 
         Parameters
         ----------
-        data : str
+        data : `str`
             String to scan.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            True if data is partial (default: `False`).
 
         Returns
         -------
-        generator of (str or Scanner.END)
+        `generator` of (`str` or `markovchain.scanner.Scanner.END`)
             Token generator.
         """
         if not self.end_chars:
@@ -148,11 +148,11 @@ class CharScanner(Scanner):
                 and self.default_end == scanner.default_end)
 
     def save(self):
-        """Convert the scanner to JSON.
+        """Convert to JSON.
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()
@@ -166,14 +166,14 @@ class RegExpScanner(Scanner):
 
     Attributes
     ----------
-    DEFAULT_EXPR : _sre.SRE_Pattern
+    DEFAULT_EXPR : `re._sre.SRE_Pattern`
         Default regular expression.
-    expr : _sre.SRE_Pattern
+    expr : `re._sre.SRE_Pattern`
         Regular expression..
-    default_end : str
+    default_end : `str`
         Default sentence ending string.
-    end : bool
-        True if current sentence is ended.
+    end : `bool`
+        `True` if current sentence is ended.
 
     Examples
     --------
@@ -195,10 +195,10 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        expr : str or _sre.SRE_Pattern, optional
-            Regular expression (default: RegExpScanner.DEFAULT_EXPR).
+        expr : `str` or `re._sre.SRE_Pattern`, optional
+            Regular expression (default: `markovchain.scanner.RegExpScanner.DEFAULT_EXPR`).
             It should have groups 'word' (words) and 'end' (sentence endings).
-        default_end : str, optional
+        default_end : `str`, optional
             Default sentence ending string (default: '.').
         """
         super().__init__()
@@ -216,14 +216,14 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        data : str
+        data : `str`
             String to scan.
-        part : bool, optional
-            True if data is partial (default: False).
+        part : `bool`, optional
+            `True` if data is partial (default: `False`).
 
         Returns
         -------
-        generator of (str or Scanner.END)
+        `generator` of (`str` or `markovchain.scanner.Scanner.END`)
             Token generator.
         """
         if not self.expr.groups:
@@ -262,7 +262,7 @@ class RegExpScanner(Scanner):
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()
@@ -276,12 +276,12 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        x : str or _sre.SRE_Pattern
+        x : `str` or `re._sre.SRE_Pattern`
             Regular expression.
 
         Returns
         -------
-        _sre.SRE_Pattern
+        `re._sre.SRE_Pattern`
             Compiled regular expression.
         """
         if isinstance(x, str):
@@ -294,12 +294,14 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        match : _sre.SRE_Match
-        group : str or int
+        match : `re._sre.SRE_Match`
+            Regular expression match object.
+        group : `str` or `int`
+            Group name or index.
 
         Returns
         -------
-        str or None
+        `str` or `None`
         """
         try:
             return match.group(group)

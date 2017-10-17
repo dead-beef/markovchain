@@ -7,11 +7,11 @@ def palette(hues, saturations, values):
 
     Parameters
     ----------
-    hues : int
+    hues : `int`
         Number of hues.
-    saturations : int
+    saturations : `int`
         Number of saturations.
-    values : int
+    values : `int`
         Number of values.
 
     Raises
@@ -22,8 +22,8 @@ def palette(hues, saturations, values):
 
     Returns
     -------
-    list of int
-        Palette for PIL.Image.putpalette().
+    `list` of `int`
+        Palette for `PIL.Image.putpalette`.
     """
     size = hues * saturations * values
     if size > 256:
@@ -60,14 +60,14 @@ def convert(ctype, img, palette_img, dither=False):
 
     Parameters
     ----------
-    ctype : int
+    ctype : `int`
         Conversion type.
-    img : Image
+    img : `PIL.Image`
         Image to convert.
-    palette_img : Image
+    palette_img : `PIL.Image`
         Palette source image.
-    dither : bool, optional
-        Enable dithering (default: False).
+    dither : `bool`, optional
+        Enable dithering (default: `False`).
 
     Raises
     ------
@@ -76,7 +76,7 @@ def convert(ctype, img, palette_img, dither=False):
 
     Returns
     -------
-    Image
+    `PIL.Image`
         Converted image.
     """
     if ctype == 0:

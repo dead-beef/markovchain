@@ -25,7 +25,7 @@ def create_arg_parser(parent):
 
     Parameters
     ----------
-    parent : ArgumentParser
+    parent : `argparse.ArgumentParser`
         Command parser.
     """
 
@@ -140,7 +140,7 @@ class TraversalProgressWrapper(ObjectWrapper): # pylint: disable=too-few-public-
 
     Attributes
     ----------
-    pbar_parent : tqdm
+    pbar_parent : `tqdm.tqdm`
         Parent progress bar.
     """
     def __init__(self, obj, parent=None):
@@ -173,13 +173,13 @@ def read(fnames, markov, progress, leave=True):
 
     Parameters
     ----------
-    fnames : list of str
+    fnames : `list` of `str`
         File paths.
-    markov : MarkovBase
+    markov : `markovchain.base.MarkovBase`
         Generator to update.
-    progress : bool
+    progress : `bool`
         Show progress bar.
-    leave : bool, optional
+    leave : `bool`, optional
         Leave progress bars (default: True).
     """
     tr = markov.scanner.traversal
@@ -204,16 +204,21 @@ def outfiles(markov, fmt, nfiles, progress, start=0):
 
     Parameters
     ----------
-    markov : MarkovBase
+    markov : `markovchain.base.MarkovBase`
         Markov chain generator.
-    fmt : str
+    fmt : `str`
         File path format string.
-    nfiles : int
+    nfiles : `int`
         Number of files.
-    progress : bool
+    progress : `bool`
         Show progress bars.
-    start : int, optional
+    start : `int`, optional
         Initial image level (default: 0).
+
+    Returns
+    -------
+    `generator` of `str`
+        Output file paths.
     """
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):
@@ -237,7 +242,7 @@ def cmd_convert(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     scanner = ImageScanner(
@@ -261,7 +266,7 @@ def cmd_create(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     if args.type == SQLITE:
@@ -278,7 +283,7 @@ def cmd_update(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     if args.type == SQLITE and args.output is not None:
@@ -305,7 +310,7 @@ def cmd_generate(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     check_output_format(args.output, args.count)
@@ -345,7 +350,7 @@ def cmd_filter(args):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     check_output_format(args.output, args.count)

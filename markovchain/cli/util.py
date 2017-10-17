@@ -35,7 +35,7 @@ class NoProgressBar:
 
     Attributes
     ----------
-    warning : bool
+    warning : `bool`
         True if a missing progress bar warning was printed.
     """
     warning = False
@@ -65,12 +65,12 @@ def no_tqdm(iterable=None, *args, **kwargs): # pylint: disable=unused-argument
 
     Parameters
     ----------
-    iterable : iterable or None, optional
+    iterable : `iterable` or `None`, optional
         Iterable to decorate with a progress bar (default: None).
 
     Returns
     -------
-    iterable or NoProgressBar
+    `iterable` or `markovchain.cli.util.NoProgressBar`
     """
     NoProgressBar.print_warning()
     if iterable is not None:
@@ -87,10 +87,10 @@ def pprint(data, indent=0, end='\n'):
     ----------
     data
         JSON data.
-    indent : int, optional
+    indent : `int`, optional
         Indent level (default: 0).
-    end : str, optional
-        Ending string (default: '\n')
+    end : `str`, optional
+        Ending string (default: '\\n').
     """
     if isinstance(data, dict):
         print('{')
@@ -122,11 +122,11 @@ def load(markov, fname, args):
 
     Parameters
     ----------
-    markov : type
+    markov : `type`
         Markov chain generator class.
-    fname : str
+    fname : `str`
         Input file path.
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     if issubclass(markov, MarkovJsonMixin):
@@ -157,11 +157,11 @@ def save(markov, fname, args):
 
     Parameters
     ----------
-    markov : MarkovBase
+    markov : `MarkovBase`
         Markov chain generator.
-    fname : str
+    fname : `str`
         Output file path.
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
     """
     if isinstance(markov, MarkovJsonMixin):
@@ -186,9 +186,9 @@ def set_args(args, base):
 
     Parameters
     ----------
-    args : Namespace
+    args : `argparse.Namespace`
         Command arguments.
-    base : tuple of type
+    base : `tuple` of `type`
         Generator mixins.
 
     Raises
@@ -250,9 +250,9 @@ def check_output_format(fmt, nfiles):
 
     Parameters
     ----------
-    fmt : str
+    fmt : `str`
         File format string.
-    nfiles : int
+    nfiles : `int`
         Number of files.
 
     Raises
@@ -273,6 +273,22 @@ def check_output_format(fmt, nfiles):
 
 @contextmanager
 def infiles(fnames, progress, leave=True):
+    """Get input file paths.
+
+    Parameters
+    ----------
+    fnames : `list` of `str`
+        File paths.
+    progress : `bool`
+        Show progress bar.
+    leave : `bool`, optional
+        Leave progress bar (default: True).
+
+    Returns
+    -------
+    `generator` of `str`
+        Input file paths.
+    """
     if progress:
         if fnames:
             fnames = tqdm(fnames, desc='Loading', unit='file',
@@ -288,6 +304,29 @@ def infiles(fnames, progress, leave=True):
 
 @contextmanager
 def outfiles(fmt, nfiles, progress, leave=True):
+    """Get output file paths.
+
+    Parameters
+    ----------
+    fmt : `str`
+        File path format string.
+    nfiles : `int`
+        Number of files.
+    progress : `bool`
+        Show progress bars.
+    leave : `bool`, optional
+        Leave progress bar (default: True).
+
+    Raises
+    ------
+    ValueError
+        If nfiles <= 0.
+
+    Returns
+    -------
+    `generator` of `str`
+        Output file paths.
+    """
     if nfiles > 1:
         fnames = (fmt % i for i in range(nfiles))
     elif nfiles == 1:
@@ -307,6 +346,13 @@ def outfiles(fmt, nfiles, progress, leave=True):
         fnames.close()
 
 def cmd_settings(args):
+    """Print generator settings.
+
+    Parameters
+    ----------
+    args : `argparse.Namespace`
+        Command arguments.
+    """
     markov = load(args.markov, args.state, args)
     data = markov.get_save_data()
     try:
