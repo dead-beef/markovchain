@@ -30,9 +30,12 @@ python setup.py test
 
 ```
 coverage run --include 'markovchain/*' setup.py test
+coverage report
 ```
 
 ## Module usage
+
+- [`Module documentation`](https://dead-beef.github.io/markovchain/)
 
 ### Examples
 
@@ -116,11 +119,22 @@ optional arguments:
 
 ### Examples
 
+#### Text
+
 ```bash
-markovchain text create -o text.db input1.txt input2.txt
+markovchain text create --output text.db input1.txt input2.txt
 markovchain text update text.db input3.txt input4.txt
 markovchain text generate text.db
-markovchain text generate -S 16 -st 'sentence start' text.db
+markovchain text generate --sentences 16 --start 'sentence start' text.db
+```
+
+#### Image
+
+```bash
+markovchain image create --progress --output img.db img1.png img2.png
+markovchain image update --progress img.db img3.png img4.png
+markovchain image generate --progress --size 64 64 --count 4 img.db img%02d.png
+markovchain image filter --progress img.png output.png
 ```
 
 #### Settings
