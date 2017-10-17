@@ -1,7 +1,9 @@
 from argparse import FileType
-from sys import stdout, stderr
+from sys import stdout #, stderr
 from os import replace, remove, path, SEEK_SET, SEEK_END
+from itertools import chain
 
+from .util import format_sentence
 from .. import CharScanner
 from ..util import truncate
 from ..cli.util import (
@@ -174,9 +176,7 @@ def cmd_generate(args):
     args : Namespace
         Command arguments.
     """
-    ispunct = lambda s: (s.isprintable()
-                         and not s.isalnum()
-                         and not s.isspace())
+
     markov = load(args.markov, args.state, args)
     ss = range(args.sentences)
 
@@ -195,62 +195,17 @@ def cmd_generate(args):
     else:
         state = None
 
-    try:
-        if isinstance(markov.scanner, CharScanner):
-            for _ in ss:
-                chars = iter(markov.generate(args.words,
-                                             state_size=args.state_size,
-                                             start=state))
-                prev = next(chars)
+    if isinstance(markov.scanner, CharScanner):
+        separator = ''
+    else:
+        separator = ' '
 
-                if state is not None:
-                    print(args.start, end='', file=args.output)
-                    start = False
-                else:
-                    start = True
-
-                for char in chars:
-                    if ispunct(prev):
-                        if prev in '.!?':
-                            start = True
-                    elif not prev.isspace():
-                        if start:
-                            prev = prev.upper()
-                            start = False
-                    if prev != '\n':
-                        print(prev, end='', file=args.output)
-                    prev = char
-                if prev == '\n':
-                    prev = ''
-                elif not ispunct(prev):
-                    prev += '.'
-                print(prev, file=args.output)
-        else:
-            for _ in ss:
-                words = iter(markov.generate(args.words,
-                                             state_size=args.state_size,
-                                             start=state))
-                first = next(words)
-
-                if state is not None:
-                    print(args.start,
-                          end='' if state[-1].isspace() else ' ',
-                          file=args.output)
-                else:
-                    first = first.title()
-
-                prev = first
-
-                for word in words:
-                    print(prev,
-                          end=args.word_separator if not ispunct(word) else '',
-                          file=args.output)
-                    prev = word
-                if not ispunct(prev[-1]):
-                    prev += '.'
-                print(prev, file=args.output)
-    except StopIteration:
-        if state is not None:
-            print('Not found', file=stderr)
-            exit(1)
-        raise
+    for _ in ss:
+        data = markov.generate(args.words,
+                               state_size=args.state_size,
+                               start=state)
+        if args.start is not None:
+            data = chain((args.start,), data)
+        data = format_sentence(data, join_with=separator)
+        if data:
+            print(data)
