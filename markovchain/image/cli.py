@@ -334,9 +334,9 @@ def cmd_generate(args):
     markov.scanner.traversal[0].show_progress = args.progress
 
     for fname in outfiles(markov, args.output, args.count, args.progress):
-        img = markov.generate(width, height,
-                              state_size=args.state_size,
-                              levels=args.level)
+        img = markov.image(width, height,
+                           state_size=args.state_size,
+                           levels=args.level)
         with open(fname, 'wb') as fp:
             img.save(fp)
 
@@ -379,9 +379,9 @@ def cmd_filter(args):
 
     for fname in outfiles(markov, args.output,
                           args.count, args.progress, args.level + 1):
-        img = markov.generate(width, height,
-                              state_size=args.state_size,
-                              start_level=args.level,
-                              start_image=start)
+        img = markov.image(width, height,
+                           state_size=args.state_size,
+                           start_level=args.level,
+                           start_image=start)
         with open(fname, 'wb') as fp:
             img.save(fp)
