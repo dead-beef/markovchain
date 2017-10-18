@@ -1,3 +1,5 @@
+from math import ceil, log2
+
 from ..util import SaveLoad, load
 
 
@@ -342,6 +344,126 @@ class Spiral(Traversal):
             yield from self._rspiral(width, height)
         else:
             yield from self._spiral(width, height)
+
+
+class Hilbert(Traversal):
+    """Hilbert curve traversal.
+
+    Attributes
+    ----------
+    POSITION : `list` of (`int`, `int`)
+        Block positions.
+
+    Examples
+    --------
+    >>> traverse = Hilbert()
+    >>> list(traverse(2, 2))
+    [(0, 0), (0, 1), (1, 1), (1, 0)]
+    >>> list(traverse(3, 5))
+    [(0, 0), (0, 1), (1, 1), (1, 0), (2, 0), (2, 1),
+     (2, 2), (2, 3), (1, 3), (1, 2), (0, 2), (0, 3),
+     (0, 4), (1, 4), (2, 4)]
+    """
+
+    POSITION = [(0, 0), (0, 1), (1, 1), (1, 0)]
+
+    @classmethod
+    def get_point_in_block(cls, x, y, block_idx, block_size):
+        """Get point coordinates in next block.
+
+        Parameters
+        ----------
+        x : `int`
+            X coordinate in current block.
+        y : `int`
+            Y coordinate in current block.
+        block_index : `int`
+            Current block index in next block.
+        block_size : `int`
+            Current block size.
+
+        Raises
+        ------
+        IndexError
+            If block index is out of range.
+
+        Returns
+        -------
+        (`int`, `int`)
+            Point coordinates.
+        """
+        if block_idx == 0:
+            return y, x
+        if block_idx == 1:
+            return x, y + block_size
+        if block_idx == 2:
+            return x + block_size, y + block_size
+        if block_idx == 3:
+            x, y = block_size - 1 - y, block_size - 1 - x
+            return x + block_size, y
+        raise IndexError('block index out of range: %d' % block_idx)
+
+    @classmethod
+    def get_point(cls, idx, size):
+        """Get curve point coordinates by index.
+
+        Parameters
+        ----------
+        idx : `int`
+            Point index.
+        size : `int`
+            Bounding box size.
+
+        Returns
+        -------
+        (`int`, `int`)
+            Point coordinates.
+        """
+        x, y = cls.POSITION[idx % 4]
+        idx //= 4
+        block_size = 2
+        while block_size < size:
+            block_idx = idx % 4
+            x, y = cls.get_point_in_block(x, y, block_idx, block_size)
+            idx //= 4
+            block_size *= 2
+        return x, y
+
+    def __call__(self, width, height, ends=True): # pylint: disable=unused-argument
+        """Traverse an image.
+
+        Parameters
+        ----------
+        width : `int`
+            Image width.
+        height : `int`
+            Image height.
+        ends : `bool`, optional
+            Unused (default: `True`).
+
+        Returns
+        -------
+        `generator` of (`int`, `int`)
+            Points.
+        """
+        size = max(width, height)
+        size = 2 ** ceil(log2(size))
+
+        generated = 0
+        points = width * height
+        if generated >= points or width <= 0 or height <= 0:
+            return
+
+        for i in range(size * size):
+            x, y = self.get_point(i, size)
+            if x < width and y < height:
+                yield x, y
+                generated += 1
+                if generated >= points:
+                    return
+
+    def __eq__(self, tr):
+        return isinstance(tr, self.__class__)
 
 
 class Blocks(Traversal):
