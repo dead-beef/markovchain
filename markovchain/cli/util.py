@@ -188,7 +188,7 @@ def set_args(args, base):
     ----------
     args : `argparse.Namespace`
         Command arguments.
-    base : `tuple` of `type`
+    base : `iterable` of `type`
         Generator mixins.
 
     Raises

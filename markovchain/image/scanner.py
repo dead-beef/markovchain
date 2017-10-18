@@ -15,7 +15,7 @@ class ImageScanner(Scanner):
     ----------
     palette_image : `PIL.Image` or `None`
         Palette source image.
-    resize : `(int, int)` or `None`
+    resize : (`int`, `int`) or `None`
         If not None, resize images before scanning.
     min_size : `int`
         Minimum image size.
@@ -37,7 +37,7 @@ class ImageScanner(Scanner):
 
         Parameters
         ----------
-        resize : `(int, int)` or `None`, optional
+        resize : (`int`, `int`) or `None`, optional
             If not `None`, resize images before scanning (default: `None`).
         convert_type : `int`, optional
             Image conversion type (default: 1).
@@ -51,10 +51,7 @@ class ImageScanner(Scanner):
             Level scale factors.
         scale : `int`, optional
             Scale quality (default: `PIL.Image.BICUBIC`).
-        traversal : `dict` \
-                    or `markovchain.image.traversal.Traversal` \
-                    or `list` of (`dict` or `markovchain.image.traversal.Traversal`), \
-                    optional
+        traversal : `dict` or `markovchain.image.traversal.Traversal` or `list` of (`dict` or `markovchain.image.traversal.Traversal`), optional
             Level traversals (default: `markovchain.image.traversal.HLines()`).
         """
         super().__init__()
@@ -242,9 +239,7 @@ class ImageScanner(Scanner):
 
         Returns
         -------
-        `generator` of (`str` \
-                        or `markovchain.scanner.Scanner.END` \
-                        or (`markovchain.scanner.Scanner.START`, `str`))
+        `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))
             Token generator.
         """
         if level == 0:
@@ -291,13 +286,11 @@ class ImageScanner(Scanner):
         Raises
         ------
         NotImplementedError
-            If part is True.
+            If `part` is `True`.
 
         Returns
         -------
-        `generator` of (`str` \
-                        or `markovchain.scanner.Scanner.END` \
-                        or (`markovchain.scanner.Scanner.START`, `str`))
+        `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))
             Token generator.
         """
         if part:

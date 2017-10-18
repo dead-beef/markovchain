@@ -17,8 +17,8 @@ def palette(hues, saturations, values):
     Raises
     ------
     ValueError
-        If hues * saturations * values > 256
-        or min(hues, saturations, values) < 1.
+        If `hues` * `saturations` * `values` > 256
+        or min(`hues`, `saturations`, `values`) < 1.
 
     Returns
     -------

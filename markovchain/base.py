@@ -29,9 +29,9 @@ class MarkovBase:
         separator : `str`, optional
             State separator (default: ' ').
         scanner : `dict` or `markovchain.scanner.Scanner`, optional
-            Scanner (default: `MarkovBase.DEFAULT_SCANNER`()).
+            Scanner (default: `markovchain.base.MarkovBase.DEFAULT_SCANNER()`).
         parser : `dict` or `markovchain.parser.ParserBase`, optional
-            Parser (default: `MarkovBase.DEFAULT_PARSER`()).
+            Parser (default: `markovchain.base.MarkovBase.DEFAULT_PARSER()`).
         """
         self._separator = None
         self.separator = separator
@@ -64,7 +64,7 @@ class MarkovBase:
         data
             Data to parse.
         part : `bool`, optional
-            True if data is partial (default: False).
+            True if data is partial (default: `False`).
         """
         #if self.parser is None:
         #    raise ValueError('no parser')
@@ -150,7 +150,7 @@ class MarkovBase:
 
         Parameters
         ----------
-        links : `generator` of `(islice, str)`
+        links : `generator` of (`islice` of `str`, `str`)
             Links to add.
 
         Raises

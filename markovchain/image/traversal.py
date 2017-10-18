@@ -31,7 +31,7 @@ class Traversal(SaveLoad):
 
         Returns
         -------
-        `generator` of (`(int, int)` or `None`)
+        `generator` of ((`int`, `int`) or `None`)
             Points and block ends.
         """
         raise NotImplementedError()
@@ -70,7 +70,7 @@ class Lines(Traversal): # pylint: disable=abstract-method
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()
@@ -80,7 +80,7 @@ class Lines(Traversal): # pylint: disable=abstract-method
 
 
 class HLines(Lines):
-    """Horizontal lines traversal.
+    """Horizontal line traversal.
 
     Examples
     --------
@@ -113,7 +113,7 @@ class HLines(Lines):
 
         Returns
         -------
-        `generator` of (`(int, int)` or `None`)
+        `generator` of ((`int`, `int`) or `None`)
             Points and block ends.
         """
         for y in range(height):
@@ -163,7 +163,7 @@ class VLines(Lines):
 
         Returns
         -------
-        generator of (`(int, int)` or `None`)
+        generator of ((`int`, `int`) or `None`)
             Points and block ends.
         """
         for x in range(width):
@@ -215,7 +215,7 @@ class Spiral(Traversal):
 
         Returns
         -------
-        dict
+        `dict`
             JSON data.
         """
         data = super().save()
@@ -235,8 +235,8 @@ class Spiral(Traversal):
 
         Returns
         -------
-        `generator` of `(int, int)`
-            Spiral points.
+        `generator` of (`int`, `int`)
+            Points.
         """
 
         x0 = 0
@@ -279,8 +279,8 @@ class Spiral(Traversal):
 
         Returns
         -------
-        `generator` of `(int, int)`
-            Spiral points.
+        `generator` of (`int`, `int`)
+            Points.
         """
 
         if width == 1:
@@ -337,8 +337,8 @@ class Spiral(Traversal):
 
         Returns
         -------
-        `generator` of (`(int, int)` or `None`)
-            Points and block ends.
+        `generator` of (`int`, `int`)
+            Points.
         """
         if self.reverse:
             yield from self._rspiral(width, height)
@@ -471,7 +471,7 @@ class Blocks(Traversal):
 
     Attributes
     ----------
-    block_size : `(int, int)`
+    block_size : (`int`, `int`)
         Block size.
     block_sentences : `bool`
         Generate a block end after each block.
@@ -500,7 +500,7 @@ class Blocks(Traversal):
 
         Parameters
         ----------
-        block_size : `(int, int)`, optional
+        block_size : (`int`, `int`), optional
             Block size (default: (16, 16)).
         block_sentences : `bool`, optional
             Generate a block end after each block (default: False).
@@ -531,7 +531,7 @@ class Blocks(Traversal):
 
         Returns
         -------
-        `generator` of (`(int, int)` or `None`)
+        `generator` of ((`int`, `int`) or `None`)
             Points and block ends.
         """
         block_width, block_height = self.block_size

@@ -180,7 +180,7 @@ def read(fnames, markov, progress, leave=True):
     progress : `bool`
         Show progress bar.
     leave : `bool`, optional
-        Leave progress bars (default: True).
+        Leave progress bars (default: `True`).
     """
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):

@@ -12,7 +12,7 @@ FORMAT_REPLACE = [(re.compile(expr), repl) for expr, repl in [
 RE_PUNCT = re.compile(r'^[^\w\s]+$')
 
 def ispunct(string):
-    """Return True if all characters in a string are punctuation
+    """Return `True` if all characters in a string are punctuation
        and it is not empty.
 
     Parameters
@@ -42,7 +42,7 @@ def lstrip_ws_and_chars(string, chars):
 
     Examples
     --------
-    >>> lstrip_ws_and_chars(' \t.\n , .x. ', '.,?!')
+    >>> lstrip_ws_and_chars(' \\t.\\n , .x. ', '.,?!')
     'x. '
     """
     res = string.lstrip().lstrip(chars)
@@ -94,6 +94,12 @@ def format_sentence_string(string, end_chars='.?!', default_end='.'):
 
     Examples
     --------
+    >>> format_sentence_string('  ..?!word  ,  (word)..  word')
+    'Word, (word).. word.'
+    >>> format_sentence_string('word WORD', default_end='?')
+    'Word word?'
+    >>> format_sentence_string('word,', end_chars=',')
+    'Word,'
     """
     string = lstrip_ws_and_chars(string.rstrip(), end_chars)
 
@@ -131,6 +137,14 @@ def format_sentence(parts, join_with=' ', end_chars='.?!', default_end='.'):
 
     Examples
     --------
+    >>> format_sentence('word WORD', default_end='?')
+    'Word word?'
+    >>> format_sentence('word,', end_chars=',')
+    'Word,'
+    >>> format_sentence('word' for _ in range(3))
+    'Word word word.'
+    >>> format_sentence(('word' for _ in range(3)), join_with=',')
+    'Word, word, word.'
     """
     if isinstance(parts, str):
         sentence = parts

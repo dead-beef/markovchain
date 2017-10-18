@@ -114,7 +114,7 @@ class MarkovImageMixin:
             Number of generated levels (default: `self.scanner.levels`).
         start_level : `int`, optional
             Initial level (default: -1).
-        start_image : `Image` or `None`
+        start_image : `PIL.Image` or `None`
             Initial level image (default: `None`).
 
         Returns

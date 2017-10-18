@@ -20,14 +20,14 @@ class MarkovJsonMixin:
 
     Attributes
     ----------
-    nodes : `dict` of (`(list of str, list of int)` or `(str, str)`)
+    nodes : `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`))
     """
     def __init__(self, nodes=None, *args, **kwargs):
         """Markov chain JSON data constructor.
 
         Attributes
         ----------
-            nodes : `dict` of (`(list of str, list of int)` or `(str, int)`), optional
+            nodes : `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`)), optional
         """
         super().__init__(*args, **kwargs)
         if not nodes:
@@ -68,7 +68,7 @@ class MarkovJsonMixin:
 
         Parameters
         ----------
-        links : `generator` of `(islice, str)`
+        links : `generator` of (`islice` of `str`, `str`)
             Links to add.
         """
         for src, dst in links:

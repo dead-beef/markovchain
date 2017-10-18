@@ -53,7 +53,7 @@ class MarkovSqliteMixin:
 
         Parameters
         ----------
-        links : `generator` of `(islice, str)`
+        links : `generator` of (`islice` of `str`, `str`)
             Links to add.
         """
         for src, dst in links:

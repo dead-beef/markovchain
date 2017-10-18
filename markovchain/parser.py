@@ -44,6 +44,7 @@ class ParserBase(SaveLoad):
 
         Returns
         -------
+        `object`
             self.parse(data)
         """
         return self.parse(data)
@@ -138,16 +139,14 @@ class Parser(ParserBase):
 
         Parameters
         ----------
-        data : `generator` of (`str` \
-                                or `markovchain.scanner.Scanner.END` \
-                                or (`markovchain.scanner.Scanner.START`, `str`))
+        data : `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))
             Tokens to parse.
         part : `bool`, optional
             `True` if data is partial (default: `False`).
 
         Returns
         -------
-        generator of `(islice, str)`
+        generator of (`islice` of `str`, `str`)
             Link generator.
         """
         for word in data:
@@ -257,18 +256,14 @@ class LevelParser(ParserBase):
 
         Parameters
         ----------
-        data : `generator` of `generator` of ( \
-                    `str` \
-                    or `markovchain.scanner.Scanner.END` \
-                    or (`markovchain.scanner.Scanner.START`, `str`) \
-                )
+        data : `generator` of `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))
             Levels to parse.
         part : `bool`, optional
             `True` if data is partial (default: `False`).
 
         Returns
         -------
-        `generator` of `(islice, str)`
+        `generator` of (`islice` of `str`, `str`)
             Link generator.
         """
         #if part:

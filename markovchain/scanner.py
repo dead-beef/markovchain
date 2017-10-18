@@ -49,6 +49,7 @@ class Scanner(SaveLoad):
 
         Returns
         -------
+        `object`
             self.scan(data)
         """
         return self.scan(data)
@@ -197,7 +198,8 @@ class RegExpScanner(Scanner):
         ----------
         expr : `str` or `re._sre.SRE_Pattern`, optional
             Regular expression (default: `markovchain.scanner.RegExpScanner.DEFAULT_EXPR`).
-            It should have groups 'word' (words) and 'end' (sentence endings).
+            It should have groups 'end' (sentence ending punctuation)
+            and 'word' (words / other punctuation).
         default_end : `str`, optional
             Default sentence ending string (default: '.').
         """
