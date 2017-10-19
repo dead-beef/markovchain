@@ -44,7 +44,12 @@ setup(name='markovchain',
       install_requires=['tqdm', 'ijson'],
       extras_require={
           'image': ['pillow'],
-          'dev': ['coverage', 'sphinx', 'sphinx_bootstrap_theme']
+          'dev': [
+              'pillow',
+              'coverage',
+              'sphinx',
+              'sphinx_rtd_theme'
+          ]
       },
       python_requires='>=3',
       include_package_data=True,

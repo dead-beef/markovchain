@@ -1,4 +1,11 @@
 include README.md
 include LICENSE
-include test/**/*.py
+include tests/**/*.py
 include settings/**/*.json
+include docsrc/Makefile
+include docsrc/index.rst
+include docsrc/conf.py
+include build.sh
+include test
+include .editorconfig
+include .pylintrc
