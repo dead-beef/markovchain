@@ -11,25 +11,29 @@ Markov chain generator
 ## Installation
 
 ```
-python setup.py install
+pip install markovchain
 ```
 
 ```
-pip install -e .[image]
+pip install markovchain[image]
 ```
 
 ```
+git clone https://github.com/dead-beef/markovchain
+cd markovchain
 pip install -e .[dev]
+```
+
+## Building
+
+```
+./build.sh
 ```
 
 ## Testing
 
 ```
-python setup.py test
-```
-
-```
-coverage run --include 'markovchain/*' setup.py test
+./test
 coverage report
 ```
 
