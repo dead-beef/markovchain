@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.image.markov &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../../index.html">
+        README
+    </a>
+    <a href="../../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.image.markov</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.image.markov</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">ImageScanner</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">palette</span> <span class="k">as</span> <span class="n">default_palette</span>
+<span class="kn">from</span> <span class="nn">..parser</span> <span class="k">import</span> <span class="n">LevelParser</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">fill</span>
+
+
+<div class="viewcode-block" id="MarkovImageMixin"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.MarkovImageMixin">[docs]</a><span class="k">class</span> <span class="nc">MarkovImageMixin</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Markov chain image generator mixin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">ImageScanner</span>
+    <span class="n">DEFAULT_PARSER</span> <span class="o">=</span> <span class="n">LevelParser</span>
+
+<div class="viewcode-block" id="MarkovImageMixin.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.MarkovImageMixin.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Markov chain image generator constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        levels : `int`, optional</span>
+<span class="sd">            Number of levels.</span>
+<span class="sd">        palette : `list` of `int`, optional</span>
+<span class="sd">            Image palette (default: `markovchain.image.util.palette(8, 4, 8)`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">palette</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">palette</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">palette</span> <span class="o">=</span> <span class="n">default_palette</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">palette</span> <span class="o">=</span> <span class="n">default_palette</span><span class="p">(</span><span class="o">*</span><span class="n">palette</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="n">palette</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`int` : Number of levels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span>
+
+    <span class="nd">@levels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="n">levels</span>
+
+    <span class="k">def</span> <span class="nf">_imgdata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate image pixels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        state_size : `int` or `None`, optional</span>
+<span class="sd">            State size to use for generation (default: `None`).</span>
+<span class="sd">        start : `str` or `None`, optional</span>
+<span class="sd">            Initial state (default: `None`).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If generator is empty.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of `int`</span>
+<span class="sd">            Pixel generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">maxlength</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
+        <span class="k">if</span> <span class="n">maxlength</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="n">maxlength</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">maxlength</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">prevmaxlength</span> <span class="o">=</span> <span class="n">maxlength</span>
+            <span class="k">for</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">maxlength</span><span class="o">=</span><span class="n">maxlength</span><span class="p">,</span>
+                                       <span class="n">state_size</span><span class="o">=</span><span class="n">state_size</span><span class="p">,</span>
+                                       <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="nb">int</span><span class="p">(</span><span class="n">pixel</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="n">maxlength</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">prevmaxlength</span> <span class="o">==</span> <span class="n">maxlength</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">pixel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span> <span class="mi">16</span><span class="p">)</span>
+                    <span class="k">yield from</span> <span class="n">repeat</span><span class="p">(</span><span class="n">pixel</span><span class="p">,</span> <span class="n">maxlength</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;empty generator&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MarkovImageMixin.image"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.MarkovImageMixin.image">[docs]</a>    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+              <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">start_level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        state_size : `int` or `None`, optional</span>
+<span class="sd">            State size to use for generation (default: `None`).</span>
+<span class="sd">        start : `str` or `None`, optional</span>
+<span class="sd">            Initial state (default: `None`).</span>
+<span class="sd">        levels : `int`, optional</span>
+<span class="sd">            Number of generated levels (default: `self.scanner.levels`).</span>
+<span class="sd">        start_level : `int`, optional</span>
+<span class="sd">            Initial level (default: -1).</span>
+<span class="sd">        start_image : `PIL.Image` or `None`</span>
+<span class="sd">            Initial level image (default: `None`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `PIL.Image`</span>
+<span class="sd">            Generated image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">levels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">levels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">levels</span>
+        <span class="k">elif</span> <span class="n">levels</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">levels</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid level count: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">levels</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">start_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="n">start_image</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start_level</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">start_level</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">start_level</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">start_level</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">start_image</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">start_level</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">levels</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">start_image</span>
+
+        <span class="n">state_sizes</span> <span class="o">=</span> <span class="n">fill</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+        <span class="c1">#if any(sz is not None and sz not in parser.state_sizes</span>
+        <span class="c1">#       for sz, parser in zip(state_sizes, self.parser.parsers)):</span>
+        <span class="c1">#    raise ValueError(&#39;invalid state sizes: {0}: not in {1}&#39;.format(</span>
+        <span class="c1">#        state_sizes,</span>
+        <span class="c1">#        [parser.state_sizes for parser in self.parser.parsers]</span>
+        <span class="c1">#    ))</span>
+
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">start_image</span>
+        <span class="n">gen_levels</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">state_sizes</span><span class="p">),</span> <span class="n">start_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">levels</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">state_size</span> <span class="ow">in</span> <span class="n">gen_levels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">state_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">state_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parsers</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">state_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">level_scale</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">width</span> <span class="o">*=</span> <span class="n">scale</span>
+                <span class="n">height</span> <span class="o">*=</span> <span class="n">scale</span>
+
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">putpalette</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">palette</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">xy</span><span class="p">,</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+                    <span class="n">ret</span><span class="o">.</span><span class="n">putpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">pixel</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span>
+                    <span class="n">prev</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">prev</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">ends</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="n">tr</span><span class="p">:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%02X%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prev</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
+                    <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">xy</span>
+                    <span class="n">x0</span> <span class="o">*=</span> <span class="n">scale</span>
+                    <span class="n">y0</span> <span class="o">*=</span> <span class="n">scale</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imgdata</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+                    <span class="n">blk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="n">level</span><span class="p">](</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">pixel</span><span class="p">,</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">blk</span><span class="p">):</span>
+                        <span class="n">ret</span><span class="o">.</span><span class="n">putpixel</span><span class="p">((</span><span class="n">x0</span> <span class="o">+</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">y1</span><span class="p">),</span> <span class="n">pixel</span><span class="p">)</span>
+
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">ret</span>
+
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="MarkovImageMixin.data"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.MarkovImageMixin.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse data and update links.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `PIL.Image`</span>
+<span class="sd">            Data to parse.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            `True` if data is partial (default: `False`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">,</span> <span class="n">LevelParser</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">),</span> <span class="n">part</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MarkovImageMixin.get_save_data"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.MarkovImageMixin.get_save_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert generator settings to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_save_data</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;palette&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markov</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">palette</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">levels</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

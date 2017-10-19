@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.scanner &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../index.html">
+        README
+    </a>
+    <a href="../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.scanner</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.scanner</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">SaveLoad</span>
+
+
+<div class="viewcode-block" id="Scanner"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Scanner">[docs]</a><span class="k">class</span> <span class="nc">Scanner</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base scanner class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    classes : `dict`</span>
+<span class="sd">        Scanner class group.</span>
+<span class="sd">    START</span>
+<span class="sd">        Sentence start token.</span>
+<span class="sd">    END</span>
+<span class="sd">        Sentence end token.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; scan = Scanner(lambda data: data.split())</span>
+<span class="sd">    &gt;&gt;&gt; scan(&#39;a b c&#39;)</span>
+<span class="sd">    [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">END</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">START</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Scanner.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Scanner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Base scanner constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scan : `function`, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">scan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scan</span> <span class="o">=</span> <span class="n">scan</span></div>
+
+<div class="viewcode-block" id="Scanner.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Scanner.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data</span>
+<span class="sd">            Data to scan.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            `True` if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            self.scan(data)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scanner.reset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Scanner.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset scanner state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="CharScanner"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.CharScanner">[docs]</a><span class="k">class</span> <span class="nc">CharScanner</span><span class="p">(</span><span class="n">Scanner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Character scanner.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    end_chars : `str`</span>
+<span class="sd">        Sentence ending characters.</span>
+<span class="sd">    default_end : `str`</span>
+<span class="sd">        Default sentence ending character.</span>
+<span class="sd">    start : `bool`</span>
+<span class="sd">        True if current sentence is started.</span>
+<span class="sd">    end : `bool`</span>
+<span class="sd">        True if current sentence is ended.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; scan = CharScanner()</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;Word&#39;))</span>
+<span class="sd">    [&#39;W&#39;, &#39;o&#39;, &#39;r&#39;, &#39;d&#39;, &#39;.&#39;, Scanner.END]</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;Word&#39;, True))</span>
+<span class="sd">    [&#39;W&#39;, &#39;o&#39;, &#39;r&#39;, &#39;d&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;&#39;))</span>
+<span class="sd">    [&#39;.&#39;, Scanner.END]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CharScanner.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.CharScanner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_chars</span><span class="o">=</span><span class="s1">&#39;.?!&#39;</span><span class="p">,</span> <span class="n">default_end</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Character scanner constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        end_chars : `str`, optional</span>
+<span class="sd">            Sentence ending characters (default: &#39;.?!&#39;).</span>
+<span class="sd">        default_end : `str`, optional</span>
+<span class="sd">            Default sentence ending character (default: &#39;.&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span> <span class="o">=</span> <span class="n">end_chars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">=</span> <span class="n">default_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CharScanner.reset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.CharScanner.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset scanner state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CharScanner.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.CharScanner.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan a string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `str`</span>
+<span class="sd">            String to scan.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            True if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`str` or `markovchain.scanner.Scanner.END`)</span>
+<span class="sd">            Token generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">yield</span> <span class="n">char</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">end_chars</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">default_end</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CharScanner.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.CharScanner.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_chars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;default_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+
+
+<div class="viewcode-block" id="RegExpScanner"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner">[docs]</a><span class="k">class</span> <span class="nc">RegExpScanner</span><span class="p">(</span><span class="n">Scanner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Regular expression scanner.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    DEFAULT_EXPR : `re._sre.SRE_Pattern`</span>
+<span class="sd">        Default regular expression.</span>
+<span class="sd">    expr : `re._sre.SRE_Pattern`</span>
+<span class="sd">        Regular expression..</span>
+<span class="sd">    default_end : `str`</span>
+<span class="sd">        Default sentence ending string.</span>
+<span class="sd">    end : `bool`</span>
+<span class="sd">        `True` if current sentence is ended.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; scan = RegExpScanner(lambda data: data.split())</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;Word word. word&#39;))</span>
+<span class="sd">    [&#39;Word&#39;, &#39;word&#39;, &#39;.&#39;, Scanner.END, &#39;word&#39;, &#39;.&#39;, Scanner.END]</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;word&#39;, True))</span>
+<span class="sd">    [&#39;word&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(scan(&#39;&#39;))</span>
+<span class="sd">    [&#39;.&#39;, Scanner.END]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_EXPR</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s1">&#39;(?:(?P&lt;end&gt;[.!?]+)|(?P&lt;word&gt;(?:[^\w\s]+|\w+)))&#39;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="RegExpScanner.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">DEFAULT_EXPR</span><span class="p">,</span> <span class="n">default_end</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Regular expression scanner constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        expr : `str` or `re._sre.SRE_Pattern`, optional</span>
+<span class="sd">            Regular expression (default: `markovchain.scanner.RegExpScanner.DEFAULT_EXPR`).</span>
+<span class="sd">            It should have groups &#39;end&#39; (sentence ending punctuation)</span>
+<span class="sd">            and &#39;word&#39; (words / other punctuation).</span>
+<span class="sd">        default_end : `str`, optional</span>
+<span class="sd">            Default sentence ending string (default: &#39;.&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regexp</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">=</span> <span class="n">default_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="RegExpScanner.reset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset scanner state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="RegExpScanner.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan a string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `str`</span>
+<span class="sd">            String to scan.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            `True` if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`str` or `markovchain.scanner.Scanner.END`)</span>
+<span class="sd">            Token generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">group</span>
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="s1">&#39;word&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">group</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">expr</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">default_end</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RegExpScanner.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the scanner to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;expr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">pattern</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;default_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="RegExpScanner.get_regexp"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.get_regexp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_regexp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compile a regular expression if necessary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : `str` or `re._sre.SRE_Pattern`</span>
+<span class="sd">            Regular expression.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `re._sre.SRE_Pattern`</span>
+<span class="sd">            Compiled regular expression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="RegExpScanner.get_group"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.RegExpScanner.get_group">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a group from a regular expression match object if it exists.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        match : `re._sre.SRE_Match`</span>
+<span class="sd">            Regular expression match object.</span>
+<span class="sd">        group : `str` or `int`</span>
+<span class="sd">            Group name or index.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `str` or `None`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

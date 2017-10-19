@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.util &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../index.html">
+        README
+    </a>
+    <a href="../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span><span class="p">,</span> <span class="n">repeat</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+
+<div class="viewcode-block" id="SaveLoad"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.SaveLoad">[docs]</a><span class="k">class</span> <span class="nc">SaveLoad</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base class for converting to/from JSON.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    classes : `dict`</span>
+<span class="sd">        Class group.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; class SaveLoadGroup(SaveLoad):</span>
+<span class="sd">    ...     classes = {}</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; class SaveLoadObject(SaveLoadGroup):</span>
+<span class="sd">    ...     def __init__(self, attr=None):</span>
+<span class="sd">    ...         self.attr = attr</span>
+<span class="sd">    ...     def save(self):</span>
+<span class="sd">    ...         data = super().save()</span>
+<span class="sd">    ...         data[&#39;attr&#39;] = self.attr</span>
+<span class="sd">    ...         return data</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; SaveLoadGroup.add_class(SaveLoadObject)</span>
+<span class="sd">    &gt;&gt;&gt; SaveLoadGroup.classes</span>
+<span class="sd">    {&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="sd">    &gt;&gt;&gt; obj = SaveLoadObject(0)</span>
+<span class="sd">    &gt;&gt;&gt; data = obj.save()</span>
+<span class="sd">    &gt;&gt;&gt; data</span>
+<span class="sd">    {&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="sd">    &gt;&gt;&gt; obj2 = SaveLoadGroup.load(data)</span>
+<span class="sd">    &gt;&gt;&gt; type(obj2)</span>
+<span class="sd">    &lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; obj2.attr</span>
+<span class="sd">    0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="SaveLoad.add_class"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.SaveLoad.add_class">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add classes to the group.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *args : `type`</span>
+<span class="sd">            Classes to add.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cls2</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">cls2</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls2</span></div>
+
+<div class="viewcode-block" id="SaveLoad.remove_class"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.SaveLoad.remove_class">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">remove_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove classes from the group.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *args : `type`</span>
+<span class="sd">            Classes to remove.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cls2</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">cls</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">cls2</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SaveLoad.load"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.SaveLoad.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an object from JSON data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `dict`</span>
+<span class="sd">            JSON data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            Created object.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If `data` does not have the &#39;__class__&#39; key</span>
+<span class="sd">            or the necessary class is not in the class group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">]]</span>
+        <span class="n">data_cls</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_cls</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="SaveLoad.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.SaveLoad.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert an object to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;__class__&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="ObjectWrapper"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.ObjectWrapper">[docs]</a><span class="k">class</span> <span class="nc">ObjectWrapper</span><span class="p">:</span> <span class="c1"># pylint:disable=too-few-public-methods</span>
+    <span class="sd">&quot;&quot;&quot;Base class for wrapping objects.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; class Object:</span>
+<span class="sd">    ...     def method(self):</span>
+<span class="sd">    ...         return 2</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; class Wrapper(ObjectWrapper):</span>
+<span class="sd">    ...     def method(self):</span>
+<span class="sd">    ...         return super().method() * 2</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; obj = Object()</span>
+<span class="sd">    &gt;&gt;&gt; wrapped = Wrapper(obj)</span>
+<span class="sd">    &gt;&gt;&gt; wrapped.method()</span>
+<span class="sd">    4</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ObjectWrapper.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.ObjectWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="p">),</span>
+            <span class="p">{}</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span></div></div>
+
+
+<div class="viewcode-block" id="const"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.const">[docs]</a><span class="k">def</span> <span class="nf">const</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return a function that takes any arguments and returns the specified value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x</span>
+<span class="sd">        Value to return.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `function`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="to_list"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.to_list">[docs]</a><span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a value to a list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x</span>
+<span class="sd">        Value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `list`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; to_list(0)</span>
+<span class="sd">    [0]</span>
+<span class="sd">    &gt;&gt;&gt; to_list({&#39;x&#39;: 0})</span>
+<span class="sd">    [{&#39;x&#39;: 0}]</span>
+<span class="sd">    &gt;&gt;&gt; to_list(x ** 2 for x in range(3))</span>
+<span class="sd">    [0, 1, 4]</span>
+<span class="sd">    &gt;&gt;&gt; x = [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; to_list(x)</span>
+<span class="sd">    [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; _ is x</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="fill"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.fill">[docs]</a><span class="k">def</span> <span class="nf">fill</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a value to a list of specified length.</span>
+
+<span class="sd">    If the input is too short, fill it with its last element.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xs</span>
+<span class="sd">        Input list or value.</span>
+<span class="sd">    length : `int`</span>
+<span class="sd">        Output list length.</span>
+<span class="sd">    copy : `bool`, optional</span>
+<span class="sd">        Deep copy the last element to fill the list (default: False).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `list`</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `xs` is empty and `length` &gt; 0</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; fill(0, 3)</span>
+<span class="sd">    [0, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; fill((x ** 2 for x in range(3)), 1)</span>
+<span class="sd">    [0]</span>
+<span class="sd">    &gt;&gt;&gt; x = [{&#39;x&#39;: 0}, {&#39;x&#39;: 1}]</span>
+<span class="sd">    &gt;&gt;&gt; y = fill(x, 4)</span>
+<span class="sd">    &gt;&gt;&gt; y</span>
+<span class="sd">    [{&#39;x&#39;: 0}, {&#39;x&#39;: 1}, {&#39;x&#39;: 1}, {&#39;x&#39;: 1}]</span>
+<span class="sd">    &gt;&gt;&gt; y[2] is y[1]</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; y[3] is y[2]</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; y = fill(x, 4, True)</span>
+<span class="sd">    &gt;&gt;&gt; y</span>
+<span class="sd">    [{&#39;x&#39;: 0}, {&#39;x&#39;: 1}, {&#39;x&#39;: 1}, {&#39;x&#39;: 1}]</span>
+<span class="sd">    &gt;&gt;&gt; y[2] is y[1]</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; y[3] is y[2]</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">==</span> <span class="n">length</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xs</span>
+
+    <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">xs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;empty input&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xs</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">xs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">last</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">xs</span></div>
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">default_factory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create or load an object if necessary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : `object` or `dict` or `None`</span>
+<span class="sd">    cls : `type`</span>
+<span class="sd">    default_factory : `function`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `object`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default_factory</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj</span></div>
+
+<span class="k">def</span> <span class="nf">_extend</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">old</span> <span class="o">=</span> <span class="n">dst</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">_extend</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dst</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">dst</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dst</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+<div class="viewcode-block" id="extend"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.extend">[docs]</a><span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recursively update a dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dst : `dict`</span>
+<span class="sd">        Dictionary to update.</span>
+<span class="sd">    *args : `dict`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `dict`</span>
+<span class="sd">        Updated dictionary.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; extend({&#39;x&#39;: {&#39;y&#39;: 0}}, {&#39;x&#39;: {&#39;z&#39;: 1}})</span>
+<span class="sd">    {&#39;x&#39;: {&#39;y&#39;: 0, &#39;z&#39;: 1}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">_extend</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dst</span></div>
+
+<div class="viewcode-block" id="truncate"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.truncate">[docs]</a><span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Truncate a string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    string : `str`</span>
+<span class="sd">        String to truncate.</span>
+<span class="sd">    maxlen : `int`</span>
+<span class="sd">        Maximum string length.</span>
+<span class="sd">    end : `boolean`, optional</span>
+<span class="sd">        Remove characters from the end (default: `True`).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `maxlen` &lt;= 3.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `str`</span>
+<span class="sd">        Truncated string.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; truncate(&#39;str&#39;, 6)</span>
+<span class="sd">    &#39;str&#39;</span>
+<span class="sd">    &gt;&gt;&gt; truncate(&#39;long string&#39;, 8)</span>
+<span class="sd">    &#39;long ...&#39;</span>
+<span class="sd">    &gt;&gt;&gt; truncate(&#39;long string&#39;, 8, False)</span>
+<span class="sd">    &#39;...tring&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">maxlen</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;maxlen &lt;= 3&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">maxlen</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+    <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span><span class="p">[:</span><span class="n">maxlen</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span>
+
+    <span class="k">return</span> <span class="s1">&#39;...&#39;</span> <span class="o">+</span> <span class="n">string</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="n">maxlen</span><span class="p">:]</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.parser &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../index.html">
+        README
+    </a>
+    <a href="../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.parser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">islice</span>
+
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">SaveLoad</span><span class="p">,</span> <span class="n">to_list</span><span class="p">,</span> <span class="n">fill</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">Scanner</span>
+
+
+<div class="viewcode-block" id="ParserBase"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.ParserBase">[docs]</a><span class="k">class</span> <span class="nc">ParserBase</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base parser class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    classes : `dict`</span>
+<span class="sd">        Parser class group.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; parse = ParserBase(lambda data: zip(data, data[1:]))</span>
+<span class="sd">    &gt;&gt;&gt; list(parse([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]))</span>
+<span class="sd">    [(&#39;a&#39;, &#39;b&#39;), (&#39;b&#39;, &#39;c&#39;)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ParserBase.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.ParserBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parse</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Base parser constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parse : `function`, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse</span> <span class="o">=</span> <span class="n">parse</span></div>
+
+<div class="viewcode-block" id="ParserBase.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.ParserBase.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data</span>
+<span class="sd">            Data to parse.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            True if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            self.parse(data)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="n">ParserBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Default parser class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state : `deque` of `str`</span>
+<span class="sd">        Parser state.</span>
+<span class="sd">    state_size : `int`</span>
+<span class="sd">        Maximum parser state size.</span>
+<span class="sd">    reset_on_sentence_end : `bool`</span>
+<span class="sd">        Reset parser state on `markovchain.scanner.Scanner.END` token.</span>
+<span class="sd">    end : `bool`</span>
+<span class="sd">        True if a sentence is not started.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; tokens = [&#39;a&#39;, &#39;b&#39;, &#39;.&#39;, Scanner.END, &#39;c&#39;, &#39;.&#39;, Scanner.END]</span>
+<span class="sd">    &gt;&gt;&gt; parse = Parser()</span>
+<span class="sd">    &gt;&gt;&gt; [(list(state), next) for state, next in parse(tokens)]</span>
+<span class="sd">    [([&#39;&#39;], &#39;a&#39;), ([&#39;a&#39;], &#39;b&#39;), ([&#39;b&#39;], &#39;.&#39;),</span>
+<span class="sd">     ([&#39;&#39;], &#39;c&#39;), ([&#39;c&#39;], &#39;.&#39;)]</span>
+<span class="sd">    &gt;&gt;&gt; parse.state_sizes = 2</span>
+<span class="sd">    &gt;&gt;&gt; [(list(state), next) for state, next in parse(tokens)]</span>
+<span class="sd">    [([&#39;&#39;, &#39;&#39;], &#39;a&#39;), ([&#39;&#39;, &#39;a&#39;], &#39;b&#39;), ([&#39;a&#39;, &#39;b&#39;], &#39;.&#39;),</span>
+<span class="sd">     ([&#39;&#39;, &#39;&#39;], &#39;c&#39;), ([&#39;&#39;, &#39;c&#39;], &#39;.&#39;)]</span>
+<span class="sd">    &gt;&gt;&gt; parse.state_sizes = [1, 2]</span>
+<span class="sd">    &gt;&gt;&gt; [(list(state), next) for state, next in parse(tokens)]</span>
+<span class="sd">    [([&#39;&#39;], &#39;a&#39;), ([&#39;&#39;, &#39;&#39;], &#39;a&#39;),</span>
+<span class="sd">     ([&#39;a&#39;], &#39;b&#39;), ([&#39;&#39;, &#39;a&#39;], &#39;b&#39;),</span>
+<span class="sd">     ([&#39;b&#39;], &#39;.&#39;), ([&#39;a&#39;, &#39;b&#39;], &#39;.&#39;),</span>
+<span class="sd">     ([&#39;&#39;], &#39;c&#39;), ([&#39;&#39;, &#39;&#39;], &#39;c&#39;),</span>
+<span class="sd">     ([&#39;c&#39;], &#39;.&#39;), ([&#39;&#39;, &#39;c&#39;], &#39;.&#39;)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Parser.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Parser.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_sizes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">reset_on_sentence_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default parser constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_sizes : `int` or `list` of `int`, optional</span>
+<span class="sd">            Parser state size(s) (default: [1]).</span>
+<span class="sd">        reset_on_sentence_end : `bool`, optional</span>
+<span class="sd">            Reset parser state on `markovchain.scanner.Scanner.END` token (default: `True`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_sizes</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_on_sentence_end</span> <span class="o">=</span> <span class="n">reset_on_sentence_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">state_sizes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state_sizes</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state_sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`list` of `int` : Parser state sizes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_sizes</span>
+
+    <span class="nd">@state_sizes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">state_sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_sizes</span><span class="p">):</span>
+        <span class="n">state_sizes</span> <span class="o">=</span> <span class="n">to_list</span><span class="p">(</span><span class="n">state_sizes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_sizes</span> <span class="o">!=</span> <span class="n">state_sizes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state_sizes</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;parser state size &lt;= 0: </span><span class="si">{0}</span><span class="s1">&#39;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state_sizes</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">state_sizes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_sizes</span> <span class="o">=</span> <span class="n">state_sizes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Parser.reset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Parser.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size_changed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset parser state.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_size_changed : `bool`, optional</span>
+<span class="sd">            `True` if maximum state size changed (default: `False`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state_size_changed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span><span class="p">),</span>
+                               <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Parser.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Parser.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse tokens.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))</span>
+<span class="sd">            Tokens to parse.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            `True` if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        generator of (`islice` of `str`, `str`)</span>
+<span class="sd">            Link generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="n">cmd</span><span class="p">,</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">word</span>
+                <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="n">Scanner</span><span class="o">.</span><span class="n">START</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid parser input: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">word</span> <span class="o">==</span> <span class="n">Scanner</span><span class="o">.</span><span class="n">END</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_on_sentence_end</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">sz</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_sizes</span><span class="p">:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">-</span> <span class="n">sz</span>
+                    <span class="k">yield</span> <span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span><span class="p">),</span> <span class="n">word</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reset_on_sentence_end</span> <span class="o">==</span> <span class="n">parser</span><span class="o">.</span><span class="n">reset_on_sentence_end</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">==</span> <span class="n">parser</span><span class="o">.</span><span class="n">state_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Parser.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Parser.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;state_sizes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_sizes</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;reset_on_sentence_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_on_sentence_end</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+
+
+<div class="viewcode-block" id="LevelParser"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.LevelParser">[docs]</a><span class="k">class</span> <span class="nc">LevelParser</span><span class="p">(</span><span class="n">ParserBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Multilevel parser class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LevelParser.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.LevelParser.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">parsers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multilevel parser constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        levels : `int`</span>
+<span class="sd">            Number of levels.</span>
+<span class="sd">        parsers : `list` of `markovchain.parser.ParserBase`</span>
+<span class="sd">            Level parsers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parsers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parsers_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span> <span class="o">=</span> <span class="n">parsers</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parsers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`list` of `markovchain.parser.ParserBase` : Level parsers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsers</span>
+
+    <span class="nd">@parsers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">parsers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsers</span><span class="p">):</span>
+        <span class="n">parsers</span> <span class="o">=</span> <span class="n">to_list</span><span class="p">(</span><span class="n">parsers</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">parser</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parsers</span><span class="p">):</span>
+            <span class="n">parsers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">Parser</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">fill</span><span class="p">(</span><span class="n">parsers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">parsers</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parsers_max</span> <span class="o">=</span> <span class="n">parsers</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filled</span><span class="p">)</span> <span class="k">else</span> <span class="n">filled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parsers</span> <span class="o">=</span> <span class="n">filled</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`int` : Number of levels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span>
+
+    <span class="nd">@levels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">levels</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;level count &lt;= 0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsers_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsers_max</span>
+
+<div class="viewcode-block" id="LevelParser.reset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.LevelParser.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset parser state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">parser</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LevelParser.__call__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.LevelParser.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse tokens.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : `generator` of `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))</span>
+<span class="sd">            Levels to parse.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            `True` if data is partial (default: `False`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`islice` of `str`, `str`)</span>
+<span class="sd">            Link generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#if part:</span>
+        <span class="c1">#    raise NotImplementedError()</span>
+        <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">parser</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span><span class="p">):</span>
+            <span class="k">yield from</span> <span class="n">parser</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">==</span> <span class="n">parser</span><span class="o">.</span><span class="n">levels</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span> <span class="o">==</span> <span class="n">parser</span><span class="o">.</span><span class="n">parsers</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LevelParser.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.LevelParser.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;parsers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;parsers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">parser</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> <span class="k">for</span> <span class="n">parser</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsers</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

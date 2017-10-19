@@ -1,0 +1,11 @@
+{% extends "!layout.html" %}
+
+{% block menu %}
+    <a href="{{ pathto('index') }}">
+        {{ _('README') }}
+    </a>
+    <a href="{{ pathto('genindex') }}">
+        {{ _('Index') }}
+    </a>
+    {{ super() }}
+{% endblock %}

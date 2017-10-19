@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.image.traversal &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../../index.html">
+        README
+    </a>
+    <a href="../../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.image.traversal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.image.traversal</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">log2</span>
+
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">SaveLoad</span><span class="p">,</span> <span class="n">load</span>
+
+
+<div class="viewcode-block" id="Traversal"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Traversal">[docs]</a><span class="k">class</span> <span class="nc">Traversal</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base image traversal class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    classes : `dict`</span>
+<span class="sd">        Image traversal class group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Traversal.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Traversal.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Generate block ends (default: `True`).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of ((`int`, `int`) or `None`)</span>
+<span class="sd">            Points and block ends.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Lines"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Lines">[docs]</a><span class="k">class</span> <span class="nc">Lines</span><span class="p">(</span><span class="n">Traversal</span><span class="p">):</span> <span class="c1"># pylint: disable=abstract-method</span>
+    <span class="sd">&quot;&quot;&quot;Base line traversal class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    reverse : `int`</span>
+<span class="sd">        If greater than 0, reverse every nth line.</span>
+<span class="sd">    line_sentences : `bool`</span>
+<span class="sd">        Generate a block end after each line.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Lines.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Lines.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">line_sentences</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Base line traversal constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reverse : `int`, optional</span>
+<span class="sd">            If greater than 0, reverse every nth line (default: 0).</span>
+<span class="sd">        line_sentences : `bool`, optional</span>
+<span class="sd">            Generate a block end after each line (default: `False`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_sentences</span> <span class="o">=</span> <span class="n">line_sentences</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">reverse</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_sentences</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">line_sentences</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Lines.save"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Lines.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;reverse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;line_sentences&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_sentences</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+
+
+<div class="viewcode-block" id="HLines"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.HLines">[docs]</a><span class="k">class</span> <span class="nc">HLines</span><span class="p">(</span><span class="n">Lines</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Horizontal line traversal.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; traverse = HLines()</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 0), (1, 0), (0, 1), (1, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = HLines(reverse=1)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(1, 0), (0, 0), (1, 1), (0, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = HLines(reverse=2)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(1, 0), (0, 0), (0, 1), (1, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = HLines(line_sentences=True)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 0), (1, 0), None, (0, 1), (1, 1), None]</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2, ends=False))</span>
+<span class="sd">    [(0, 0), (1, 0), (0, 1), (1, 1)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="HLines.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.HLines.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Generate block ends (default: `True`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of ((`int`, `int`) or `None`)</span>
+<span class="sd">            Points and block ends.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">xs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">xs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_sentences</span> <span class="ow">and</span> <span class="n">ends</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="VLines"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.VLines">[docs]</a><span class="k">class</span> <span class="nc">VLines</span><span class="p">(</span><span class="n">Lines</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Vertical line traversal.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; traverse = VLines()</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 0), (0, 1), (1, 0), (1, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = VLines(reverse=1)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 1), (0, 0), (1, 1), (1, 0)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = VLines(reverse=2)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(1, 0), (0, 0), (1, 0), (1, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = VLines(line_sentences=True)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 0), (0, 1), None, (1, 0), (1, 1), None]</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2, ends=False))</span>
+<span class="sd">    [(0, 0), (0, 1), (1, 0), (1, 1)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="VLines.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.VLines.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Generate block ends (default: `True`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        generator of ((`int`, `int`) or `None`)</span>
+<span class="sd">            Points and block ends.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_sentences</span> <span class="ow">and</span> <span class="n">ends</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="Spiral"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Spiral">[docs]</a><span class="k">class</span> <span class="nc">Spiral</span><span class="p">(</span><span class="n">Traversal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spiral traversal.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    reverse : `bool`</span>
+<span class="sd">        Reverse traversal order.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; traverse = Spiral()</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(3, 3))</span>
+<span class="sd">    [(1, 1), (0, 1), (0, 2), (1, 2), (2, 2), (2, 1), (2, 0), (1, 0), (0, 0)]</span>
+<span class="sd">    &gt;&gt;&gt; traverse = Spiral(True)</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(3, 3))</span>
+<span class="sd">    [(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (1, 2), (0, 2), (0, 1), (1, 1)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Spiral.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Spiral.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Spiral traversal constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reverse : `bool`, optional</span>
+<span class="sd">            Reverse traversal order (default: `False`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">reverse</span>
+
+<div class="viewcode-block" id="Spiral.save"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Spiral.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;reverse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_rspiral</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reversed spiral generator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Spiral width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Spiral height.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`int`, `int`)</span>
+<span class="sd">            Points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x0</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y0</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">width</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">height</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="n">x0</span> <span class="o">&lt;</span> <span class="n">x1</span> <span class="ow">and</span> <span class="n">y0</span> <span class="o">&lt;</span> <span class="n">y1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y0</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y1</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y</span>
+
+            <span class="n">x0</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">y0</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">x1</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">y1</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">x0</span> <span class="o">==</span> <span class="n">x1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y</span>
+        <span class="k">elif</span> <span class="n">y0</span> <span class="o">==</span> <span class="n">y1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y0</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_spiral</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Spiral generator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Spiral width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Spiral height.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`int`, `int`)</span>
+<span class="sd">            Points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">width</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">height</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">width</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">width</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y</span>
+            <span class="n">x0</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="n">x0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y0</span> <span class="o">=</span> <span class="n">height</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">height</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y0</span>
+            <span class="n">y0</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">y0</span>
+
+        <span class="k">while</span> <span class="n">x0</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">width</span> <span class="o">-</span> <span class="n">x0</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="n">height</span> <span class="o">-</span> <span class="n">y0</span> <span class="o">-</span> <span class="mi">1</span>
+
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y1</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x0</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y0</span>
+
+            <span class="n">x0</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">y0</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="Spiral.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Spiral.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span> <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Unused (default: `True`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`int`, `int`)</span>
+<span class="sd">            Points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rspiral</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spiral</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Hilbert"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Hilbert">[docs]</a><span class="k">class</span> <span class="nc">Hilbert</span><span class="p">(</span><span class="n">Traversal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Hilbert curve traversal.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    POSITION : `list` of (`int`, `int`)</span>
+<span class="sd">        Block positions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; traverse = Hilbert()</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(2, 2))</span>
+<span class="sd">    [(0, 0), (0, 1), (1, 1), (1, 0)]</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(3, 5))</span>
+<span class="sd">    [(0, 0), (0, 1), (1, 1), (1, 0), (2, 0), (2, 1),</span>
+<span class="sd">     (2, 2), (2, 3), (1, 3), (1, 2), (0, 2), (0, 3),</span>
+<span class="sd">     (0, 4), (1, 4), (2, 4)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">POSITION</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="Hilbert.get_point_in_block"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Hilbert.get_point_in_block">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_point_in_block</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">block_idx</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get point coordinates in next block.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : `int`</span>
+<span class="sd">            X coordinate in current block.</span>
+<span class="sd">        y : `int`</span>
+<span class="sd">            Y coordinate in current block.</span>
+<span class="sd">        block_index : `int`</span>
+<span class="sd">            Current block index in next block.</span>
+<span class="sd">        block_size : `int`</span>
+<span class="sd">            Current block size.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        IndexError</span>
+<span class="sd">            If block index is out of range.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (`int`, `int`)</span>
+<span class="sd">            Point coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">block_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+        <span class="k">if</span> <span class="n">block_idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">block_size</span>
+        <span class="k">if</span> <span class="n">block_idx</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">block_size</span>
+        <span class="k">if</span> <span class="n">block_idx</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">block_size</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="n">block_size</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span>
+            <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">y</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;block index out of range: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">block_idx</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Hilbert.get_point"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Hilbert.get_point">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_point</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get curve point coordinates by index.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : `int`</span>
+<span class="sd">            Point index.</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            Bounding box size.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (`int`, `int`)</span>
+<span class="sd">            Point coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">POSITION</span><span class="p">[</span><span class="n">idx</span> <span class="o">%</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">//=</span> <span class="mi">4</span>
+        <span class="n">block_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">while</span> <span class="n">block_size</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">block_idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">%</span> <span class="mi">4</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_point_in_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">block_idx</span><span class="p">,</span> <span class="n">block_size</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">//=</span> <span class="mi">4</span>
+            <span class="n">block_size</span> <span class="o">*=</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+<div class="viewcode-block" id="Hilbert.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Hilbert.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span> <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Unused (default: `True`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`int`, `int`)</span>
+<span class="sd">            Points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">ceil</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+
+        <span class="n">generated</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
+        <span class="k">if</span> <span class="n">generated</span> <span class="o">&gt;=</span> <span class="n">points</span> <span class="ow">or</span> <span class="n">width</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">size</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_point</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">width</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+                <span class="n">generated</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">generated</span> <span class="o">&gt;=</span> <span class="n">points</span><span class="p">:</span>
+                    <span class="k">return</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Blocks"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Blocks">[docs]</a><span class="k">class</span> <span class="nc">Blocks</span><span class="p">(</span><span class="n">Traversal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Block traversal.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    block_size : (`int`, `int`)</span>
+<span class="sd">        Block size.</span>
+<span class="sd">    block_sentences : `bool`</span>
+<span class="sd">        Generate a block end after each block.</span>
+<span class="sd">    traverse_image : `markovchain.image.traversal.Traversal`</span>
+<span class="sd">        Image traversal.</span>
+<span class="sd">    traverse_block : `markovchain.image.traversal.Traversal`</span>
+<span class="sd">        Block traversal.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; traverse = Blocks(block_size=(2, 2),</span>
+<span class="sd">    ...                   traverse_image=HLines(),</span>
+<span class="sd">    ...                   traverse_block=VLines())</span>
+<span class="sd">    &gt;&gt;&gt; list(traverse(4, 4))</span>
+<span class="sd">    [(0, 0), (0, 1), (1, 0), (1, 1),</span>
+<span class="sd">     (2, 0), (2, 1), (3, 0), (3, 1),</span>
+<span class="sd">     (0, 2), (0, 3), (1, 2), (1, 3),</span>
+<span class="sd">     (2, 2), (2, 3), (3, 2), (3, 3)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Blocks.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Blocks.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">block_size</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+                 <span class="n">block_sentences</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">traverse_image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">traverse_block</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Block traversal constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        block_size : (`int`, `int`), optional</span>
+<span class="sd">            Block size (default: (16, 16)).</span>
+<span class="sd">        block_sentences : `bool`, optional</span>
+<span class="sd">            Generate a block end after each block (default: False).</span>
+<span class="sd">        traverse_image : `markovchain.image.traversal.Traversal` \</span>
+<span class="sd">                          or `dict`, optional</span>
+<span class="sd">            Image traversal object or JSON data (default: HLines()).</span>
+<span class="sd">        traverse_block : `markovchain.image.traversal.Traversal` \</span>
+<span class="sd">                         or `dict`, optional</span>
+<span class="sd">            Block traversal object or JSON data (default: HLines()).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">block_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_sentences</span> <span class="o">=</span> <span class="n">block_sentences</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traverse_image</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">traverse_image</span><span class="p">,</span> <span class="n">Traversal</span><span class="p">,</span> <span class="n">HLines</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traverse_block</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">traverse_block</span><span class="p">,</span> <span class="n">Traversal</span><span class="p">,</span> <span class="n">HLines</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Blocks.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Blocks.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Traverse an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        width : `int`</span>
+<span class="sd">            Image width.</span>
+<span class="sd">        height : `int`</span>
+<span class="sd">            Image height.</span>
+<span class="sd">        ends : `bool`, optional</span>
+<span class="sd">            Generate block ends (default: `True`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of ((`int`, `int`) or `None`)</span>
+<span class="sd">            Points and block ends.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">block_width</span><span class="p">,</span> <span class="n">block_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_size</span>
+        <span class="n">img_width</span> <span class="o">=</span> <span class="n">width</span> <span class="o">//</span> <span class="n">block_width</span>
+        <span class="n">img_height</span> <span class="o">=</span> <span class="n">height</span> <span class="o">//</span> <span class="n">block_height</span>
+        <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_image</span><span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">ends</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">xy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="kc">None</span>
+                <span class="k">continue</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">block_width</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="n">block_height</span>
+            <span class="k">for</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_block</span><span class="p">(</span><span class="n">block_width</span><span class="p">,</span> <span class="n">block_height</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_sentences</span> <span class="ow">and</span> <span class="n">ends</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Blocks.save"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.traversal.Blocks.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;block_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_size</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;block_sentences&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_sentences</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;traverse_image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_image</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;traverse_block&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_block</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_size</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">block_size</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_sentences</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">block_sentences</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_image</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">traverse_image</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">traverse_block</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">traverse_block</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

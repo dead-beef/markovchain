@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.cli package &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="markovchain package" href="markovchain.html"/>
+        <link rel="next" title="markovchain.image package" href="markovchain.image.html"/>
+        <link rel="prev" title="markovchain package" href="markovchain.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../index.html">
+        README
+    </a>
+    <a href="../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">markovchain</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="markovchain.html">markovchain package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="markovchain.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">markovchain</a> &raquo;</li>
+        
+          <li><a href="markovchain.html">markovchain package</a> &raquo;</li>
+        
+      <li>markovchain.cli package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/markovchain.cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="markovchain-cli-package">
+<h1>markovchain.cli package<a class="headerlink" href="#markovchain-cli-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-markovchain.cli.main">
+<span id="markovchain-cli-main-module"></span><h2>markovchain.cli.main module<a class="headerlink" href="#module-markovchain.cli.main" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="markovchain.cli.main.main">
+<code class="descclassname">markovchain.cli.main.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.main.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>CLI main function.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.cli.util">
+<span id="markovchain-cli-util-module"></span><h2>markovchain.cli.util module<a class="headerlink" href="#module-markovchain.cli.util" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.cli.util.NoProgressBar">
+<em class="property">class </em><code class="descclassname">markovchain.cli.util.</code><code class="descname">NoProgressBar</code><a class="reference internal" href="../_modules/markovchain/cli/util.html#NoProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.NoProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Missing progress bar class.</p>
+<dl class="attribute">
+<dt id="markovchain.cli.util.NoProgressBar.warning">
+<code class="descname">warning</code><a class="headerlink" href="#markovchain.cli.util.NoProgressBar.warning" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code> – True if a missing progress bar warning was printed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.cli.util.NoProgressBar.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#NoProgressBar.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.NoProgressBar.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="markovchain.cli.util.NoProgressBar.print_warning">
+<em class="property">classmethod </em><code class="descname">print_warning</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#NoProgressBar.print_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.NoProgressBar.print_warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a missing progress bar warning if it was not printed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.cli.util.NoProgressBar.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#NoProgressBar.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.NoProgressBar.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">warning</code><em class="property"> = False</em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.check_output_format">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">check_output_format</code><span class="sig-paren">(</span><em>fmt</em>, <em>nfiles</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#check_output_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.check_output_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate file format string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fmt</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File format string.</li>
+<li><strong>nfiles</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Number of files.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If nfiles &lt; 0 or format string is invalid.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.cmd_settings">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">cmd_settings</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#cmd_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.cmd_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print generator settings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.infiles">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">infiles</code><span class="sig-paren">(</span><em>fnames</em>, <em>progress</em>, <em>leave=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#infiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.infiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get input file paths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fnames</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File paths.</li>
+<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bar.</li>
+<li><strong>leave</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Leave progress bar (default: True).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Input file paths.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.load">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">load</code><span class="sig-paren">(</span><em>markov</em>, <em>fname</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a markov chain generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">type</span></code>) – Markov chain generator class.</li>
+<li><strong>fname</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Input file path.</li>
+<li><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.no_tqdm">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">no_tqdm</code><span class="sig-paren">(</span><em>iterable=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#no_tqdm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.no_tqdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a missing progress bar warning if it was not printed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>iterable</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – Iterable to decorate with a progress bar (default: None).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> or <a class="reference internal" href="#markovchain.cli.util.NoProgressBar" title="markovchain.cli.util.NoProgressBar"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.cli.util.NoProgressBar</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.outfiles">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">outfiles</code><span class="sig-paren">(</span><em>fmt</em>, <em>nfiles</em>, <em>progress</em>, <em>leave=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#outfiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.outfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get output file paths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fmt</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File path format string.</li>
+<li><strong>nfiles</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Number of files.</li>
+<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bars.</li>
+<li><strong>leave</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Leave progress bar (default: True).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If nfiles &lt;= 0.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Output file paths.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.pprint">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">pprint</code><span class="sig-paren">(</span><em>data</em>, <em>indent=0</em>, <em>end='\n'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#pprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.pprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty print JSON data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – JSON data.</li>
+<li><strong>indent</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Indent level in characters (default: 0).</li>
+<li><strong>end</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – String to print after the data (default: ‘\n’).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.save">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">save</code><span class="sig-paren">(</span><em>markov</em>, <em>fname</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a markov chain generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">MarkovBase</span></code>) – Markov chain generator.</li>
+<li><strong>fname</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Output file path.</li>
+<li><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.util.set_args">
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">set_args</code><span class="sig-paren">(</span><em>args</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#set_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.set_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set computed command arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</li>
+<li><strong>base</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">type</span></code>) – Generator mixins.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If output file is stdout and progress bars are enabled.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.cli">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-markovchain.cli" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="markovchain.image.html" class="btn btn-neutral float-right" title="markovchain.image package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="markovchain.html" class="btn btn-neutral" title="markovchain package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,685 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>README &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="#"/>
+        <link rel="next" title="markovchain" href="source/modules.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="#">
+        README
+    </a>
+    <a href="genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>README</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="readme">
+<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Markov chain generator</p>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.python.org/">Python 3</a></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">markovchain</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">markovchain</span><span class="p">[</span><span class="n">image</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dead</span><span class="o">-</span><span class="n">beef</span><span class="o">/</span><span class="n">markovchain</span>
+<span class="n">cd</span> <span class="n">markovchain</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span><span class="p">[</span><span class="n">dev</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">build</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">test</span>
+<span class="n">coverage</span> <span class="n">report</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-usage">
+<h2>Module usage<a class="headerlink" href="#module-usage" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://dead-beef.github.io/markovchain/">Module documentation</a></li>
+</ul>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="text">
+<h4>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h4>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">markovchain</span> <span class="k">import</span> <span class="n">MarkovBase</span><span class="p">,</span> <span class="n">MarkovSqliteMixin</span>
+
+<span class="k">class</span> <span class="nc">Markov</span><span class="p">(</span><span class="n">MarkovSqliteMixin</span><span class="p">,</span> <span class="n">MarkovBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s1">&#39;markov.db&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data2.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="c1"># generator</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">words</span><span class="p">)</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sentence&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">words</span><span class="p">)</span>
+
+<span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;markov.db&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="image">
+<h4>Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h4>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">markovchain</span> <span class="k">import</span> <span class="n">MarkovBase</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span>
+<span class="kn">from</span> <span class="nn">markovchain.image</span> <span class="k">import</span> <span class="n">MarkovImageMixin</span>
+
+<span class="k">class</span> <span class="nc">Markov</span><span class="p">(</span><span class="n">MarkovImageMixin</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">,</span> <span class="n">MarkovBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span><span class="p">()</span>
+
+<span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data.png&#39;</span><span class="p">))</span>
+
+<span class="n">width</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="c1"># PIL image</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;generated.png&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;markov.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+
+<span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;markov.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cli-usage">
+<h2>CLI usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">text</span><span class="p">,</span><span class="n">image</span><span class="p">}</span> <span class="o">...</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="p">{</span><span class="n">text</span><span class="p">,</span><span class="n">image</span><span class="p">}</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>    <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+</pre></div>
+</div>
+<div class="section" id="data-types">
+<h3>Data types<a class="headerlink" href="#data-types" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="41%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">State file</th>
+<th class="head">File type</th>
+<th class="head">Data mixin used</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>stdout</td>
+<td>JSON</td>
+<td>MarkovJsonMixin</td>
+</tr>
+<tr class="row-odd"><td>*.json</td>
+<td>JSON</td>
+<td>MarkovJsonMixin</td>
+</tr>
+<tr class="row-even"><td>*.json.bz2</td>
+<td>bzip2 compressed JSON</td>
+<td>MarkovJsonMixin</td>
+</tr>
+<tr class="row-odd"><td>Other</td>
+<td>SQLite 3 database</td>
+<td>MarkovSqliteMixin</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Text<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">markovchain</span> <span class="n">text</span> <span class="n">create</span> <span class="o">--</span><span class="n">output</span> <span class="n">text</span><span class="o">.</span><span class="n">db</span> <span class="n">input1</span><span class="o">.</span><span class="n">txt</span> <span class="n">input2</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">markovchain</span> <span class="n">text</span> <span class="n">update</span> <span class="n">text</span><span class="o">.</span><span class="n">db</span> <span class="n">input3</span><span class="o">.</span><span class="n">txt</span> <span class="n">input4</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">markovchain</span> <span class="n">text</span> <span class="n">generate</span> <span class="n">text</span><span class="o">.</span><span class="n">db</span>
+<span class="n">markovchain</span> <span class="n">text</span> <span class="n">generate</span> <span class="o">--</span><span class="n">sentences</span> <span class="mi">16</span> <span class="o">--</span><span class="n">start</span> <span class="s1">&#39;sentence start&#39;</span> <span class="n">text</span><span class="o">.</span><span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>Image<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">markovchain</span> <span class="n">image</span> <span class="n">create</span> <span class="o">--</span><span class="n">progress</span> <span class="o">--</span><span class="n">output</span> <span class="n">img</span><span class="o">.</span><span class="n">db</span> <span class="n">img1</span><span class="o">.</span><span class="n">png</span> <span class="n">img2</span><span class="o">.</span><span class="n">png</span>
+<span class="n">markovchain</span> <span class="n">image</span> <span class="n">update</span> <span class="o">--</span><span class="n">progress</span> <span class="n">img</span><span class="o">.</span><span class="n">db</span> <span class="n">img3</span><span class="o">.</span><span class="n">png</span> <span class="n">img4</span><span class="o">.</span><span class="n">png</span>
+<span class="n">markovchain</span> <span class="n">image</span> <span class="n">generate</span> <span class="o">--</span><span class="n">progress</span> <span class="o">--</span><span class="n">size</span> <span class="mi">64</span> <span class="mi">64</span> <span class="o">--</span><span class="n">count</span> <span class="mi">4</span> <span class="n">img</span><span class="o">.</span><span class="n">db</span> <span class="n">img</span><span class="o">%</span><span class="mi">02</span><span class="n">d</span><span class="o">.</span><span class="n">png</span>
+<span class="n">markovchain</span> <span class="n">image</span> <span class="nb">filter</span> <span class="o">--</span><span class="n">progress</span> <span class="n">img</span><span class="o">.</span><span class="n">png</span> <span class="n">output</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="settings">
+<h4>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/dead-beef/markovchain/tree/master/settings/text">Text</a></li>
+<li><a class="reference external" href="https://github.com/dead-beef/markovchain/tree/master/settings/image">Image</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Text<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">}</span> <span class="o">...</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="p">{</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">}</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+</pre></div>
+</div>
+<div class="section" id="create">
+<h4>create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">create</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">create</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
+                               <span class="p">[</span><span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">stdin</span><span class="p">)</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
+                        <span class="n">output</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="update">
+<h4>update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">update</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">update</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
+                               <span class="n">state</span> <span class="p">[</span><span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>                 <span class="n">state</span> <span class="n">file</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">stdin</span><span class="p">)</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
+                        <span class="n">output</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">rewrite</span> <span class="n">state</span> <span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate">
+<h4>generate<a class="headerlink" href="#generate" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">generate</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">generate</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span><span class="p">]</span>
+                                 <span class="p">[</span><span class="o">-</span><span class="n">st</span> <span class="n">START</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">w</span> <span class="n">WORDS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ws</span> <span class="n">WORD_SEPARATOR</span><span class="p">]</span>
+                                 <span class="p">[</span><span class="o">-</span><span class="n">S</span> <span class="n">SENTENCES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
+                                 <span class="n">state</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>                 <span class="n">state</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span><span class="p">,</span> <span class="o">--</span><span class="n">state</span><span class="o">-</span><span class="n">size</span> <span class="n">STATE_SIZE</span>
+                        <span class="n">generator</span> <span class="n">state</span> <span class="n">size</span>
+  <span class="o">-</span><span class="n">st</span> <span class="n">START</span><span class="p">,</span> <span class="o">--</span><span class="n">start</span> <span class="n">START</span>
+                        <span class="n">sentence</span> <span class="n">start</span>
+  <span class="o">-</span><span class="n">w</span> <span class="n">WORDS</span><span class="p">,</span> <span class="o">--</span><span class="n">words</span> <span class="n">WORDS</span>
+                        <span class="nb">max</span> <span class="n">sentence</span> <span class="n">size</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">256</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">ws</span> <span class="n">WORD_SEPARATOR</span><span class="p">,</span> <span class="o">--</span><span class="n">word</span><span class="o">-</span><span class="n">separator</span> <span class="n">WORD_SEPARATOR</span>
+                        <span class="n">output</span> <span class="n">word</span> <span class="n">separator</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">S</span> <span class="n">SENTENCES</span><span class="p">,</span> <span class="o">--</span><span class="n">sentences</span> <span class="n">SENTENCES</span>
+                        <span class="n">number</span> <span class="n">of</span> <span class="n">generated</span> <span class="n">sentences</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
+                        <span class="n">output</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h4>settings<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">settings</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">text</span> <span class="n">settings</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">state</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>       <span class="n">state</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>Image<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
+                         <span class="p">{</span><span class="n">convert</span><span class="p">,</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span> <span class="o">...</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="p">{</span><span class="n">convert</span><span class="p">,</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+</pre></div>
+</div>
+<div class="section" id="convert">
+<h4>convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">convert</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">convert</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">}]</span>
+                                 <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">]</span>
+                                 <span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">p</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span><span class="p">,</span> <span class="o">--</span><span class="n">palette</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span>
+                        <span class="n">palette</span> <span class="n">color</span> <span class="n">division</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+  <span class="o">-</span><span class="n">c</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="o">--</span><span class="n">convert</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span>
+                        <span class="n">conversion</span> <span class="nb">type</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">dither</span>          <span class="n">enable</span> <span class="n">dithering</span>
+  <span class="o">-</span><span class="n">r</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">,</span> <span class="o">--</span><span class="n">resize</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span>
+                        <span class="n">resize</span> <span class="n">images</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h4>create<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">create</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">create</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
+                                <span class="p">[</span><span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
+                        <span class="n">output</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">stdout</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h4>update<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">update</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">update</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
+                                <span class="n">state</span> <span class="p">[</span><span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>                 <span class="n">state</span> <span class="n">file</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
+                        <span class="n">output</span> <span class="n">file</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">rewrite</span> <span class="n">state</span> <span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h4>generate<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">generate</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">generate</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span>
+                                  <span class="p">[</span><span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">]]</span>
+                                  <span class="p">[</span><span class="o">-</span><span class="n">S</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">LEVEL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COUNT</span><span class="p">]</span>
+                                  <span class="n">state</span> <span class="n">output</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>                 <span class="n">state</span> <span class="n">file</span>
+  <span class="n">output</span>                <span class="n">output</span> <span class="n">file</span> <span class="n">name</span> <span class="nb">format</span> <span class="n">string</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">],</span> <span class="o">--</span><span class="n">state</span><span class="o">-</span><span class="n">size</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">]</span>
+                        <span class="n">generator</span> <span class="n">state</span> <span class="n">sizes</span>
+  <span class="o">-</span><span class="n">S</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">,</span> <span class="o">--</span><span class="n">size</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span>
+                        <span class="n">image</span> <span class="n">size</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">scanner</span><span class="o">.</span><span class="n">resize</span><span class="o">&gt;</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">l</span> <span class="n">LEVEL</span><span class="p">,</span> <span class="o">--</span><span class="n">level</span> <span class="n">LEVEL</span>
+                        <span class="n">image</span> <span class="n">levels</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">scanner</span><span class="o">.</span><span class="n">levels</span><span class="o">&gt;</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">c</span> <span class="n">COUNT</span><span class="p">,</span> <span class="o">--</span><span class="n">count</span> <span class="n">COUNT</span>
+                        <span class="n">generated</span> <span class="n">image</span> <span class="n">count</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filter">
+<h4>filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="nb">filter</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="nb">filter</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="p">{</span><span class="n">json</span><span class="p">,</span><span class="n">sqlite</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">]</span>
+                                <span class="p">[</span><span class="o">-</span><span class="n">S</span> <span class="n">STATE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">]]</span>
+                                <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">LEVEL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COUNT</span><span class="p">]</span>
+                                <span class="nb">input</span> <span class="n">output</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">image</span>
+  <span class="n">output</span>                <span class="n">output</span> <span class="n">file</span> <span class="n">name</span> <span class="nb">format</span> <span class="n">string</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">progress</span>        <span class="n">show</span> <span class="n">progress</span> <span class="n">bar</span>
+  <span class="o">-</span><span class="n">t</span> <span class="p">{</span><span class="n">json</span><span class="p">,</span><span class="n">sqlite</span><span class="p">},</span> <span class="o">--</span><span class="nb">type</span> <span class="p">{</span><span class="n">json</span><span class="p">,</span><span class="n">sqlite</span><span class="p">}</span>
+                        <span class="n">generator</span> <span class="nb">type</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="n">json</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SETTINGS</span><span class="p">,</span> <span class="o">--</span><span class="n">settings</span> <span class="n">SETTINGS</span>
+                        <span class="n">settings</span> <span class="n">json</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">S</span> <span class="n">STATE</span><span class="p">,</span> <span class="o">--</span><span class="n">state</span> <span class="n">STATE</span>
+                        <span class="n">state</span> <span class="n">file</span>
+  <span class="o">-</span><span class="n">ss</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">],</span> <span class="o">--</span><span class="n">state</span><span class="o">-</span><span class="n">size</span> <span class="n">STATE_SIZE</span> <span class="p">[</span><span class="n">STATE_SIZE</span> <span class="o">...</span><span class="p">]</span>
+                        <span class="n">generator</span> <span class="n">state</span> <span class="n">sizes</span>
+  <span class="o">-</span><span class="n">l</span> <span class="n">LEVEL</span><span class="p">,</span> <span class="o">--</span><span class="n">level</span> <span class="n">LEVEL</span>
+                        <span class="nb">filter</span> <span class="n">start</span> <span class="n">level</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">c</span> <span class="n">COUNT</span><span class="p">,</span> <span class="o">--</span><span class="n">count</span> <span class="n">COUNT</span>
+                        <span class="n">generated</span> <span class="n">image</span> <span class="n">count</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h4>settings<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">settings</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">settings</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">state</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">state</span>       <span class="n">state</span> <span class="n">file</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="licenses">
+<h2>Licenses<a class="headerlink" href="#licenses" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/dead-beef/markovchain/blob/master/LICENSE">markovchain</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="source/modules.html" class="btn btn-neutral float-right" title="markovchain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

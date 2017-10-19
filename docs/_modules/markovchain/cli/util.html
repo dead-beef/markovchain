@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.cli.util &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../../index.html">
+        README
+    </a>
+    <a href="../../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.cli.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.cli.util</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">bz2</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+    <span class="n">TQDM_IMPORT_ERROR</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="n">tqdm</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">TQDM_IMPORT_ERROR</span> <span class="o">=</span> <span class="n">err</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">MarkovBase</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">,</span> <span class="n">MarkovSqliteMixin</span>
+
+
+<span class="n">JSON</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">SQLITE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">IJSON_MIN_SIZE</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+<span class="n">IJSON_MIN_COMPRESSED_SIZE</span> <span class="o">=</span> <span class="mi">512</span> <span class="o">*</span> <span class="mi">1024</span>
+
+<span class="n">BAR_DESC_SIZE</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">BAR_N_SIZE</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">BAR_RATE_SIZE</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">BAR_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;{{desc:&lt;</span><span class="si">{0}</span><span class="s1">.</span><span class="si">{0}</span><span class="s1">}}{{percentage:3.0f}}%&#39;</span> \
+             <span class="s1">&#39;|{{bar}}| &#39;</span> \
+             <span class="s1">&#39;{{n_fmt:&gt;</span><span class="si">{1}</span><span class="s1">.</span><span class="si">{1}</span><span class="s1">}}/{{total_fmt:&lt;</span><span class="si">{1}</span><span class="s1">.</span><span class="si">{1}</span><span class="s1">}} &#39;</span>\
+             <span class="s1">&#39;{{elapsed}}&lt;{{remaining:^5}} {{rate_fmt:&gt;</span><span class="si">{2}</span><span class="s1">.</span><span class="si">{2}</span><span class="s1">}}&#39;</span> \
+                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">BAR_DESC_SIZE</span><span class="p">,</span> <span class="n">BAR_N_SIZE</span><span class="p">,</span> <span class="n">BAR_RATE_SIZE</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="NoProgressBar"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.NoProgressBar">[docs]</a><span class="k">class</span> <span class="nc">NoProgressBar</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Missing progress bar class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    warning : `bool`</span>
+<span class="sd">        True if a missing progress bar warning was printed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warning</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="NoProgressBar.print_warning"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.NoProgressBar.print_warning">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">print_warning</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a missing progress bar warning if it was not printed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">warning</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">warning</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t create progress bar:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">TQDM_IMPORT_ERROR</span><span class="p">),</span>
+                  <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NoProgressBar.update"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.NoProgressBar.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Do nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="NoProgressBar.close"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.NoProgressBar.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Do nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="no_tqdm"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.no_tqdm">[docs]</a><span class="k">def</span> <span class="nf">no_tqdm</span><span class="p">(</span><span class="n">iterable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;Print a missing progress bar warning if it was not printed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    iterable : `iterable` or `None`, optional</span>
+<span class="sd">        Iterable to decorate with a progress bar (default: None).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `iterable` or `markovchain.cli.util.NoProgressBar`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NoProgressBar</span><span class="o">.</span><span class="n">print_warning</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">iterable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">iterable</span>
+    <span class="k">return</span> <span class="n">NoProgressBar</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="n">tqdm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">tqdm</span> <span class="o">=</span> <span class="n">no_tqdm</span> <span class="c1"># pylint: disable=invalid-name</span>
+
+<div class="viewcode-block" id="pprint"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.pprint">[docs]</a><span class="k">def</span> <span class="nf">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pretty print JSON data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data</span>
+<span class="sd">        JSON data.</span>
+<span class="sd">    indent : `int`, optional</span>
+<span class="sd">        Indent level in characters (default: 0).</span>
+<span class="sd">    end : `str`, optional</span>
+<span class="sd">        String to print after the data (default: &#39;\\\\n&#39;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span>
+        <span class="n">new_indent</span> <span class="o">=</span> <span class="n">indent</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">new_indent</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">new_indent</span><span class="p">,</span>
+                   <span class="n">end</span><span class="o">=</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">indent</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span>
+            <span class="n">new_indent</span> <span class="o">=</span> <span class="n">indent</span> <span class="o">+</span> <span class="mi">4</span>
+            <span class="n">space</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">new_indent</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">pprint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">new_indent</span><span class="p">,</span>
+                       <span class="n">end</span><span class="o">=</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">indent</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a markov chain generator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    markov : `type`</span>
+<span class="sd">        Markov chain generator class.</span>
+<span class="sd">    fname : `str`</span>
+<span class="sd">        Input file path.</span>
+<span class="sd">    args : `argparse.Namespace`</span>
+<span class="sd">        Command arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;bz2&#39;</span><span class="p">):</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
+            <span class="n">maxsize</span> <span class="o">=</span> <span class="n">IJSON_MIN_COMPRESSED_SIZE</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="nb">open</span>
+            <span class="n">maxsize</span> <span class="o">=</span> <span class="n">IJSON_MIN_SIZE</span>
+
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;rb&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;rt&#39;</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading JSON data...&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">op</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save a markov chain generator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    markov : `MarkovBase`</span>
+<span class="sd">        Markov chain generator.</span>
+<span class="sd">    fname : `str`</span>
+<span class="sd">        Output file path.</span>
+<span class="sd">    args : `argparse.Namespace`</span>
+<span class="sd">        Command arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;bz2&#39;</span><span class="p">):</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="nb">open</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Saving JSON data...&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">op</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="set_args"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.set_args">[docs]</a><span class="k">def</span> <span class="nf">set_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set computed command arguments.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args : `argparse.Namespace`</span>
+<span class="sd">        Command arguments.</span>
+<span class="sd">    base : `iterable` of `type`</span>
+<span class="sd">        Generator mixins.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If output file is stdout and progress bars are enabled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="ow">is</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;args.output is stdout and args.progress&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;.json&#39;</span>
+
+    <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bz2&#39;</span><span class="p">):</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">JSON</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">SQLITE</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">JSON</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">MarkovJsonMixin</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SQLITE</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">MarkovSqliteMixin</span>
+
+    <span class="n">base</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">chain</span><span class="p">((</span><span class="n">dtype</span><span class="p">,),</span> <span class="n">base</span><span class="p">,</span> <span class="p">(</span><span class="n">MarkovBase</span><span class="p">,)))</span>
+
+    <span class="k">class</span> <span class="nc">Markov</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">):</span> <span class="c1"># pylint: disable=too-few-public-methods</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">has_settings</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">has_settings</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">has_settings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">args</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span></div>
+
+<div class="viewcode-block" id="check_output_format"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.check_output_format">[docs]</a><span class="k">def</span> <span class="nf">check_output_format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validate file format string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fmt : `str`</span>
+<span class="sd">        File format string.</span>
+<span class="sd">    nfiles : `int`</span>
+<span class="sd">        Number of files.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If nfiles &lt; 0 or format string is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nfiles</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid file count: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nfiles</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">nfiles</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">%</span> <span class="n">nfiles</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;Invalid file format string: &#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="p">))</span></div>
+
+<div class="viewcode-block" id="infiles"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.infiles">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">infiles</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get input file paths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fnames : `list` of `str`</span>
+<span class="sd">        File paths.</span>
+<span class="sd">    progress : `bool`</span>
+<span class="sd">        Show progress bar.</span>
+<span class="sd">    leave : `bool`, optional</span>
+<span class="sd">        Leave progress bar (default: True).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `generator` of `str`</span>
+<span class="sd">        Input file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fnames</span><span class="p">:</span>
+            <span class="n">fnames</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Loading&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">,</span>
+                          <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span>
+                          <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">yield</span> <span class="n">fnames</span>
+
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="n">fnames</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="outfiles"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.outfiles">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">outfiles</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get output file paths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fmt : `str`</span>
+<span class="sd">        File path format string.</span>
+<span class="sd">    nfiles : `int`</span>
+<span class="sd">        Number of files.</span>
+<span class="sd">    progress : `bool`</span>
+<span class="sd">        Show progress bars.</span>
+<span class="sd">    leave : `bool`, optional</span>
+<span class="sd">        Leave progress bar (default: True).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If nfiles &lt;= 0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `generator` of `str`</span>
+<span class="sd">        Output file paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nfiles</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fnames</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfiles</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">nfiles</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fnames</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmt</span><span class="p">,)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;output file count &lt;= 0&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="n">fnames</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">nfiles</span><span class="p">,</span>
+                      <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Generating&#39;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">,</span>
+                      <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span>
+                      <span class="n">leave</span><span class="o">=</span><span class="n">leave</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">yield</span> <span class="n">fnames</span>
+
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="n">fnames</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="cmd_settings"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.cmd_settings">[docs]</a><span class="k">def</span> <span class="nf">cmd_settings</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print generator settings.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args : `argparse.Namespace`</span>
+<span class="sd">        Command arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">get_save_data</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

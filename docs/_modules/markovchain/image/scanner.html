@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.image.scanner &mdash; markovchain 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="markovchain 0.1.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../../index.html">
+        README
+    </a>
+    <a href="../../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.image.scanner</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.image.scanner</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">floor</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">..scanner</span> <span class="k">import</span> <span class="n">Scanner</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">fill</span><span class="p">,</span> <span class="n">to_list</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">convert</span><span class="p">,</span> <span class="n">palette</span> <span class="k">as</span> <span class="n">default_palette</span>
+<span class="kn">from</span> <span class="nn">.traversal</span> <span class="k">import</span> <span class="n">Traversal</span><span class="p">,</span> <span class="n">HLines</span>
+
+<div class="viewcode-block" id="ImageScanner"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner">[docs]</a><span class="k">class</span> <span class="nc">ImageScanner</span><span class="p">(</span><span class="n">Scanner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Image scanner class.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    palette_image : `PIL.Image` or `None`</span>
+<span class="sd">        Palette source image.</span>
+<span class="sd">    resize : (`int`, `int`) or `None`</span>
+<span class="sd">        If not None, resize images before scanning.</span>
+<span class="sd">    min_size : `int`</span>
+<span class="sd">        Minimum image size.</span>
+<span class="sd">    convert : `int`</span>
+<span class="sd">        Image conversion type.</span>
+<span class="sd">    dither : `bool`</span>
+<span class="sd">        If True, enable image dithering.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ImageScanner.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">resize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">convert_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">dither</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">level_scale</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                 <span class="n">scale</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
+                 <span class="n">traversal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Image scanner constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        resize : (`int`, `int`) or `None`, optional</span>
+<span class="sd">            If not `None`, resize images before scanning (default: `None`).</span>
+<span class="sd">        convert_type : `int`, optional</span>
+<span class="sd">            Image conversion type (default: 1).</span>
+<span class="sd">        dither : `bool`</span>
+<span class="sd">            If `True`, enable image dithering (default: `False`).</span>
+<span class="sd">        palette : `list` of `int`, optional</span>
+<span class="sd">            Image palette (default: `markovchain.image.util.palette(8, 4, 8)`).</span>
+<span class="sd">        levels : `int`, optional</span>
+<span class="sd">            Number of scanner levels (default: 1).</span>
+<span class="sd">        level_scale : `int` or `list` of `int`</span>
+<span class="sd">            Level scale factors.</span>
+<span class="sd">        scale : `int`, optional</span>
+<span class="sd">            Scale quality (default: `PIL.Image.BICUBIC`).</span>
+<span class="sd">        traversal : `dict` or `markovchain.image.traversal.Traversal` or `list` of (`dict` or `markovchain.image.traversal.Traversal`), optional</span>
+<span class="sd">            Level traversals (default: `markovchain.image.traversal.HLines()`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_palette</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_traversal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_traversal_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">resize</span><span class="p">)</span> <span class="k">if</span> <span class="n">resize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="n">palette</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert</span> <span class="o">=</span> <span class="n">convert_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span> <span class="o">=</span> <span class="n">level_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="n">dither</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span> <span class="o">=</span> <span class="n">traversal</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">traversal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`markovchain.image.traversal.Traversal`: Image traversal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traversal</span>
+
+    <span class="nd">@traversal</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">traversal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">):</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">to_list</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+            <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">Traversal</span><span class="p">,</span> <span class="n">HLines</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">fill</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">ts</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_traversal_max</span> <span class="o">=</span> <span class="n">ts</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filled</span><span class="p">)</span> <span class="k">else</span> <span class="n">filled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_traversal</span> <span class="o">=</span> <span class="n">filled</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`int`: Number of levels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span>
+
+    <span class="nd">@levels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">levels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">levels</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;level count &lt;= 0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_levels</span> <span class="o">=</span> <span class="n">levels</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traversal_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traversal_max</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale_max</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">level_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`list` of `int`: Level scale factors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale</span>
+
+    <span class="nd">@level_scale</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">level_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">to_list</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">scale</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;level scale &lt;= 1: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">fill</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filled</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">filled</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filled</span> <span class="o">=</span> <span class="n">scale</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale_max</span> <span class="o">=</span> <span class="n">scale</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">filled</span><span class="p">)</span> <span class="k">else</span> <span class="n">filled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale</span> <span class="o">=</span> <span class="n">filled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="n">size</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">palette</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;`list` of `int` : Image palette.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_palette</span>
+
+    <span class="nd">@palette</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">palette</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">palette</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">palette</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">palette</span> <span class="o">=</span> <span class="n">default_palette</span><span class="p">(</span><span class="o">*</span><span class="n">palette</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span><span class="o">.</span><span class="n">putpalette</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_palette</span> <span class="o">=</span> <span class="n">palette</span>
+
+<div class="viewcode-block" id="ImageScanner.input"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.input">[docs]</a>    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resize input image if necessary.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        img : `PIL.Image`</span>
+<span class="sd">            Input image.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If input image is too small.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `PIL.Image`</span>
+<span class="sd">            Resized image or input image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">width</span> <span class="o">/</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">height</span> <span class="o">/</span> <span class="n">img_height</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">floor</span><span class="p">(</span><span class="n">img_width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span>
+                              <span class="n">floor</span><span class="p">(</span><span class="n">img_height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)))</span>
+            <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="n">img_width</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="ow">or</span> <span class="n">img_height</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;input image is too small: </span><span class="si">{0}</span><span class="s1"> x </span><span class="si">{1}</span><span class="s1"> &lt; </span><span class="si">{2}</span><span class="s1"> x </span><span class="si">{2}</span><span class="s1">&#39;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">img</span></div>
+
+<div class="viewcode-block" id="ImageScanner.set_palette"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.set_palette">[docs]</a>    <span class="k">def</span> <span class="nf">set_palette</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set image palette.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        img : `PIL.Image`</span>
+<span class="sd">            Input image.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `PIL.Image`</span>
+<span class="sd">            Converted image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">convert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageScanner.level"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.level">[docs]</a>    <span class="k">def</span> <span class="nf">level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get image level.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        img : `PIL.Image`</span>
+<span class="sd">            Input image.</span>
+<span class="sd">        level : `int`</span>
+<span class="sd">            Level number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `PIL.Image`</span>
+<span class="sd">            Converted image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span>
+                           <span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">))</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span> <span class="o">//</span> <span class="n">scale</span><span class="p">,</span> <span class="n">height</span> <span class="o">//</span> <span class="n">scale</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_scan_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan a level.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        level : `int`</span>
+<span class="sd">            Level number.</span>
+<span class="sd">        prev : `PIL.Image` or None</span>
+<span class="sd">            Previous level image or None if level == 0.</span>
+<span class="sd">        img : `PIL.Image`</span>
+<span class="sd">            Current level image.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))</span>
+<span class="sd">            Token generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">prev</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="p">(</span><span class="n">level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="n">tr</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">xy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">xy</span> <span class="ow">in</span> <span class="n">tr</span><span class="p">:</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">START</span><span class="p">,</span>
+                    <span class="s1">&#39;</span><span class="si">%02X%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prev</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="k">yield</span> <span class="n">start</span>
+                <span class="k">for</span> <span class="n">dxy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="n">level</span><span class="p">](</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">dxy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">start</span>
+                    <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">%02X%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">level</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="p">)</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
+
+<div class="viewcode-block" id="ImageScanner.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scan an image.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        img : `PIL.Image`</span>
+<span class="sd">            Image to scan.</span>
+<span class="sd">        part : `bool`, optional</span>
+<span class="sd">            True if data is partial.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If `part` is `True`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of (`str` or `markovchain.scanner.Scanner.END` or (`markovchain.scanner.Scanner.START`, `str`))</span>
+<span class="sd">            Token generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">part</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+        <span class="n">prev</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">resized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">(</span><span class="n">resized</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scan_level</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">img</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">resize</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">convert</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">dither</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">palette</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">levels</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">level_scale</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ImageScanner.save"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to JSON.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `dict`</span>
+<span class="sd">            JSON data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;resize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;convert_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dither&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;palette&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;traversal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span><span class="p">]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;level_scale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
