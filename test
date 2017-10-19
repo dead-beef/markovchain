@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if which coverage >/dev/null 2>&1; then
+    coverage run --include 'markovchain/*' setup.py test
+else
+    ./setup.py test
+fi
