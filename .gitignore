@@ -7,8 +7,6 @@
 /*.egg-info
 /README.rst
 /docsrc/_build
-/docsrc/_static
-/docsrc/_templates
 /docsrc/source
 __pycache__
 *.pyc
