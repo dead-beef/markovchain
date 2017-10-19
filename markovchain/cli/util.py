@@ -88,9 +88,9 @@ def pprint(data, indent=0, end='\n'):
     data
         JSON data.
     indent : `int`, optional
-        Indent level (default: 0).
+        Indent level in characters (default: 0).
     end : `str`, optional
-        Ending string (default: '\\n').
+        String to print after the data (default: '\\\\n').
     """
     if isinstance(data, dict):
         print('{')
