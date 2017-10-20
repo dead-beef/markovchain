@@ -351,9 +351,9 @@
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    DEFAULT_EXPR : `re._sre.SRE_Pattern`</span>
+<span class="sd">    DEFAULT_EXPR : `_sre.SRE_Pattern`</span>
 <span class="sd">        Default regular expression.</span>
-<span class="sd">    expr : `re._sre.SRE_Pattern`</span>
+<span class="sd">    expr : `_sre.SRE_Pattern`</span>
 <span class="sd">        Regular expression..</span>
 <span class="sd">    default_end : `str`</span>
 <span class="sd">        Default sentence ending string.</span>
@@ -380,7 +380,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        expr : `str` or `re._sre.SRE_Pattern`, optional</span>
+<span class="sd">        expr : `str` or `_sre.SRE_Pattern`, optional</span>
 <span class="sd">            Regular expression (default: `markovchain.scanner.RegExpScanner.DEFAULT_EXPR`).</span>
 <span class="sd">            It should have groups &#39;end&#39; (sentence ending punctuation)</span>
 <span class="sd">            and &#39;word&#39; (words / other punctuation).</span>
@@ -462,12 +462,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        x : `str` or `re._sre.SRE_Pattern`</span>
+<span class="sd">        x : `str` or `_sre.SRE_Pattern`</span>
 <span class="sd">            Regular expression.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        `re._sre.SRE_Pattern`</span>
+<span class="sd">        `_sre.SRE_Pattern`</span>
 <span class="sd">            Compiled regular expression.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -480,7 +480,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        match : `re._sre.SRE_Match`</span>
+<span class="sd">        match : `_sre.SRE_Match`</span>
 <span class="sd">            Regular expression match object.</span>
 <span class="sd">        group : `str` or `int`</span>
 <span class="sd">            Group name or index.</span>

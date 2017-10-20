@@ -167,9 +167,9 @@ class RegExpScanner(Scanner):
 
     Attributes
     ----------
-    DEFAULT_EXPR : `re._sre.SRE_Pattern`
+    DEFAULT_EXPR : `_sre.SRE_Pattern`
         Default regular expression.
-    expr : `re._sre.SRE_Pattern`
+    expr : `_sre.SRE_Pattern`
         Regular expression..
     default_end : `str`
         Default sentence ending string.
@@ -196,7 +196,7 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        expr : `str` or `re._sre.SRE_Pattern`, optional
+        expr : `str` or `_sre.SRE_Pattern`, optional
             Regular expression (default: `markovchain.scanner.RegExpScanner.DEFAULT_EXPR`).
             It should have groups 'end' (sentence ending punctuation)
             and 'word' (words / other punctuation).
@@ -278,12 +278,12 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        x : `str` or `re._sre.SRE_Pattern`
+        x : `str` or `_sre.SRE_Pattern`
             Regular expression.
 
         Returns
         -------
-        `re._sre.SRE_Pattern`
+        `_sre.SRE_Pattern`
             Compiled regular expression.
         """
         if isinstance(x, str):
@@ -296,7 +296,7 @@ class RegExpScanner(Scanner):
 
         Parameters
         ----------
-        match : `re._sre.SRE_Match`
+        match : `_sre.SRE_Match`
             Regular expression match object.
         group : `str` or `int`
             Group name or index.
