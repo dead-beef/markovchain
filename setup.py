@@ -15,7 +15,7 @@ except FileNotFoundError:
     README = ''
 
 setup(name='markovchain',
-      version='0.1.0',
+      version='0.1.1',
       description='Markov chain generator',
       long_description=README,
       classifiers=[
