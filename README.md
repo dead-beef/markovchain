@@ -34,7 +34,6 @@ pip install -e .[dev]
 
 ```
 ./test
-coverage report
 ```
 
 ## Module usage
