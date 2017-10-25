@@ -21,6 +21,14 @@ markovchain\.base module
     :undoc-members:
     :show-inheritance:
 
+markovchain\.info module
+------------------------
+
+.. automodule:: markovchain.info
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 markovchain\.json module
 ------------------------
 
