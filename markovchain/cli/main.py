@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 from .util import set_args
 from ..text import cli as text
+from ..info import CLI_VERSION
 
 try:
     from ..image import cli as image
@@ -13,6 +14,9 @@ def main():
     """CLI main function.
     """
     parser = ArgumentParser()
+    parser.add_argument('-v', '--version',
+                        action='version', version=CLI_VERSION)
+
     parsers = parser.add_subparsers(dest='dtype')
 
     text.create_arg_parser(parsers.add_parser('text'))

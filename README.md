@@ -10,15 +10,15 @@ Markov chain generator
 
 ## Installation
 
-```
+```bash
 pip install markovchain
 ```
 
-```
+```bash
 pip install markovchain[image]
 ```
 
-```
+```bash
 git clone https://github.com/dead-beef/markovchain
 cd markovchain
 pip install -e .[dev]
@@ -26,13 +26,13 @@ pip install -e .[dev]
 
 ## Building
 
-```
+```bash
 ./build.sh
 ```
 
 ## Testing
 
-```
+```bash
 ./test
 ```
 
@@ -102,13 +102,14 @@ markov = Markov.load('markov.json')
 
 ```
 > markovchain -h
-usage: markovchain [-h] {text,image} ...
+usage: markovchain [-h] [-v] {text,image} ...
 
 positional arguments:
   {text,image}
 
 optional arguments:
-  -h, --help    show this help message and exit
+  -h, --help     show this help message and exit
+  -v, --version  show program's version number and exit
 ```
 
 ### Data types
