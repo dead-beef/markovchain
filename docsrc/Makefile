@@ -10,10 +10,10 @@ BUILDDIR      = _build
 HTML_DIR      := $(BUILDDIR)/html
 DISTDIR       = ../docs
 
-$(DISTDIR):
-	mkdir $@
+$(DISTDIR) $(BUILDDIR):
+	mkdir -p $@
 
-$(HTML_DIR): | $(DISTDIR)
+$(HTML_DIR): | $(DISTDIR) $(BUILDDIR)
 	ln -s ../$(DISTDIR) $@
 
 apidoc:
