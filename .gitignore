@@ -5,7 +5,6 @@
 /build
 /dist
 /*.egg-info
-/README.rst
 /docsrc/_build
 /docsrc/source
 __pycache__
