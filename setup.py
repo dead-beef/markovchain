@@ -11,7 +11,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 try:
     with open(os.path.join(BASE_DIR, 'README.rst')) as fp:
         README = fp.read()
-except FileNotFoundError:
+except IOError:
     README = ''
 
 setup(name='markovchain',
@@ -34,7 +34,6 @@ setup(name='markovchain',
       keywords='markov chain generator',
       url='https://github.com/dead-beef/markovchain',
       author='dead-beef',
-      author_email='contact@dead-beef.tk',
       license='MIT',
       packages=find_packages(include=('markovchain*',)),
       entry_points={
