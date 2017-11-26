@@ -47,7 +47,9 @@ setup(name='markovchain',
               'pillow',
               'coverage',
               'sphinx',
-              'sphinx_rtd_theme'
+              'sphinx_rtd_theme',
+              'twine>=1.8.1',
+              'wheel'
           ]
       },
       python_requires='>=3',
