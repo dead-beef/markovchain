@@ -2,17 +2,17 @@ markovchain
 ===========
 
 .. image:: https://img.shields.io/pypi/v/markovchain.svg
-           :target: https://pypi.python.org/pypi/markovchain
+   :target: https://pypi.python.org/pypi/markovchain
 .. image:: https://img.shields.io/pypi/status/markovchain.svg
-           :target: https://pypi.python.org/pypi/markovchain
+   :target: https://pypi.python.org/pypi/markovchain
 .. image:: https://img.shields.io/pypi/format/markovchain.svg
-           :target: https://pypi.python.org/pypi/markovchain
+   :target: https://pypi.python.org/pypi/markovchain
 .. image:: https://img.shields.io/librariesio/github/dead-beef/markovchain.svg
-           :target: https://libraries.io/pypi/markovchain
+   :target: https://libraries.io/pypi/markovchain
 .. image:: https://img.shields.io/pypi/pyversions/markovchain.svg
-           :target: https://python.org
+   :target: https://python.org
 .. image:: https://img.shields.io/pypi/l/markovchain.svg
-           :target: https://github.com/dead-beef/markovchain/blob/master/LICENSE
+   :target: https://github.com/dead-beef/markovchain/blob/master/LICENSE
 
 Overview
 --------
