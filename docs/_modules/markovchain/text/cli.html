@@ -246,6 +246,10 @@
     <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-P&#39;</span><span class="p">,</span> <span class="s1">&#39;--progress&#39;</span><span class="p">,</span>
                       <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;show progress bar&#39;</span><span class="p">)</span>
+    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-nf&#39;</span><span class="p">,</span> <span class="s1">&#39;--no-format&#39;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;format&#39;</span><span class="p">,</span>
+                      <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;do not format sentences&#39;</span><span class="p">)</span>
     <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--settings&#39;</span><span class="p">,</span>
                       <span class="nb">type</span><span class="o">=</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;settings json file&#39;</span><span class="p">)</span>
@@ -268,7 +272,9 @@
                       <span class="nb">type</span><span class="o">=</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output file (default: stdout)&#39;</span><span class="p">)</span>
     <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;state file&#39;</span><span class="p">)</span></div>
+                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;state file&#39;</span><span class="p">)</span>
+
+    <span class="n">arg2</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="read"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.cli.read">[docs]</a><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">markov</span><span class="p">,</span> <span class="n">progress</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Read data files and update a generator.</span>
@@ -380,7 +386,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="p">,</span> <span class="n">CharScanner</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="p">,</span> <span class="n">CharScanner</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">:</span>
         <span class="n">separator</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">separator</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
@@ -391,7 +397,10 @@
                                <span class="n">start</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">chain</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">start</span><span class="p">,),</span> <span class="n">data</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">format_sentence</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">join_with</span><span class="o">=</span><span class="n">separator</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">format_sentence</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">join_with</span><span class="o">=</span><span class="n">separator</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 </pre></div>

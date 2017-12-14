@@ -241,8 +241,9 @@ generate
 ::
 
     > markovchain text generate -h
-    usage: markovchain text generate [-h] [-P] [-s SETTINGS] [-ss STATE_SIZE]
-                                     [-st START] [-w WORDS] [-ws WORD_SEPARATOR]
+    usage: markovchain text generate [-h] [-P] [-nf] [-s SETTINGS]
+                                     [-ss STATE_SIZE] [-st START] [-w WORDS]
+                                     [-ws WORD_SEPARATOR]
                                      [-S SENTENCES] [-o OUTPUT]
                                      state
 
@@ -252,6 +253,7 @@ generate
     optional arguments:
       -h, --help            show this help message and exit
       -P, --progress        show progress bar
+      -nf, --no-format      do not format sentences
       -s SETTINGS, --settings SETTINGS
                             settings json file
       -ss STATE_SIZE, --state-size STATE_SIZE

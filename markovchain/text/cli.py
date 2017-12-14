@@ -61,6 +61,10 @@ def create_arg_parser(parent):
     arg2.add_argument('-P', '--progress',
                       action='store_true',
                       help='show progress bar')
+    arg2.add_argument('-nf', '--no-format',
+                      dest='format',
+                      action='store_false',
+                      help='do not format sentences')
     arg2.add_argument('-s', '--settings',
                       type=FileType('r'), default=None,
                       help='settings json file')
@@ -84,6 +88,8 @@ def create_arg_parser(parent):
                       help='output file (default: stdout)')
     arg2.add_argument('state',
                       help='state file')
+
+    arg2.set_defaults(format=True)
 
 def read(fnames, markov, progress):
     """Read data files and update a generator.
@@ -195,7 +201,7 @@ def cmd_generate(args):
     else:
         state = None
 
-    if isinstance(markov.scanner, CharScanner):
+    if isinstance(markov.scanner, CharScanner) or not args.format:
         separator = ''
     else:
         separator = ' '
@@ -206,6 +212,9 @@ def cmd_generate(args):
                                start=state)
         if args.start is not None:
             data = chain((args.start,), data)
-        data = format_sentence(data, join_with=separator)
+        if args.format:
+            data = format_sentence(data, join_with=separator)
+        else:
+            data = separator.join(data)
         if data:
             print(data)
