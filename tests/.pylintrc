@@ -4,16 +4,16 @@ persistent=no
 
 [MESSAGES CONTROL]
 
-disable=missing-docstring,too-few-public-methods,redefined-variable-type
+disable=missing-docstring,too-few-public-methods,redefined-variable-type,redefined-outer-name,pointless-statement,bad-builtin,too-many-arguments
 
 [TYPECHECK]
 
 ignored-classes=ObjectWrapper,ObjectWrapperTest
-generated-members=markovchain.base.MarkovBase.parser
 
 [BASIC]
 
 good-names=i,j,k,x,y,z,m,s,db,fp,ex,Run,_
+function-rgx=[a-z_][a-z0-9_]{2,60}$
 
 [FORMAT]
 
