@@ -147,7 +147,7 @@ def const(x):
     -------
     `function`
     """
-    return lambda *args: x
+    return lambda *args, **kwargs: x
 
 def to_list(x):
     """Convert a value to a list.
