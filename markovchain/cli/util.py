@@ -1,8 +1,6 @@
 import json
 import sys
-import os
 import bz2
-from itertools import chain
 from contextlib import contextmanager
 
 try:
@@ -12,13 +10,12 @@ except ImportError as err:
     tqdm = None
     TQDM_IMPORT_ERROR = err
 
-from .. import MarkovBase, MarkovJsonMixin, MarkovSqliteMixin
+from ..storage import JsonStorage, SqliteStorage
+from ..util import extend
 
 
 JSON = 0
 SQLITE = 1
-IJSON_MIN_SIZE = 4 * 1024 * 1024
-IJSON_MIN_COMPRESSED_SIZE = 512 * 1024
 
 BAR_DESC_SIZE = 12
 BAR_N_SIZE = 8
@@ -117,71 +114,70 @@ def pprint(data, indent=0, end='\n'):
     else:
         print(json.dumps(data), end=end)
 
-def load(markov, fname, args):
-    """Load a markov chain generator.
+def load(cls, fname, args):
+    """Load a generator.
 
     Parameters
     ----------
-    markov : `type`
-        Markov chain generator class.
+    cls : `type`
+        Generator class.
     fname : `str`
         Input file path.
     args : `argparse.Namespace`
         Command arguments.
+
+    Returns
+    -------
+    `cls`
     """
-    if issubclass(markov, MarkovJsonMixin):
-        size = os.path.getsize(fname)
 
-        if fname.endswith('bz2'):
-            op = bz2.open
-            maxsize = IJSON_MIN_COMPRESSED_SIZE
+    if args.type == JSON:
+        if fname.endswith('.bz2'):
+            open_ = bz2.open
         else:
-            op = open
-            maxsize = IJSON_MIN_SIZE
-
-        if size > maxsize:
-            mode = 'rb'
-        else:
-            mode = 'rt'
+            open_ = open
 
         if args.progress:
             print('Loading JSON data...')
 
-        with op(fname, mode) as fp:
-            return markov.load(fp, args.settings)
+        with open_(fname, 'rt') as fp:
+            storage = JsonStorage.load(fp)
     else:
-        return markov.load(fname, args.settings)
+        storage = SqliteStorage.load(fname)
+
+    if args.settings is not None:
+        extend(storage.settings, args.settings)
+
+    return cls.load(storage)
 
 def save(markov, fname, args):
-    """Save a markov chain generator.
+    """Save a generator.
 
     Parameters
     ----------
-    markov : `MarkovBase`
-        Markov chain generator.
+    markov : `markovchain.Markov`
+        Generator to save.
     fname : `str`
         Output file path.
     args : `argparse.Namespace`
         Command arguments.
     """
-    if isinstance(markov, MarkovJsonMixin):
+    if isinstance(markov.storage, JsonStorage):
         if fname is None:
             markov.save(sys.stdout)
         else:
-            if fname.endswith('bz2'):
-                op = bz2.open
+            if fname.endswith('.bz2'):
+                open_ = bz2.open
             else:
-                op = open
-
+                open_ = open
             if args.progress:
                 print('Saving JSON data...')
-
-            with op(fname, 'wt') as fp:
+            with open_(fname, 'wt') as fp:
                 markov.save(fp)
     else:
         markov.save()
 
-def set_args(args, base):
+def set_args(args):
     """Set computed command arguments.
 
     Parameters
@@ -213,37 +209,19 @@ def set_args(args, base):
             except AttributeError:
                 fname = '.json'
 
-    if fname is None or fname.endswith('.json') or fname.endswith('.bz2'):
+    if fname is None or fname.endswith('.json') or fname.endswith('.json.bz2'):
         args.type = JSON
     else:
         args.type = SQLITE
 
-    if args.type == JSON:
-        dtype = MarkovJsonMixin
-    elif args.type == SQLITE:
-        dtype = MarkovSqliteMixin
-
-    base = tuple(chain((dtype,), base, (MarkovBase,)))
-
-    class Markov(*base): # pylint: disable=too-few-public-methods
-        pass
-
+    settings = {}
     try:
-        settings = args.settings
-        has_settings = True
-    except AttributeError:
-        settings = None
-        has_settings = False
-
-    if has_settings:
-        if settings is not None:
-            settings = json.load(settings)
+        if args.settings is not None:
+            settings = json.load(args.settings)
             args.settings.close()
-        else:
-            settings = {}
-
+    except AttributeError:
+        pass
     args.settings = settings
-    args.markov = Markov
 
 def check_output_format(fmt, nfiles):
     """Validate file format string.
@@ -353,10 +331,14 @@ def cmd_settings(args):
     args : `argparse.Namespace`
         Command arguments.
     """
-    markov = load(args.markov, args.state, args)
-    data = markov.get_save_data()
+    if args.type == SQLITE:
+        storage = SqliteStorage
+    else:
+        storage = JsonStorage
+    storage = storage.load(args.state)
+    data = storage.settings
     try:
-        del data['nodes']
+        del data['markov']['nodes']
     except KeyError:
         pass
     pprint(data)

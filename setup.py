@@ -40,7 +40,7 @@ setup(name='markovchain',
           'console_scripts': ['markovchain=markovchain.cli:main'],
       },
       test_suite='setup.tests',
-      install_requires=['tqdm', 'ijson'],
+      install_requires=['tqdm', 'ijson', 'custom_inherit'],
       extras_require={
           'image': ['pillow'],
           'dev': [

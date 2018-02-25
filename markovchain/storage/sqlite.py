@@ -3,10 +3,11 @@ import sqlite3
 from random import randint
 from itertools import chain, islice
 
-from .util import extend
+from .base import Storage
 
-class MarkovSqliteMixin:
-    """Markov chain SQLite data mixin.
+
+class SqliteStorage(Storage):
+    """SQLite storage.
 
     Attributes
     ----------
@@ -15,51 +16,38 @@ class MarkovSqliteMixin:
     cursor
         Database cursor.
     """
-    def __init__(self, db=':memory:', *args, **kwargs):
-        """Markov chain SQLite data constructor.
+    def __init__(self, db=':memory:', settings=None):
+        """SQLite storage constructor.
 
         Parameters
         ----------
         db : `str` or `sqlite3.Connection`, optional
             Database path or connection (default: ':memory:').
+        settings: `dict`, optional
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(settings)
         if isinstance(db, str):
             db = sqlite3.connect(db, isolation_level='IMMEDIATE')
         self.db = db
         self.cursor = db.cursor()
         self.create_node_tables()
+        self.update_main_table()
 
     def __eq__(self, markov):
-        return super().__eq__(markov)
+        raise NotImplementedError()
+        #return super().__eq__(markov)
 
     def replace_state_separator(self, old_separator, new_separator):
-        """Replace state separator.
-
-        Parameters
-        ----------
-        old_separator : `str`
-            Old state separator.
-        new_separator : `str`
-            New state separator.
-        """
         self.cursor.execute(
             'UPDATE nodes SET value = replace(value, ?, ?)',
             (old_separator, new_separator)
         )
 
     def links(self, links):
-        """Update links.
-
-        Parameters
-        ----------
-        links : `generator` of (`islice` of `str`, `str`)
-            Links to add.
-        """
         for src, dst in links:
             src = list(src)
-            source = self.get_node(self.separator.join(src))
-            target = self.get_node(self.separator.join(
+            source = self.get_node(self.join_state(src))
+            target = self.get_node(self.join_state(
                 chain(islice(src, 1, None), (dst,))
             ))
             self.cursor.execute(
@@ -74,22 +62,10 @@ class MarkovSqliteMixin:
             )
 
     def random_link(self, state):
-        """Get a random link.
-
-        Parameters
-        ----------
-        state : `int` or `deque` of `str`
-            Link source ID or name.
-
-        Returns
-        -------
-        (`str`, `int`)
-            Link value and next source ID.
-        """
         if not isinstance(state, int):
             self.cursor.execute(
                 'SELECT id FROM nodes WHERE value=?',
-                (self.separator.join(state),)
+                (self.join_state(state),)
             )
             x = state
             state = self.cursor.fetchone()
@@ -156,7 +132,7 @@ class MarkovSqliteMixin:
     def update_main_table(self):
         """Write generator settings to database.
         """
-        data = (json.dumps(self.get_save_data()),)
+        data = (json.dumps(self.settings),)
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS main (
                 settings TEXT NOT NULL DEFAULT "{}"
@@ -196,44 +172,31 @@ class MarkovSqliteMixin:
         #    'CREATE INDEX IF NOT EXISTS link_target ON links (target)'
         #)
 
-    @classmethod
-    def load(cls, fp, override=None):
-        """Load a generator.
+    def do_save(self, fp=None):
+        """Save.
 
         Parameters
         ----------
-        fp : `file` or `str`
-            Input file or file path.
-        override : `dict` or `None`, optional
-            Changes to loaded data (default: `None`).
-
-        Returns
-        -------
-        Loaded generator.
+        fp : `None`, optional
         """
-        if not isinstance(fp, str):
-            fp.close()
-            fp = fp.name
-
-        db = sqlite3.connect(fp)
-
-        try:
-            cursor = db.cursor()
-            cursor.execute('SELECT settings FROM main')
-            args = json.loads(cursor.fetchone()[0])
-        except sqlite3.OperationalError:
-            args = {}
-            raise
-
-        if override is not None:
-            extend(args, override)
-
-        args['db'] = db
-
-        return cls(**args)
-
-    def save(self):
-        """Save the generator.
-        """
+        if fp is not None:
+            raise NotImplementedError()
         self.update_main_table()
         self.db.commit()
+
+    @classmethod
+    def load(cls, fp):
+        if not isinstance(fp, sqlite3.Connection):
+            if not isinstance(fp, str):
+                fp.close()
+                fp = fp.name
+            fp = sqlite3.connect(fp, isolation_level='IMMEDIATE')
+
+        cursor = fp.cursor()
+        try:
+            cursor.execute('SELECT settings FROM main')
+            settings = json.loads(cursor.fetchone()[0])
+        except sqlite3.OperationalError:
+            settings = None
+
+        return cls(fp, settings)

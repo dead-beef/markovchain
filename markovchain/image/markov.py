@@ -3,12 +3,13 @@ from PIL import Image
 
 from .scanner import ImageScanner
 from .util import palette as default_palette
+from ..base import Markov
 from ..parser import LevelParser
 from ..util import fill
 
 
-class MarkovImageMixin:
-    """Markov chain image generator mixin.
+class MarkovImage(Markov):
+    """Markov image generator.
     """
 
     DEFAULT_SCANNER = ImageScanner
@@ -18,7 +19,7 @@ class MarkovImageMixin:
                  levels=1,
                  palette=None,
                  *args, **kwargs):
-        """Markov chain image generator constructor.
+        """Markov image generator constructor.
 
         Parameters
         ----------
@@ -35,6 +36,7 @@ class MarkovImageMixin:
                 palette = default_palette(8, 4, 8)
         elif len(palette) == 3:
             palette = default_palette(*palette)
+        self._levels = None
         self.palette = palette
         self.levels = levels
 
@@ -76,28 +78,59 @@ class MarkovImageMixin:
         `generator` of `int`
             Pixel generator.
         """
-        maxlength = width * height
-        if maxlength > 0 and start is not None:
+        size = width * height
+        if size > 0 and start is not None:
             yield int(start[-2:], 16)
-            maxlength -= 1
-        while maxlength > 0:
-            prevmaxlength = maxlength
-            for pixel in self.generate(maxlength=maxlength,
-                                       state_size=state_size,
-                                       start=start):
+            size -= 1
+
+        while size > 0:
+            prev_size = size
+            pixels = self.generate(state_size=state_size, start=start)
+            pixels = islice(pixels, 0, size)
+
+            for pixel in pixels:
                 yield int(pixel[-2:], 16)
-                maxlength -= 1
-            if prevmaxlength == maxlength:
+                size -= 1
+
+            if prev_size == size:
                 if start is not None:
                     pixel = int(start[-2:], 16)
-                    yield from repeat(pixel, maxlength)
+                    yield from repeat(pixel, size)
                 else:
                     raise RuntimeError('empty generator')
 
-    def image(self, width, height,
-              state_size=None,
-              start=None, levels=None,
-              start_level=-1, start_image=None):
+    def data(self, data, part=False):
+        """
+        Parameters
+        ----------
+        data : `PIL.Image`
+            Image to parse.
+        part : `bool`, optional
+            True if data is partial (default: `False`).
+        """
+        #if self.parser is None:
+        #    raise ValueError('no parser')
+        if isinstance(self.parser, LevelParser):
+            self.storage.links(self.parser(self.scanner(data, part), part))
+        else:
+            data = chain.from_iterable(self.scanner(data, part))
+            self.storage.links(self.parser(data, part))
+
+    def get_settings_json(self):
+        data = super().get_settings_json()
+        data['palette'] = self.palette
+        data['levels'] = self.levels
+        return data
+
+    def __eq__(self, markov):
+        return (self.palette == markov.palette
+                and self.levels == markov.levels
+                and super().__eq__(markov))
+
+    def __call__(self, width, height,
+                 state_size=None,
+                 start=None, levels=None,
+                 start_level=-1, start_image=None):
         """Generate an image.
 
         Parameters
@@ -107,11 +140,11 @@ class MarkovImageMixin:
         height : `int`
             Image height.
         state_size : `int` or `None`, optional
-            State size to use for generation (default: `None`).
+            State size (default: `None`).
         start : `str` or `None`, optional
             Initial state (default: `None`).
         levels : `int`, optional
-            Number of generated levels (default: `self.scanner.levels`).
+            Number of levels to generate (default: `self.scanner.levels`).
         start_level : `int`, optional
             Initial level (default: -1).
         start_image : `PIL.Image` or `None`
@@ -191,36 +224,3 @@ class MarkovImageMixin:
             prev = ret
 
         return ret
-
-    def data(self, data, part=False):
-        """Parse data and update links.
-
-        Parameters
-        ----------
-        data : `PIL.Image`
-            Data to parse.
-        part : `bool`, optional
-            `True` if data is partial (default: `False`).
-        """
-        if isinstance(self.parser, LevelParser):
-            self.links(self.parser(self.scanner(data, part), part))
-        else:
-            data = chain.from_iterable(self.scanner(data, part))
-            self.links(self.parser(data, part))
-
-    def get_save_data(self):
-        """Convert generator settings to JSON.
-
-        Returns
-        -------
-        `dict`
-            JSON data.
-        """
-        data = super().get_save_data()
-        data['palette'] = self.palette
-        data['levels'] = self.levels
-        return data
-
-    def __eq__(self, markov):
-        return (self.palette == markov.palette
-                and self.levels == markov.levels)

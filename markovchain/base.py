@@ -1,13 +1,14 @@
 from collections import deque
 from itertools import chain, repeat
 
-from .scanner import Scanner, RegExpScanner
+from .storage import JsonStorage
+from .scanner import Scanner, CharScanner
 from .parser import ParserBase, Parser
-from .util import load
+from .util import load, DOC_INHERIT
 
 
-class MarkovBase:
-    """Base markov chain generator class.
+class Markov(metaclass=DOC_INHERIT):
+    """Markov chain generator base class.
 
     Attributes
     ----------
@@ -15,46 +16,45 @@ class MarkovBase:
         Default scanner class.
     DEFAULT_PARSER : `type`
         Default parser class.
+    DEFAULT_STORAGE : `type`
+        Default storage class.
     scanner : `markovchain.scanner.Scanner`
     parser : `markovchain.parser.ParserBase`
+    storage : `markovchain.storage.Storage`
     """
-    DEFAULT_SCANNER = RegExpScanner
+    DEFAULT_SCANNER = CharScanner
     DEFAULT_PARSER = Parser
+    DEFAULT_STORAGE = JsonStorage
 
-    def __init__(self, separator=' ', scanner=None, parser=None):
-        """Base markov chain generator constructor.
+    def __init__(self,
+                 scanner=None,
+                 parser=None,
+                 storage=None):
+        """Markov chain generator base class constructor.
 
-        Attributes
+        Parameters
         ----------
-        separator : `str`, optional
-            State separator (default: ' ').
         scanner : `dict` or `markovchain.scanner.Scanner`, optional
-            Scanner (default: `markovchain.base.MarkovBase.DEFAULT_SCANNER()`).
+            Scanner (default: `DEFAULT_SCANNER()`).
         parser : `dict` or `markovchain.parser.ParserBase`, optional
-            Parser (default: `markovchain.base.MarkovBase.DEFAULT_PARSER()`).
+            Parser (default: `DEFAULT_PARSER()`).
+        storage : `markovchain.storage.Storage`, optional
+            Parser (default: `DEFAULT_STORAGE()`).
         """
-        self._separator = None
-        self.separator = separator
+        if storage is None:
+            storage = self.DEFAULT_STORAGE()
+        #if scanner is None:
+        #    scanner = storage.settings.get('scanner', None)
+        #if parser is None:
+        #    scanner = storage.settings.get('parser', None)
+        self.storage = storage
         self.scanner = load(scanner, Scanner, self.DEFAULT_SCANNER)
         self.parser = load(parser, ParserBase, self.DEFAULT_PARSER)
 
-    @property
-    def separator(self):
-        """`str` : State separator.
-        """
-        return self._separator
-
-    @separator.setter
-    def separator(self, separator):
-        old_separator = self._separator
-        if old_separator is not None:
-            self.replace_state_separator(old_separator, separator)
-        self._separator = separator
-
     def __eq__(self, markov):
-        return (self.separator == markov.separator
-                and self.scanner == markov.scanner
-                and self.parser == markov.parser)
+        return (self.scanner == markov.scanner
+                and self.parser == markov.parser
+                and self.storage == markov.storage)
 
     def data(self, data, part=False):
         """Parse data and update links.
@@ -66,31 +66,23 @@ class MarkovBase:
         part : `bool`, optional
             True if data is partial (default: `False`).
         """
-        #if self.parser is None:
-        #    raise ValueError('no parser')
+        self.storage.links(self.parser(self.scanner(data, part), part))
 
-        self.links(self.parser(self.scanner(data, part), part))
-
-    def generate(self, maxlength, state_size=None, start=None):
-        """Generate a sentence.
+    def generate(self, state_size=None, start=None):
+        """Generate a sequence.
 
         Parameters
         ----------
-        maxlength : `int`
-            Maximum sentence length.
         state_size : `int`, optional
             State size (default: parser.state_sizes[0]).
-        start : `list` of `str`, optional
+        start : `iterable` of `str`, optional
             Starting state (default: []).
 
         Returns
         -------
         `generator` of `str`
-            Word generator.
+            State generator.
         """
-        if maxlength <= 0:
-            return
-
         if state_size is None:
             if self.parser is None:
                 raise ValueError('parser is None and state_size is None')
@@ -104,22 +96,22 @@ class MarkovBase:
         #                     .format(state_size, self.parser.state_sizes))
 
         if start is None:
-            start = self.separator.join(repeat('', state_size))
+            start = self.storage.join_state(repeat('', state_size))
             state = repeat('', state_size)
         else:
             if isinstance(start, str):
-                start = start.split(self.separator)
+                start = self.storage.split_state(start)
             state = chain(repeat('', state_size), start)
 
         state = deque(state, maxlen=state_size)
 
-        for _ in range(maxlength):
-            link, state = self.random_link(state)
+        while True:
+            link, state = self.storage.random_link(state)
             if link is None:
                 return
             yield link
 
-    def get_save_data(self):
+    def get_settings_json(self):
         """Convert generator settings to JSON.
 
         Returns
@@ -128,70 +120,33 @@ class MarkovBase:
             JSON data.
         """
         return {
-            'separator': self.separator,
             'scanner': None if self.scanner is None else self.scanner.save(),
             'parser': None if self.parser is None else self.parser.save()
         }
 
-    def replace_state_separator(self, old_separator, new_separator):
-        """Replace state separator.
+    def save(self, fp=None):
+        """Save to file.
 
         Parameters
         ----------
-        old_separator : `str`
-            Old state separator.
-        new_separator : `str`
-            New state separator.
+        fp : `file`, optional
+            Output file.
         """
-        pass
-
-    def links(self, links):
-        """Update links.
-
-        Parameters
-        ----------
-        links : `generator` of (`islice` of `str`, `str`)
-            Links to add.
-
-        Raises
-        -------
-        NotImplementedError
-            If data mixin is missing.
-        """
-        raise NotImplementedError('missing data mixin')
-
-    def random_link(self, state):
-        """Get a random link.
-
-        Parameters
-        ----------
-        state
-            Link source.
-
-        Raises
-        -------
-        NotImplementedError
-            If data mixin is missing.
-        """
-        raise NotImplementedError('missing data mixin')
+        self.storage.settings['markov'] = self.get_settings_json()
+        self.storage.save(fp)
 
     @classmethod
-    def load(cls, *args, **kwargs):
-        """Load a generator.
+    def load(cls, storage):
+        """Load from storage.
 
-        Raises
+        Parameters
+        ----------
+        storage : `markovchain.storage.Storage`
+
+        Returns
         -------
-        NotImplementedError
-            If data mixin is missing.
+        `markovchain.Markov`
         """
-        raise NotImplementedError('missing data mixin')
-
-    def save(self, *args, **kwargs):
-        """Save the generator.
-
-        Raises
-        -------
-        NotImplementedError
-            If data mixin is missing.
-        """
-        raise NotImplementedError('missing data mixin')
+        args = dict(storage.settings.get('markov', {}))
+        args['storage'] = storage
+        return cls(**args)

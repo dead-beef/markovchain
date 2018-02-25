@@ -1,4 +1,4 @@
-from .markov import MarkovImageMixin
+from .markov import MarkovImage
 from .scanner import ImageScanner
 from .traversal import Traversal, HLines, VLines, Spiral, Blocks, Hilbert
 

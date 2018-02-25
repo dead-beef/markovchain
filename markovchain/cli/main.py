@@ -1,12 +1,12 @@
 from sys import argv, stderr
 from argparse import ArgumentParser
 
+from . import text
 from .util import set_args
-from ..text import cli as text
 from ..info import CLI_VERSION
 
 try:
-    from ..image import cli as image
+    from . import image
 except ImportError:
     image = None
 
@@ -30,7 +30,7 @@ def main():
     args = parser.parse_args()
     dtype = globals()[args.dtype]
     try:
-        set_args(args, dtype.BASE)
+        set_args(args)
         cmd = getattr(dtype, 'cmd_' + args.command)
         cmd(args)
     except ValueError as err:

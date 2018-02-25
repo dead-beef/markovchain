@@ -1,5 +1,17 @@
 from itertools import islice, repeat
 from copy import deepcopy
+from custom_inherit import DocInheritMeta
+
+
+DOC_INHERIT = DocInheritMeta(
+    style='numpy',
+    abstract_base_class=False
+)
+
+DOC_INHERIT_ABSTRACT = DocInheritMeta(
+    style='numpy',
+    abstract_base_class=True
+)
 
 
 class SaveLoad:

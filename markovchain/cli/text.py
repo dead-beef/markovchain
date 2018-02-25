@@ -1,18 +1,15 @@
 from argparse import FileType
 from sys import stdout #, stderr
 from os import replace, remove, path, SEEK_SET, SEEK_END
-from itertools import chain
 
-from .util import format_sentence
-from .. import CharScanner
+from .. import MarkovText, JsonStorage, SqliteStorage
 from ..util import truncate
-from ..cli.util import (
+from .util import (
     load, save, infiles, JSON, SQLITE,
     tqdm, BAR_FORMAT, BAR_DESC_SIZE
 )
-from ..cli.util import cmd_settings # pylint:disable=unused-import
+from .util import cmd_settings # pylint:disable=unused-import
 
-BASE = ()
 
 def create_arg_parser(parent):
     """Create command subparsers.
@@ -145,9 +142,10 @@ def cmd_create(args):
     if args.type == SQLITE:
         if args.output is not None and path.exists(args.output):
             remove(args.output)
-        args.settings['db'] = args.output
-
-    markov = args.markov(**args.settings)
+        storage = SqliteStorage(db=args.output, settings=args.settings)
+    else:
+        storage = JsonStorage(settings=args.settings)
+    markov = MarkovText.load(storage)
     read(args.input, markov, args.progress)
     save(markov, args.output, args)
 
@@ -161,7 +159,7 @@ def cmd_update(args):
     """
     args.output = None
 
-    markov = load(args.markov, args.state, args)
+    markov = load(MarkovText, args.state, args)
     read(args.input, markov, args.progress)
     if args.output is None:
         if args.type == SQLITE:
@@ -183,7 +181,7 @@ def cmd_generate(args):
         Command arguments.
     """
 
-    markov = load(args.markov, args.state, args)
+    markov = load(MarkovText, args.state, args)
     ss = range(args.sentences)
 
     if args.progress:
@@ -192,29 +190,14 @@ def cmd_generate(args):
                   bar_format=BAR_FORMAT, dynamic_ncols=True)
 
     if args.start is not None:
-        parse = markov.parser(markov.scanner(args.start.lower(), True), True)
-        for _ in parse:
-            pass
-        state = list(markov.parser.state)
-        markov.scanner.reset()
-        markov.parser.reset()
-    else:
-        state = None
+        args.start = args.start.lower()
 
-    if isinstance(markov.scanner, CharScanner) or not args.format:
-        separator = ''
-    else:
-        separator = ' '
+    if not args.format:
+        markov.do_format = lambda x: x
 
     for _ in ss:
-        data = markov.generate(args.words,
-                               state_size=args.state_size,
-                               start=state)
-        if args.start is not None:
-            data = chain((args.start,), data)
-        if args.format:
-            data = format_sentence(data, join_with=separator)
-        else:
-            data = separator.join(data)
+        data = markov(args.words,
+                      state_size=args.state_size,
+                      start=args.start)
         if data:
             print(data)

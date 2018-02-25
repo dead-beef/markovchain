@@ -6,18 +6,16 @@ from functools import reduce
 from itertools import islice
 from PIL import Image
 
-from . import ImageScanner, MarkovImageMixin
-from .util import palette
+from .. import JsonStorage, SqliteStorage
+from ..image import ImageScanner, MarkovImage
+from ..image.util import palette
 from ..util import ObjectWrapper, truncate
-from ..cli.util import (
+from .util import (
     tqdm, load, save, infiles, outfiles as _outfiles,
     check_output_format, JSON, SQLITE,
     BAR_FORMAT, BAR_DESC_SIZE
 )
-from ..cli.util import cmd_settings # pylint:disable=unused-import
-
-
-BASE = (MarkovImageMixin,)
+from .util import cmd_settings # pylint:disable=unused-import
 
 
 def create_arg_parser(parent):
@@ -272,9 +270,11 @@ def cmd_create(args):
     if args.type == SQLITE:
         if path.exists(args.output):
             remove(args.output)
-        args.settings['db'] = args.output
+        storage = SqliteStorage(db=args.output, settings=args.settings)
+    else:
+        storage = JsonStorage(settings=args.settings)
 
-    markov = args.markov(**args.settings)
+    markov = MarkovImage.load(storage)
     read(args.input, markov, args.progress)
     save(markov, args.output, args)
 
@@ -290,7 +290,7 @@ def cmd_update(args):
         copyfile(args.state, args.output)
         args.state = args.output
 
-    markov = load(args.markov, args.state, args)
+    markov = load(MarkovImage, args.state, args)
 
     read(args.input, markov, args.progress)
 
@@ -315,7 +315,7 @@ def cmd_generate(args):
     """
     check_output_format(args.output, args.count)
 
-    markov = load(args.markov, args.state, args)
+    markov = load(MarkovImage, args.state, args)
 
     if args.size is None:
         if markov.scanner.resize is None:
@@ -339,9 +339,11 @@ def cmd_generate(args):
     markov.scanner.traversal[0].show_progress = args.progress
 
     for fname in outfiles(markov, args.output, args.count, args.progress):
-        img = markov.image(width, height,
-                           state_size=args.state_size,
-                           levels=args.level)
+        img = markov(
+            width, height,
+            state_size=args.state_size,
+            levels=args.level
+        )
         with open(fname, 'wb') as fp:
             img.save(fp)
 
@@ -359,11 +361,13 @@ def cmd_filter(args):
     width, height = img.size
 
     if args.state is not None:
-        markov = load(args.markov, args.state, args)
+        markov = load(MarkovImage, args.state, args)
     else:
-        markov = args.markov(**args.settings)
-
-    if args.state is None:
+        if args.type == JSON:
+            storage = JsonStorage(settings=args.settings)
+        else:
+            storage = SqliteStorage(settings=args.settings)
+        markov = MarkovImage.load(storage)
         read([args.input], markov, args.progress, False)
 
     args.level = min(args.level, markov.levels - 1) - 1
@@ -384,9 +388,11 @@ def cmd_filter(args):
 
     for fname in outfiles(markov, args.output,
                           args.count, args.progress, args.level + 1):
-        img = markov.image(width, height,
-                           state_size=args.state_size,
-                           start_level=args.level,
-                           start_image=start)
+        img = markov(
+            width, height,
+            state_size=args.state_size,
+            start_level=args.level,
+            start_image=start
+        )
         with open(fname, 'wb') as fp:
             img.save(fp)

@@ -68,12 +68,9 @@ Text
 
 .. code:: python
 
-    from markovchain import MarkovBase, MarkovSqliteMixin
+    from markovchain import MarkovText, JsonStorage
 
-    class Markov(MarkovSqliteMixin, MarkovBase):
-        pass
-
-    markov = Markov(db='markov.db')
+    markov = MarkovText()
 
     with open('data.txt') as fp:
         markov.data(fp.read())
@@ -83,15 +80,13 @@ Text
             markov.data(line, True)
     markov.data('', False)
 
-    words = markov.generate(16) # generator
-    print(*words)
+    print(markov())
+    print(markov(max_length=16, start='sentence start'))
 
-    words = markov.generate(16, start=['sentence', 'start'])
-    print(*words)
+    markov.save('markov.json')
 
-    markov.save()
-
-    markov = Markov.load('markov.db')
+    storage = JsonStorage.load('markov.json')
+    markov = MarkovText.load(storage)
 
 Image
 ^^^^^
@@ -99,27 +94,22 @@ Image
 .. code:: python
 
     from PIL import Image
+    from markovchain import MarkovImage, JsonStorage
 
-    from markovchain import MarkovBase, MarkovJsonMixin
-    from markovchain.image import MarkovImageMixin
+    markov = MarkovImage()
 
-    class Markov(MarkovImageMixin, MarkovJsonMixin, MarkovBase):
-        pass
-
-    markov = Markov()
-
-    markov.data(Image.open('data.png'))
+    markov.data(Image.open('input.png'))
 
     width = 32
     height = 16
-    img = markov.image(width, height) # PIL image
-    with open('generated.png', 'wb') as fp:
+    img = markov(width, height)
+    with open('output.png', 'wb') as fp:
         img.save(fp)
 
-    with open('markov.json', 'w') as fp:
-        markov.save(fp)
+    markov.save('markov.json')
 
-    markov = Markov.load('markov.json')
+    storage = JsonStorage.load('markov.json')
+    markov = MarkovText.load(storage)
 
 CLI usage
 ---------
@@ -139,17 +129,17 @@ CLI usage
 Data types
 ~~~~~~~~~~
 
-+---------------+-------------------------+---------------------+
-| State file    | File type               | Data mixin used     |
-+===============+=========================+=====================+
-| stdout        | JSON                    | MarkovJsonMixin     |
-+---------------+-------------------------+---------------------+
-| \*.json       | JSON                    | MarkovJsonMixin     |
-+---------------+-------------------------+---------------------+
-| \*.json.bz2   | bzip2 compressed JSON   | MarkovJsonMixin     |
-+---------------+-------------------------+---------------------+
-| Other         | SQLite 3 database       | MarkovSqliteMixin   |
-+---------------+-------------------------+---------------------+
++----------------+-------------------------+---------------------+
+| File name      | File type               | Storage class       |
++================+=========================+=====================+
+| None (stdout)  | JSON                    | JsonStorage         |
++----------------+-------------------------+---------------------+
+| \*.json        | JSON                    | JsonStorage         |
++----------------+-------------------------+---------------------+
+| \*.json.bz2    | bzip2 compressed JSON   | JsonStorage         |
++----------------+-------------------------+---------------------+
+| Other          | SQLite 3 database       | SqliteStorage       |
++----------------+-------------------------+---------------------+
 
 Examples
 ~~~~~~~~
