@@ -8,6 +8,7 @@
 /docsrc/_build
 /docsrc/source
 __pycache__
+.pytest_cache
 *.pyc
 *.bak
 *.png
