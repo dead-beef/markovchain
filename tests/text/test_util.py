@@ -1,5 +1,4 @@
-from unittest import TestCase
-from unittest.mock import patch
+import pytest
 
 from markovchain.text.util import (
     ispunct, lstrip_ws_and_chars, capitalize,
@@ -7,52 +6,60 @@ from markovchain.text.util import (
 )
 
 
-class TestTextUtils(TestCase):
-    def test_ispunct(self):
-        self.assertTrue(ispunct('\'"?,+-.[]{}()<>'))
-        self.assertFalse(ispunct('\'"?,+-x.[]{}()<>'))
-        self.assertFalse(ispunct(''))
+@pytest.mark.parametrize('test,res', [
+    ('\'"?,+-.[]{}()<>', True),
+    ('\'"?,+-x.[]{}()<>', False),
+    ('', False)
+])
+def test_ispunct(test, res):
+    assert ispunct(test) == res
 
-    def test_capitalize(self):
-        self.assertEqual(capitalize('worD WORD WoRd'), 'Word word word')
-        self.assertEqual(capitalize('x'), 'X')
-        self.assertEqual(capitalize(''), '')
 
-    def test_lstrip_ws_and_chars(self):
-        self.assertEqual(lstrip_ws_and_chars('', ''), '')
-        self.assertEqual(lstrip_ws_and_chars('     ', ''), '')
-        self.assertEqual(lstrip_ws_and_chars('  x  ', 'xy'), '')
-        self.assertEqual(lstrip_ws_and_chars(' \t.\n , .x. ', '.,?!'), 'x. ')
+@pytest.mark.parametrize('test,res', [
+    ('worD WORD WoRd', 'Word word word'),
+    ('x', 'X'),
+    ('', '')
+])
+def test_capitalize(test, res):
+    assert capitalize(test) == res
 
-    def test_format_sentence_string(self):
-        fmt = format_sentence_string
-        self.assertEqual(fmt(''), '')
-        self.assertEqual(fmt('  '), '')
-        self.assertEqual(fmt('  ...'), '')
-        self.assertEqual(fmt('.?!word'), 'Word.')
-        self.assertEqual(fmt('word', default_end='/'), 'Word/')
-        self.assertEqual(fmt('word', end_chars='d'), 'Word')
-        self.assertEqual(fmt('word  ,  (word)..  word'), 'Word, (word).. word.')
-        self.assertEqual(fmt('word,wo[rd..wo]rd'), 'Word, wo [rd.. wo] rd.')
-        self.assertEqual(fmt('wo--*--rd'), 'Wo --*-- rd.')
 
-    @patch('markovchain.text.util.format_sentence_string', return_value=1)
-    def test_format_sentence(self, fmt):
-        self.assertEqual(format_sentence('word'), 1)
-        fmt.assert_called_with('word', '.?!', '.')
-        fmt.reset_mock()
+@pytest.mark.parametrize('test,res', [
+    (('', ''), ''),
+    (('     ', ''), ''),
+    (('  x  ', 'xy'), ''),
+    ((' \t.\n , .x. ', '.,?!'), 'x. ')
+])
+def test_lstrip_ws_and_chars(test, res):
+    assert lstrip_ws_and_chars(*test) == res
 
-        self.assertEqual(
-            format_sentence((str(x) for x in range(3)),
-                            end_chars='/[', default_end='/'),
-            1
-        )
-        fmt.assert_called_with('0 1 2', '/[', '/')
-        fmt.reset_mock()
+@pytest.mark.parametrize('arg,kwargs,res', [
+    ('', {}, ''),
+    ('  ', {}, ''),
+    ('  ...', {}, ''),
+    ('.?!word', {}, 'Word.'),
+    ('word', {'default_end': '/'}, 'Word/'),
+    ('word', {'end_chars': 'd'}, 'Word'),
+    ('word  ,  (word)..  word', {}, 'Word, (word).. word.'),
+    ('word,wo[rd..wo]rd', {}, 'Word, wo [rd.. wo] rd.'),
+    ('wo--*--rd', {}, 'Wo --*-- rd.')
+])
+def test_format_sentence_string(arg, kwargs, res):
+    assert format_sentence_string(arg, **kwargs) == res
 
-        self.assertEqual(
-            format_sentence(['a', 'b', 'c'], join_with='.'),
-            1
-        )
-        fmt.assert_called_with('a.b.c', '.?!', '.')
-        fmt.reset_mock()
+@pytest.mark.parametrize('arg,kwargs,call', [
+    ('word', {}, ('word', '.?!', '.')),
+    (
+        (str(x) for x in range(3)),
+        {'end_chars': '/[', 'default_end': '/'},
+        ('0 1 2', '/[', '/')
+    ),
+    (['a', 'b', 'c'], {'join_with': '.'}, ('a.b.c', '.?!', '.'))
+])
+def test_format_sentence(mocker, arg, kwargs, call):
+    fmt = mocker.patch(
+        'markovchain.text.util.format_sentence_string',
+        return_value=1
+    )
+    assert format_sentence(arg, **kwargs) == 1
+    fmt.assert_called_once_with(*call)

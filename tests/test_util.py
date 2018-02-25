@@ -1,4 +1,4 @@
-from unittest import TestCase
+import pytest
 
 from markovchain.util import (
     SaveLoad, ObjectWrapper, const,
@@ -6,7 +6,8 @@ from markovchain.util import (
 )
 
 
-class TestSaveLoad(TestCase):
+@pytest.fixture
+def save_load_test():
     class SaveLoadTest(SaveLoad):
         classes = {}
 
@@ -20,186 +21,159 @@ class TestSaveLoad(TestCase):
             data = super().save()
             data['value'] = self.value
             return data
-
-    def test_add_remove(self):
-        self.SaveLoadTest.add_class(self.SaveLoadTest)
-        self.assertIs(self.SaveLoadTest.classes['SaveLoadTest'],
-                      self.SaveLoadTest)
-        self.SaveLoadTest.remove_class(self.SaveLoadTest)
-        self.SaveLoadTest.remove_class(self.SaveLoadTest)
-        with self.assertRaises(KeyError):
-            raise AssertionError(self.SaveLoadTest.classes['SaveLoadTest'])
-
-    def test_save_load(self):
-        self.SaveLoadTest.add_class(self.SaveLoadTest)
-        test = self.SaveLoadTest(0)
-        saved = test.save()
-        loaded = self.SaveLoadTest.load(saved)
-        self.assertIsInstance(loaded, self.SaveLoadTest)
-        self.assertEqual(loaded, test)
+    SaveLoadTest.add_class(SaveLoadTest)
+    return SaveLoadTest
 
 
-class TestObjectWrapper(TestCase):
-    class ObjectTest:
-        def __init__(self, x, y):
-            self.x = x
-            self.y = y
-        def method(self):
-            return self.x + self.y
-        def method2(self):
-            return self.x - self.y
+def test_saveload_add_remove_class(save_load_test):
+    assert save_load_test.classes['SaveLoadTest'] is save_load_test
+    save_load_test.remove_class(save_load_test)
+    save_load_test.remove_class(save_load_test)
+    with pytest.raises(KeyError):
+        save_load_test.classes['SaveLoadTest']
 
-    class ObjectWrapperTest(ObjectWrapper):
-        def __init__(self, obj, z):
-            super().__init__(obj)
-            self.y *= 2
-            self.z = z
-        def method(self):
-            return super().method() + self.z
-
-    def test_wrap(self):
-        obj = self.ObjectTest(1, 2)
-        wrapped = ObjectWrapper(obj)
-        self.assertIsInstance(wrapped, self.ObjectTest)
-        self.assertEqual(wrapped.__dict__, obj.__dict__)
-        self.assertEqual(wrapped.method(), 3)
-        self.assertEqual(wrapped.method2(), -1)
-
-    def test_override(self):
-        obj = self.ObjectTest(1, 2)
-        wrapped = self.ObjectWrapperTest(obj, 3)
-        self.assertIsInstance(wrapped, self.ObjectTest)
-        self.assertEqual(wrapped.x, 1)
-        self.assertEqual(wrapped.y, 4)
-        self.assertEqual(wrapped.z, 3)
-        self.assertEqual(wrapped.method(), 8)
-        self.assertEqual(wrapped.method2(), -3)
+def test_saveload_save_load(save_load_test):
+    test = save_load_test(0)
+    saved = test.save()
+    loaded = save_load_test.load(saved)
+    assert isinstance(loaded, save_load_test)
+    assert loaded == test
 
 
-class TestConst(TestCase):
-    def test(self):
-        func = const('x')
-        self.assertEqual(func(), 'x')
-        self.assertEqual(func(1, [2], None), 'x')
+class ObjectTest:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def method(self):
+        return self.x + self.y
+    def method2(self):
+        return self.x - self.y
+
+class ObjectWrapperTest(ObjectWrapper):
+    def __init__(self, obj, z):
+        super().__init__(obj)
+        self.y *= 2
+        self.z = z
+    def method(self):
+        return super().method() + self.z
+
+def test_object_wrapper_wrap():
+    obj = ObjectTest(1, 2)
+    wrapped = ObjectWrapper(obj)
+    assert isinstance(wrapped, ObjectTest)
+    assert wrapped.__dict__ == obj.__dict__
+    assert wrapped.method() == 3
+    assert wrapped.method2() == -1
+
+def test_object_wrapper_override():
+    obj = ObjectTest(1, 2)
+    wrapped = ObjectWrapperTest(obj, 3)
+    assert wrapped.x == 1
+    assert wrapped.y == 4
+    assert wrapped.z == 3
+    assert wrapped.method() == 8
+    assert wrapped.method2() == -3
 
 
-class TestToList(TestCase):
-    def test(self):
-        tests = [
-            ([], []),
-            (range(3), list(range(3))),
-            (0, [0]),
-            ({'x': 0}, [{'x': 0}])
-        ]
-        for test, res in tests:
-            self.assertEqual(to_list(test), res)
+def test_const():
+    assert const(0)() == 0
+    assert const(1)(1, [2], key=3) == 1
 
 
-class TestFill(TestCase):
-    def test_empty(self):
-        tests = [
-            (None, -1),
-            ([], 0),
-            (0, 0)
-        ]
-        for test in tests:
-            self.assertEqual(fill(*test), [])
-        with self.assertRaises(ValueError):
-            fill([], 1)
-
-    def test_single(self):
-        tests = [
-            ((1, 1), [1]),
-            ((1, 5), [1] * 5)
-        ]
-        for test, res in tests:
-            self.assertEqual(fill(*test), res)
-
-    def test_multiple(self):
-        tests = [
-            ((range(10), 2), [0, 1]),
-            ((range(3), 5), [0, 1, 2, 2, 2])
-        ]
-        for test, res in tests:
-            self.assertEqual(fill(*test), res)
-
-    def test_no_copy(self):
-        tests = [
-            ([], 0),
-            (list(range(3)), 3)
-        ]
-        for lst, sz in tests:
-            self.assertIs(fill(lst, sz), lst)
-
-    def test_copy(self):
-        tests = [
-            ([[0], [1]], 4)
-        ]
-        for test in tests:
-            res = fill(*test, copy=False)
-            self.assertIs(res[-1], test[0][-1])
-            res = fill(*test, copy=True)
-            self.assertIsNot(res[-1], test[0][-1])
-            self.assertEqual(res[-1], test[0][-1])
+@pytest.mark.parametrize('test,res', [
+    ([], []),
+    (range(3), list(range(3))),
+    (0, [0]),
+    ({'x': 0}, [{'x': 0}])
+])
+def test_to_list(test, res):
+    assert to_list(test) == res
 
 
-class TestLoad(TestCase):
-    class LoadTest:
-        @staticmethod
-        def load(data):
-            return data['x']
+def test_fill_error():
+    with pytest.raises(ValueError):
+        fill([], 1)
 
-    def testDefault(self):
-        x = load(None, self.LoadTest, lambda: 0)
-        self.assertEqual(x, 0)
+@pytest.mark.parametrize('test,res', [
+    ((None, -1), []),
+    (([], 0), []),
+    ((0, 0), []),
+    ((1, 1), [1]),
+    ((1, 5), [1] * 5),
+    ((range(10), 2), [0, 1]),
+    ((range(3), 5), [0, 1, 2, 2, 2])
+])
+def test_fill(test, res):
+    assert fill(*test) == res
 
-    def testLoadClass(self):
-        x = load({'x': 1}, self.LoadTest, lambda: 0)
-        self.assertEqual(x, 1)
+@pytest.mark.parametrize('lst,size', [
+    ([], 0),
+    (list(range(3)), 3)
+])
+def test_fill_no_copy(lst, size):
+    assert fill(lst, size) is lst
 
-    def testLoadObject(self):
-        obj = object()
-        x = load(obj, self.LoadTest, lambda: 0)
-        self.assertIs(x, obj)
-
-
-class TestExtend(TestCase):
-    def test(self):
-        tests = [
-            (({'x': 0}, {'y': 1}), {'x': 0, 'y': 1}),
-            (({'x': 0}, {'y': 1}, {'x': 1}), {'x': 1, 'y': 1}),
-            (({'x': {'y': 0}}, {'x': {'z': 1}}), {'x': {'y': 0, 'z': 1}}),
-            (({'x': {'y': 0}}, {'x': 1}), {'x': 1}),
-            (({'x': 1}, {'x': {'y': 0}}), {'x': {'y': 0}}),
-            (({}, {'x': {'y': 0}}), {'x': {'y': 0}}),
-        ]
-        for test, res in tests:
-            self.assertEqual(extend(*test), res)
+@pytest.mark.parametrize('lst,size', [
+    ([[0], [1]], 4)
+])
+def test_fill_copy(lst, size):
+    res = fill(lst, size, copy=False)
+    assert res[-1] is lst[-1]
+    res = fill(lst, size, copy=True)
+    assert res[-1] is not lst[-1]
+    assert res[-1] == lst[-1]
 
 
-class TestTruncate(TestCase):
-    def testError(self):
-        tests = [
-            ('', 3, True),
-            ('0', -1, False)
-        ]
-        for test in tests:
-            with self.assertRaises(ValueError):
-                truncate(*test)
+class LoadTest:
+    @staticmethod
+    def load(data):
+        return data['x']
 
-    def testNoTruncate(self):
-        tests = [
-            ('0', 4, True),
-            ('1234', 4, False)
-        ]
-        for test in tests:
-            self.assertIs(truncate(*test), test[0])
+def test_load_efault():
+    x = load(None, LoadTest, lambda: 0)
+    assert x == 0
 
-    def testTruncate(self):
-        tests = [
-            (('1234567', 5), '12...'),
-            (('1234567', 5, True), '12...'),
-            (('1234567', 5, False), '...67')
-        ]
-        for test, res in tests:
-            self.assertEqual(truncate(*test), res)
+def test_load_class():
+    x = load({'x': 1}, LoadTest, lambda: 0)
+    assert x == 1
+
+def test_load_object():
+    obj = object()
+    x = load(obj, LoadTest, lambda: 0)
+    assert x is obj
+
+
+@pytest.mark.parametrize('test,res', [
+    (({'x': 0}, {'y': 1}), {'x': 0, 'y': 1}),
+    (({'x': 0}, {'y': 1}, {'x': 1}), {'x': 1, 'y': 1}),
+    (({'x': {'y': 0}}, {'x': {'z': 1}}), {'x': {'y': 0, 'z': 1}}),
+    (({'x': {'y': 0}}, {'x': 1}), {'x': 1}),
+    (({'x': 1}, {'x': {'y': 0}}), {'x': {'y': 0}}),
+    (({}, {'x': {'y': 0}}), {'x': {'y': 0}})
+])
+def test_extend(test, res):
+    assert extend(*test) == res
+
+
+@pytest.mark.parametrize('test', [
+    ('', 3, True),
+    ('0', -1, False)
+])
+def test_truncate_error(test):
+    with pytest.raises(ValueError):
+        truncate(*test)
+
+@pytest.mark.parametrize('test', [
+    ('0', 4, True),
+    ('1234', 4, False)
+])
+def test_truncate_noop(test):
+    assert truncate(*test) is test[0]
+
+@pytest.mark.parametrize('test,res', [
+    (('1234567', 5), '12...'),
+    (('1234567', 5, True), '12...'),
+    (('1234567', 5, False), '...67')
+])
+def test_truncate(test, res):
+    assert truncate(*test) == res

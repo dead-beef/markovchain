@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from unittest import TestLoader
 from setuptools import setup, find_packages
 
-def tests():
-    return TestLoader().discover('tests')
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 try:
@@ -39,12 +36,13 @@ setup(name='markovchain',
       entry_points={
           'console_scripts': ['markovchain=markovchain.cli:main'],
       },
-      test_suite='setup.tests',
       install_requires=['tqdm', 'ijson', 'custom_inherit'],
       extras_require={
           'image': ['pillow'],
           'dev': [
               'pillow',
+              'pytest',
+              'pytest-mock',
               'coverage',
               'sphinx',
               'sphinx_rtd_theme',

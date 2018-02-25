@@ -5,7 +5,7 @@ if [ -d env ]; then
 fi
 
 if which coverage >/dev/null 2>&1; then
-    coverage run --include 'markovchain/*' setup.py test && coverage report -m
+    coverage run --include 'markovchain/*' -m pytest && coverage report -m
 else
-    ./setup.py test
+    pytest
 fi
