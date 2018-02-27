@@ -4,10 +4,26 @@ markovchain\.cli package
 Submodules
 ----------
 
+markovchain\.cli\.image module
+------------------------------
+
+.. automodule:: markovchain.cli.image
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 markovchain\.cli\.main module
 -----------------------------
 
 .. automodule:: markovchain.cli.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+markovchain\.cli\.text module
+-----------------------------
+
+.. automodule:: markovchain.cli.text
     :members:
     :undoc-members:
     :show-inheritance:

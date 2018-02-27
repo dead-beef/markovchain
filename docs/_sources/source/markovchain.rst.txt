@@ -8,6 +8,7 @@ Subpackages
 
     markovchain.cli
     markovchain.image
+    markovchain.storage
     markovchain.text
 
 Submodules
@@ -29,14 +30,6 @@ markovchain\.info module
     :undoc-members:
     :show-inheritance:
 
-markovchain\.json module
-------------------------
-
-.. automodule:: markovchain.json
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 markovchain\.parser module
 --------------------------
 
@@ -49,14 +42,6 @@ markovchain\.scanner module
 ---------------------------
 
 .. automodule:: markovchain.scanner
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-markovchain\.sqlite module
---------------------------
-
-.. automodule:: markovchain.sqlite
     :members:
     :undoc-members:
     :show-inheritance:

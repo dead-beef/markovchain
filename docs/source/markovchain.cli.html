@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.cli package &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.cli package &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../index.html"/>
         <link rel="up" title="markovchain package" href="markovchain.html"/>
         <link rel="next" title="markovchain.image package" href="markovchain.image.html"/>
         <link rel="prev" title="markovchain package" href="markovchain.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -104,16 +104,15 @@
 <li class="toctree-l3 current"><a class="reference internal" href="markovchain.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">markovchain.cli package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="markovchain.text.html">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -193,12 +192,256 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-markovchain.cli.image">
+<span id="markovchain-cli-image-module"></span><h2>markovchain.cli.image module<a class="headerlink" href="#module-markovchain.cli.image" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.cli.image.TraversalProgressWrapper">
+<em class="property">class </em><code class="descclassname">markovchain.cli.image.</code><code class="descname">TraversalProgressWrapper</code><span class="sig-paren">(</span><em>obj</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#TraversalProgressWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.TraversalProgressWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.util.ObjectWrapper" title="markovchain.util.ObjectWrapper"><code class="xref py py-class docutils literal"><span class="pre">markovchain.util.ObjectWrapper</span></code></a></p>
+<p>Traversal object wrapper.</p>
+<p>Shows image traversal progress.</p>
+<dl class="attribute">
+<dt id="markovchain.cli.image.TraversalProgressWrapper.pbar_parent">
+<code class="descname">pbar_parent</code><a class="headerlink" href="#markovchain.cli.image.TraversalProgressWrapper.pbar_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">tqdm.tqdm</span></code> – Parent progress bar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.cli.image.TraversalProgressWrapper.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>ends=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#TraversalProgressWrapper.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.TraversalProgressWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="markovchain.cli.image.TraversalProgressWrapper.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>obj</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#TraversalProgressWrapper.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.TraversalProgressWrapper.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.cmd_convert">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">cmd_convert</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#cmd_convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.cmd_convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.cmd_create">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">cmd_create</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#cmd_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.cmd_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.cmd_filter">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">cmd_filter</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#cmd_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.cmd_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.cmd_generate">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">cmd_generate</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#cmd_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.cmd_generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.cmd_update">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">cmd_update</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#cmd_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.cmd_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.create_arg_parser">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">create_arg_parser</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#create_arg_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.create_arg_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create command subparsers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.ArgumentParser</span></code>) – Command parser.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.outfiles">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">outfiles</code><span class="sig-paren">(</span><em>markov</em>, <em>fmt</em>, <em>nfiles</em>, <em>progress</em>, <em>start=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#outfiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.outfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get output file paths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code>) – Markov chain generator.</li>
+<li><strong>fmt</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File path format string.</li>
+<li><strong>nfiles</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Number of files.</li>
+<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bars.</li>
+<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Initial image level (default: 0).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Output file paths.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.image.read">
+<code class="descclassname">markovchain.cli.image.</code><code class="descname">read</code><span class="sig-paren">(</span><em>fnames</em>, <em>markov</em>, <em>progress</em>, <em>leave=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/image.html#read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.image.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data files and update a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fnames</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File paths.</li>
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code>) – Generator to update.</li>
+<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bar.</li>
+<li><strong>leave</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Leave progress bars (default: <code class="xref py py-obj docutils literal"><span class="pre">True</span></code>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-markovchain.cli.main">
 <span id="markovchain-cli-main-module"></span><h2>markovchain.cli.main module<a class="headerlink" href="#module-markovchain.cli.main" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="markovchain.cli.main.main">
-<code class="descclassname">markovchain.cli.main.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.main.main" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">markovchain.cli.main.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/main.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.main.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>CLI main function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – CLI arguments (default: <code class="xref py py-obj docutils literal"><span class="pre">sys.argv</span></code>).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.cli.text">
+<span id="markovchain-cli-text-module"></span><h2>markovchain.cli.text module<a class="headerlink" href="#module-markovchain.cli.text" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="markovchain.cli.text.cmd_create">
+<code class="descclassname">markovchain.cli.text.</code><code class="descname">cmd_create</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/text.html#cmd_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.text.cmd_create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.text.cmd_generate">
+<code class="descclassname">markovchain.cli.text.</code><code class="descname">cmd_generate</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/text.html#cmd_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.text.cmd_generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.text.cmd_update">
+<code class="descclassname">markovchain.cli.text.</code><code class="descname">cmd_update</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/text.html#cmd_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.text.cmd_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.text.create_arg_parser">
+<code class="descclassname">markovchain.cli.text.</code><code class="descname">create_arg_parser</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/text.html#create_arg_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.text.create_arg_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create command subparsers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.ArgumentParser</span></code>) – Command parser.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.cli.text.read">
+<code class="descclassname">markovchain.cli.text.</code><code class="descname">read</code><span class="sig-paren">(</span><em>fnames</em>, <em>markov</em>, <em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/text.html#read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.text.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data files and update a generator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fnames</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File paths.</li>
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code>) – Generator to update.</li>
+<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bar.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -302,17 +545,23 @@
 
 <dl class="function">
 <dt id="markovchain.cli.util.load">
-<code class="descclassname">markovchain.cli.util.</code><code class="descname">load</code><span class="sig-paren">(</span><em>markov</em>, <em>fname</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a markov chain generator.</p>
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">load</code><span class="sig-paren">(</span><em>cls</em>, <em>fname</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a generator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">type</span></code>) – Markov chain generator class.</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cls</strong> (<code class="xref py py-obj docutils literal"><span class="pre">type</span></code>) – Generator class.</li>
 <li><strong>fname</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Input file path.</li>
 <li><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">cls</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -388,13 +637,13 @@
 <dl class="function">
 <dt id="markovchain.cli.util.save">
 <code class="descclassname">markovchain.cli.util.</code><code class="descname">save</code><span class="sig-paren">(</span><em>markov</em>, <em>fname</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a markov chain generator.</p>
+<dd><p>Save a generator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">MarkovBase</span></code>) – Markov chain generator.</li>
+<li><strong>markov</strong> (<code class="xref py py-obj docutils literal"><span class="pre">markovchain.Markov</span></code>) – Generator to save.</li>
 <li><strong>fname</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Output file path.</li>
 <li><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</li>
 </ul>
@@ -406,7 +655,7 @@
 
 <dl class="function">
 <dt id="markovchain.cli.util.set_args">
-<code class="descclassname">markovchain.cli.util.</code><code class="descname">set_args</code><span class="sig-paren">(</span><em>args</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#set_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.set_args" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">markovchain.cli.util.</code><code class="descname">set_args</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/cli/util.html#set_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.cli.util.set_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set computed command arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -475,7 +724,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

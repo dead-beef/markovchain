@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.text package &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.text package &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../index.html"/>
         <link rel="up" title="markovchain package" href="markovchain.html"/>
-        <link rel="prev" title="markovchain.image package" href="markovchain.image.html"/> 
+        <link rel="prev" title="markovchain.storage package" href="markovchain.storage.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -103,16 +103,15 @@
 <li class="toctree-l3 current"><a class="reference internal" href="markovchain.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="markovchain.cli.html">markovchain.cli package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -192,81 +191,132 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-markovchain.text.cli">
-<span id="markovchain-text-cli-module"></span><h2>markovchain.text.cli module<a class="headerlink" href="#module-markovchain.text.cli" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="markovchain.text.cli.cmd_create">
-<code class="descclassname">markovchain.text.cli.</code><code class="descname">cmd_create</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/cli.html#cmd_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.cli.cmd_create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a generator.</p>
+<div class="section" id="module-markovchain.text.markov">
+<span id="markovchain-text-markov-module"></span><h2>markovchain.text.markov module<a class="headerlink" href="#module-markovchain.text.markov" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.text.markov.MarkovText">
+<em class="property">class </em><code class="descclassname">markovchain.text.markov.</code><code class="descname">MarkovText</code><span class="sig-paren">(</span><em>scanner=None</em>, <em>parser=None</em>, <em>storage=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.base.Markov" title="markovchain.base.Markov"><code class="xref py py-class docutils literal"><span class="pre">markovchain.base.Markov</span></code></a></p>
+<p>Markov text generator class.</p>
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.DEFAULT_SCANNER">
+<code class="descname">DEFAULT_SCANNER</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.DEFAULT_SCANNER" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default scanner class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.DEFAULT_PARSER">
+<code class="descname">DEFAULT_PARSER</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.DEFAULT_PARSER" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default parser class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.DEFAULT_STORAGE">
+<code class="descname">DEFAULT_STORAGE</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.DEFAULT_STORAGE" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default storage class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.scanner">
+<code class="descname">scanner</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.scanner" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="markovchain.html#markovchain.scanner.Scanner" title="markovchain.scanner.Scanner"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.scanner.Scanner</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.parser">
+<code class="descname">parser</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.parser" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="markovchain.html#markovchain.parser.ParserBase" title="markovchain.parser.ParserBase"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.parser.ParserBase</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.text.markov.MarkovText.storage">
+<code class="descname">storage</code><a class="headerlink" href="#markovchain.text.markov.MarkovText.storage" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">DEFAULT_PARSER</code></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Parser</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">DEFAULT_SCANNER</code></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">RegExpScanner</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.text.markov.MarkovText.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>max_length=None</em>, <em>state_size=None</em>, <em>start=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a sentence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_length</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – Maximum sentence length (default: None).</li>
+<li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – State size (default: parser.state_sizes[0]).</li>
+<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Starting state (default: []).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Generated sentence.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="markovchain.text.cli.cmd_generate">
-<code class="descclassname">markovchain.text.cli.</code><code class="descname">cmd_generate</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/cli.html#cmd_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.cli.cmd_generate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate text.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.text.cli.cmd_update">
-<code class="descclassname">markovchain.text.cli.</code><code class="descname">cmd_update</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/cli.html#cmd_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.cli.cmd_update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update a generator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.text.cli.create_arg_parser">
-<code class="descclassname">markovchain.text.cli.</code><code class="descname">create_arg_parser</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/cli.html#create_arg_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.cli.create_arg_parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create command subparsers.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.ArgumentParser</span></code>) – Command parser.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.text.cli.read">
-<code class="descclassname">markovchain.text.cli.</code><code class="descname">read</code><span class="sig-paren">(</span><em>fnames</em>, <em>markov</em>, <em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/cli.html#read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.cli.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data files and update a generator.</p>
+<dl class="method">
+<dt id="markovchain.text.markov.MarkovText.data">
+<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse data and update links.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fnames</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File paths.</li>
-<li><strong>markov</strong> (<a class="reference internal" href="markovchain.html#markovchain.base.MarkovBase" title="markovchain.base.MarkovBase"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code></a>) – Generator to update.</li>
-<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bar.</li>
+<li><strong>data</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Text to parse.</li>
+<li><strong>part</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – True if data is partial (default: <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>).</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.text.markov.MarkovText.do_format">
+<code class="descname">do_format</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.do_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.do_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a sentence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Sentence to format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.text.markov.MarkovText.format">
+<code class="descname">format</code><span class="sig-paren">(</span><em>parts</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a sentence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parts</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Sentence parts.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -433,7 +483,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="markovchain.image.html" class="btn btn-neutral" title="markovchain.image package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="markovchain.storage.html" class="btn btn-neutral" title="markovchain.storage package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -464,7 +514,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

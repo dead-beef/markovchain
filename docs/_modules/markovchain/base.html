@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.base &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.base &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -102,16 +102,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.cli.html">markovchain.cli package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../source/markovchain.text.html">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../source/markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -186,13 +185,14 @@
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span>
 
-<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">Scanner</span><span class="p">,</span> <span class="n">RegExpScanner</span>
+<span class="kn">from</span> <span class="nn">.storage</span> <span class="k">import</span> <span class="n">JsonStorage</span>
+<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">Scanner</span><span class="p">,</span> <span class="n">CharScanner</span>
 <span class="kn">from</span> <span class="nn">.parser</span> <span class="k">import</span> <span class="n">ParserBase</span><span class="p">,</span> <span class="n">Parser</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">DOC_INHERIT</span>
 
 
-<div class="viewcode-block" id="MarkovBase"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase">[docs]</a><span class="k">class</span> <span class="nc">MarkovBase</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Base markov chain generator class.</span>
+<div class="viewcode-block" id="Markov"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov">[docs]</a><span class="k">class</span> <span class="nc">Markov</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">DOC_INHERIT</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Markov chain generator base class.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -200,48 +200,47 @@
 <span class="sd">        Default scanner class.</span>
 <span class="sd">    DEFAULT_PARSER : `type`</span>
 <span class="sd">        Default parser class.</span>
+<span class="sd">    DEFAULT_STORAGE : `type`</span>
+<span class="sd">        Default storage class.</span>
 <span class="sd">    scanner : `markovchain.scanner.Scanner`</span>
 <span class="sd">    parser : `markovchain.parser.ParserBase`</span>
+<span class="sd">    storage : `markovchain.storage.Storage`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">RegExpScanner</span>
+    <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">CharScanner</span>
     <span class="n">DEFAULT_PARSER</span> <span class="o">=</span> <span class="n">Parser</span>
+    <span class="n">DEFAULT_STORAGE</span> <span class="o">=</span> <span class="n">JsonStorage</span>
 
-<div class="viewcode-block" id="MarkovBase.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">scanner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Base markov chain generator constructor.</span>
+<div class="viewcode-block" id="Markov.__init__"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">scanner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Markov chain generator base class constructor.</span>
 
-<span class="sd">        Attributes</span>
+<span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        separator : `str`, optional</span>
-<span class="sd">            State separator (default: &#39; &#39;).</span>
 <span class="sd">        scanner : `dict` or `markovchain.scanner.Scanner`, optional</span>
-<span class="sd">            Scanner (default: `markovchain.base.MarkovBase.DEFAULT_SCANNER()`).</span>
+<span class="sd">            Scanner (default: `DEFAULT_SCANNER()`).</span>
 <span class="sd">        parser : `dict` or `markovchain.parser.ParserBase`, optional</span>
-<span class="sd">            Parser (default: `markovchain.base.MarkovBase.DEFAULT_PARSER()`).</span>
+<span class="sd">            Parser (default: `DEFAULT_PARSER()`).</span>
+<span class="sd">        storage : `markovchain.storage.Storage`, optional</span>
+<span class="sd">            Parser (default: `DEFAULT_STORAGE()`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_separator</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">separator</span> <span class="o">=</span> <span class="n">separator</span>
+        <span class="k">if</span> <span class="n">storage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_STORAGE</span><span class="p">()</span>
+        <span class="c1">#if scanner is None:</span>
+        <span class="c1">#    scanner = storage.settings.get(&#39;scanner&#39;, None)</span>
+        <span class="c1">#if parser is None:</span>
+        <span class="c1">#    scanner = storage.settings.get(&#39;parser&#39;, None)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">=</span> <span class="n">storage</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">scanner</span><span class="p">,</span> <span class="n">Scanner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SCANNER</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">ParserBase</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_PARSER</span><span class="p">)</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">separator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;`str` : State separator.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separator</span>
-
-    <span class="nd">@separator</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="p">):</span>
-        <span class="n">old_separator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_separator</span>
-        <span class="k">if</span> <span class="n">old_separator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">replace_state_separator</span><span class="p">(</span><span class="n">old_separator</span><span class="p">,</span> <span class="n">separator</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_separator</span> <span class="o">=</span> <span class="n">separator</span>
-
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markov</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separator</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">separator</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">parser</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">parser</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">storage</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MarkovBase.data"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Markov.data"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse data and update links.</span>
 
 <span class="sd">        Parameters</span>
@@ -251,31 +250,23 @@
 <span class="sd">        part : `bool`, optional</span>
 <span class="sd">            True if data is partial (default: `False`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#if self.parser is None:</span>
-        <span class="c1">#    raise ValueError(&#39;no parser&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">),</span> <span class="n">part</span><span class="p">))</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">),</span> <span class="n">part</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="MarkovBase.generate"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlength</span><span class="p">,</span> <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a sentence.</span>
+<div class="viewcode-block" id="Markov.generate"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a sequence.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        maxlength : `int`</span>
-<span class="sd">            Maximum sentence length.</span>
 <span class="sd">        state_size : `int`, optional</span>
 <span class="sd">            State size (default: parser.state_sizes[0]).</span>
-<span class="sd">        start : `list` of `str`, optional</span>
+<span class="sd">        start : `iterable` of `str`, optional</span>
 <span class="sd">            Starting state (default: []).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        `generator` of `str`</span>
-<span class="sd">            Word generator.</span>
+<span class="sd">            State generator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">maxlength</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
-
         <span class="k">if</span> <span class="n">state_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;parser is None and state_size is None&#39;</span><span class="p">)</span>
@@ -289,22 +280,22 @@
         <span class="c1">#                     .format(state_size, self.parser.state_sizes))</span>
 
         <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">state_size</span><span class="p">))</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">state_size</span><span class="p">))</span>
             <span class="n">state</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">state_size</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">split_state</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
             <span class="n">state</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">state_size</span><span class="p">),</span> <span class="n">start</span><span class="p">)</span>
 
         <span class="n">state</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">state_size</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlength</span><span class="p">):</span>
-            <span class="n">link</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_link</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">link</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">random_link</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="k">yield</span> <span class="n">link</span></div>
 
-<div class="viewcode-block" id="MarkovBase.get_save_data"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.get_save_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Markov.get_settings_json"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.get_settings_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert generator settings to JSON.</span>
 
 <span class="sd">        Returns</span>
@@ -313,73 +304,36 @@
 <span class="sd">            JSON data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;separator&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">,</span>
             <span class="s1">&#39;scanner&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">save</span><span class="p">(),</span>
             <span class="s1">&#39;parser&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="p">}</span></div>
 
-<div class="viewcode-block" id="MarkovBase.replace_state_separator"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.replace_state_separator">[docs]</a>    <span class="k">def</span> <span class="nf">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Replace state separator.</span>
+<div class="viewcode-block" id="Markov.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save to file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        old_separator : `str`</span>
-<span class="sd">            Old state separator.</span>
-<span class="sd">        new_separator : `str`</span>
-<span class="sd">            New state separator.</span>
+<span class="sd">        fp : `file`, optional</span>
+<span class="sd">            Output file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;markov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_settings_json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MarkovBase.links"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.links">[docs]</a>    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update links.</span>
+<div class="viewcode-block" id="Markov.load"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load from storage.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        links : `generator` of (`islice` of `str`, `str`)</span>
-<span class="sd">            Links to add.</span>
+<span class="sd">        storage : `markovchain.storage.Storage`</span>
 
-<span class="sd">        Raises</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        NotImplementedError</span>
-<span class="sd">            If data mixin is missing.</span>
+<span class="sd">        `markovchain.Markov`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;missing data mixin&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="MarkovBase.random_link"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.random_link">[docs]</a>    <span class="k">def</span> <span class="nf">random_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get a random link.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        state</span>
-<span class="sd">            Link source.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        -------</span>
-<span class="sd">        NotImplementedError</span>
-<span class="sd">            If data mixin is missing.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;missing data mixin&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="MarkovBase.load"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Load a generator.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        -------</span>
-<span class="sd">        NotImplementedError</span>
-<span class="sd">            If data mixin is missing.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;missing data mixin&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="MarkovBase.save"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.MarkovBase.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save the generator.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        -------</span>
-<span class="sd">        NotImplementedError</span>
-<span class="sd">            If data mixin is missing.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;missing data mixin&#39;</span><span class="p">)</span></div></div>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">storage</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;markov&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">storage</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -416,7 +370,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

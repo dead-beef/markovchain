@@ -4,10 +4,10 @@ markovchain\.text package
 Submodules
 ----------
 
-markovchain\.text\.cli module
------------------------------
+markovchain\.text\.markov module
+--------------------------------
 
-.. automodule:: markovchain.text.cli
+.. automodule:: markovchain.text.markov
     :members:
     :undoc-members:
     :show-inheritance:

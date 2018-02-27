@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.storage package &mdash; markovchain 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../index.html"/>
+        <link rel="up" title="markovchain package" href="markovchain.html"/>
+        <link rel="next" title="markovchain.text package" href="markovchain.text.html"/>
+        <link rel="prev" title="markovchain.image package" href="markovchain.image.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../index.html">
+        README
+    </a>
+    <a href="../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">markovchain</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="markovchain.html">markovchain package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="markovchain.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">markovchain.storage package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.info">markovchain.info module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">markovchain</a> &raquo;</li>
+        
+          <li><a href="markovchain.html">markovchain package</a> &raquo;</li>
+        
+      <li>markovchain.storage package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/markovchain.storage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="markovchain-storage-package">
+<h1>markovchain.storage package<a class="headerlink" href="#markovchain-storage-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-markovchain.storage.base">
+<span id="markovchain-storage-base-module"></span><h2>markovchain.storage.base module<a class="headerlink" href="#module-markovchain.storage.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.storage.base.Storage">
+<em class="property">class </em><code class="descclassname">markovchain.storage.base.</code><code class="descname">Storage</code><span class="sig-paren">(</span><em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Storage base class.</p>
+<dl class="attribute">
+<dt id="markovchain.storage.base.Storage.settings">
+<code class="descname">settings</code><a class="headerlink" href="#markovchain.storage.base.Storage.settings" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.storage.base.Storage.state_separator">
+<code class="descname">state_separator</code><a class="headerlink" href="#markovchain.storage.base.Storage.state_separator" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storage base constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>settings</strong> (<code class="xref py py-obj docutils literal"><span class="pre">dict</span></code>, optional) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.do_save">
+<code class="descname">do_save</code><span class="sig-paren">(</span><em>fp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.do_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.do_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code>) – Output file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.join_state">
+<code class="descname">join_state</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.join_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.join_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join states.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.links">
+<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="markovchain.storage.base.Storage.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load from file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Input file or path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Loaded storage.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.random_link">
+<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.random_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a random link.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.replace_state_separator">
+<code class="descname">replace_state_separator</code><span class="sig-paren">(</span><em>old_separator</em>, <em>new_separator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.replace_state_separator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.replace_state_separator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace state separator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>old_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Old state separator.</li>
+<li><strong>new_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – New state separator.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>fp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update settings JSON data and save to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code>) – Output file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.split_state">
+<code class="descname">split_state</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.split_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.split_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split state string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">state_separator</code></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – State separator.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.storage.json">
+<span id="markovchain-storage-json-module"></span><h2>markovchain.storage.json module<a class="headerlink" href="#module-markovchain.storage.json" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.storage.json.JsonStorage">
+<em class="property">class </em><code class="descclassname">markovchain.storage.json.</code><code class="descname">JsonStorage</code><span class="sig-paren">(</span><em>nodes=None</em>, <em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#markovchain.storage.base.Storage" title="markovchain.storage.base.Storage"><code class="xref py py-class docutils literal"><span class="pre">markovchain.storage.base.Storage</span></code></a></p>
+<p>JSON storage.</p>
+<dl class="attribute">
+<dt id="markovchain.storage.json.JsonStorage.nodes">
+<code class="descname">nodes</code><a class="headerlink" href="#markovchain.storage.json.JsonStorage.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ((<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) or (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>))</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>nodes=None</em>, <em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON storage constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nodes</strong> (<code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ((<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) or (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>)), optional) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.do_save">
+<code class="descname">do_save</code><span class="sig-paren">(</span><em>fp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.do_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.do_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Output file (default: stdout).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.links">
+<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="markovchain.storage.json.JsonStorage.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load from file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Input file or path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Loaded storage.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.random_link">
+<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.random_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a random link.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.replace_state_separator">
+<code class="descname">replace_state_separator</code><span class="sig-paren">(</span><em>old_separator</em>, <em>new_separator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.replace_state_separator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.replace_state_separator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace state separator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>old_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Old state separator.</li>
+<li><strong>new_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – New state separator.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.storage.sqlite">
+<span id="markovchain-storage-sqlite-module"></span><h2>markovchain.storage.sqlite module<a class="headerlink" href="#module-markovchain.storage.sqlite" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.storage.sqlite.SqliteStorage">
+<em class="property">class </em><code class="descclassname">markovchain.storage.sqlite.</code><code class="descname">SqliteStorage</code><span class="sig-paren">(</span><em>db=':memory:'</em>, <em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#markovchain.storage.base.Storage" title="markovchain.storage.base.Storage"><code class="xref py py-class docutils literal"><span class="pre">markovchain.storage.base.Storage</span></code></a></p>
+<p>SQLite storage.</p>
+<dl class="attribute">
+<dt id="markovchain.storage.sqlite.SqliteStorage.db">
+<code class="descname">db</code><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.db" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">sqlite3.Connection</span></code> – Database connection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.storage.sqlite.SqliteStorage.cursor">
+<code class="descname">cursor</code><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Database cursor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>db=':memory:'</em>, <em>settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>SQLite storage constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>db</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">sqlite3.Connection</span></code>, optional) – Database path or connection (default: ‘:memory:’).</li>
+<li><strong>settings</strong> (<code class="xref py py-obj docutils literal"><span class="pre">dict</span></code>, optional) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.create_node_tables">
+<code class="descname">create_node_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.create_node_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.create_node_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create node and link tables if they don’t exist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.do_save">
+<code class="descname">do_save</code><span class="sig-paren">(</span><em>fp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.do_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.do_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.get_node">
+<code class="descname">get_node</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get node ID by value.</p>
+<p>If a node with the specified value does not exist,
+create it and return its ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Node value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Node ID.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.get_tables">
+<code class="descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all table names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">set</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.links">
+<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="markovchain.storage.sqlite.SqliteStorage.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>fp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load from file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Input file or path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Loaded storage.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.random_link">
+<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.random_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a random link.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.replace_state_separator">
+<code class="descname">replace_state_separator</code><span class="sig-paren">(</span><em>old_separator</em>, <em>new_separator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.replace_state_separator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.replace_state_separator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace state separator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>old_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Old state separator.</li>
+<li><strong>new_separator</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – New state separator.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.update_main_table">
+<code class="descname">update_main_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.update_main_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.update_main_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write generator settings to database.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.storage">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-markovchain.storage" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="markovchain.text.html" class="btn btn-neutral float-right" title="markovchain.text package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="markovchain.image.html" class="btn btn-neutral" title="markovchain.image package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.image.cli &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.cli.image &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../../../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -102,16 +102,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -165,7 +164,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>markovchain.image.cli</li>
+      <li>markovchain.cli.image</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -182,7 +181,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for markovchain.image.cli</h1><div class="highlight"><pre>
+  <h1>Source code for markovchain.cli.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">FileType</span>
 <span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">stderr</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">replace</span><span class="p">,</span> <span class="n">remove</span><span class="p">,</span> <span class="n">path</span>
@@ -191,21 +190,19 @@
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">ImageScanner</span><span class="p">,</span> <span class="n">MarkovImageMixin</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">palette</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">JsonStorage</span><span class="p">,</span> <span class="n">SqliteStorage</span>
+<span class="kn">from</span> <span class="nn">..image</span> <span class="k">import</span> <span class="n">ImageScanner</span><span class="p">,</span> <span class="n">MarkovImage</span>
+<span class="kn">from</span> <span class="nn">..image.util</span> <span class="k">import</span> <span class="n">palette</span>
 <span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">ObjectWrapper</span><span class="p">,</span> <span class="n">truncate</span>
-<span class="kn">from</span> <span class="nn">..cli.util</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">tqdm</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="n">infiles</span><span class="p">,</span> <span class="n">outfiles</span> <span class="k">as</span> <span class="n">_outfiles</span><span class="p">,</span>
     <span class="n">check_output_format</span><span class="p">,</span> <span class="n">JSON</span><span class="p">,</span> <span class="n">SQLITE</span><span class="p">,</span>
     <span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">BAR_DESC_SIZE</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..cli.util</span> <span class="k">import</span> <span class="n">cmd_settings</span> <span class="c1"># pylint:disable=unused-import</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">cmd_settings</span> <span class="c1"># pylint:disable=unused-import</span>
 
 
-<span class="n">BASE</span> <span class="o">=</span> <span class="p">(</span><span class="n">MarkovImageMixin</span><span class="p">,)</span>
-
-
-<div class="viewcode-block" id="create_arg_parser"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.create_arg_parser">[docs]</a><span class="k">def</span> <span class="nf">create_arg_parser</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<div class="viewcode-block" id="create_arg_parser"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.create_arg_parser">[docs]</a><span class="k">def</span> <span class="nf">create_arg_parser</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create command subparsers.</span>
 
 <span class="sd">    Parameters</span>
@@ -318,7 +315,7 @@
                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output file name format string&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TraversalProgressWrapper"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.TraversalProgressWrapper">[docs]</a><span class="k">class</span> <span class="nc">TraversalProgressWrapper</span><span class="p">(</span><span class="n">ObjectWrapper</span><span class="p">):</span> <span class="c1"># pylint: disable=too-few-public-methods</span>
+<div class="viewcode-block" id="TraversalProgressWrapper"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper">[docs]</a><span class="k">class</span> <span class="nc">TraversalProgressWrapper</span><span class="p">(</span><span class="n">ObjectWrapper</span><span class="p">):</span> <span class="c1"># pylint: disable=too-few-public-methods</span>
     <span class="sd">&quot;&quot;&quot;Traversal object wrapper.</span>
 
 <span class="sd">    Shows image traversal progress.</span>
@@ -328,11 +325,11 @@
 <span class="sd">    pbar_parent : `tqdm.tqdm`</span>
 <span class="sd">        Parent progress bar.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="TraversalProgressWrapper.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.TraversalProgressWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TraversalProgressWrapper.__init__"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">parent</span></div>
 
-<div class="viewcode-block" id="TraversalProgressWrapper.__call__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.TraversalProgressWrapper.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="TraversalProgressWrapper.__call__"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">size</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Level &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -353,7 +350,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="read"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.read">[docs]</a><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">markov</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="read"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.read">[docs]</a><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">markov</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Read data files and update a generator.</span>
 
 <span class="sd">    Parameters</span>
@@ -384,7 +381,7 @@
             <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
                 <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="outfiles"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.outfiles">[docs]</a><span class="k">def</span> <span class="nf">outfiles</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="outfiles"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.outfiles">[docs]</a><span class="k">def</span> <span class="nf">outfiles</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get output file paths.</span>
 
 <span class="sd">    Parameters</span>
@@ -422,7 +419,7 @@
             <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
                 <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="cmd_convert"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.cmd_convert">[docs]</a><span class="k">def</span> <span class="nf">cmd_convert</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="cmd_convert"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_convert">[docs]</a><span class="k">def</span> <span class="nf">cmd_convert</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert an image.</span>
 
 <span class="sd">    Parameters</span>
@@ -446,7 +443,7 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="cmd_create"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.cmd_create">[docs]</a><span class="k">def</span> <span class="nf">cmd_create</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="cmd_create"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_create">[docs]</a><span class="k">def</span> <span class="nf">cmd_create</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a generator.</span>
 
 <span class="sd">    Parameters</span>
@@ -457,13 +454,15 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SQLITE</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">):</span>
             <span class="n">remove</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">SqliteStorage</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">JsonStorage</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
 
-    <span class="n">markov</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">markov</span> <span class="o">=</span> <span class="n">MarkovImage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">storage</span><span class="p">)</span>
     <span class="n">read</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">)</span>
     <span class="n">save</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="cmd_update"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.cmd_update">[docs]</a><span class="k">def</span> <span class="nf">cmd_update</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="cmd_update"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_update">[docs]</a><span class="k">def</span> <span class="nf">cmd_update</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Update a generator.</span>
 
 <span class="sd">    Parameters</span>
@@ -475,7 +474,7 @@
         <span class="n">copyfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
 
-    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">MarkovImage</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
 
     <span class="n">read</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">)</span>
 
@@ -490,7 +489,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">save</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="cmd_generate"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.cmd_generate">[docs]</a><span class="k">def</span> <span class="nf">cmd_generate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="cmd_generate"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_generate">[docs]</a><span class="k">def</span> <span class="nf">cmd_generate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate images.</span>
 
 <span class="sd">    Parameters</span>
@@ -500,7 +499,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">check_output_format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
 
-    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">MarkovImage</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">resize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -524,13 +523,15 @@
     <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">show_progress</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span>
 
     <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">outfiles</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">):</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
-                           <span class="n">state_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
-                           <span class="n">levels</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">markov</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+            <span class="n">state_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
+            <span class="n">levels</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">level</span>
+        <span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="cmd_filter"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.cli.cmd_filter">[docs]</a><span class="k">def</span> <span class="nf">cmd_filter</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="cmd_filter"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_filter">[docs]</a><span class="k">def</span> <span class="nf">cmd_filter</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Filter an image.</span>
 
 <span class="sd">    Parameters</span>
@@ -544,11 +545,13 @@
     <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">MarkovImage</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">markov</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">JSON</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="n">JsonStorage</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="n">SqliteStorage</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+        <span class="n">markov</span> <span class="o">=</span> <span class="n">MarkovImage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">storage</span><span class="p">)</span>
         <span class="n">read</span><span class="p">([</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">],</span> <span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="n">args</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span> <span class="n">markov</span><span class="o">.</span><span class="n">levels</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -569,10 +572,12 @@
 
     <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">outfiles</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
                           <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
-                           <span class="n">state_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
-                           <span class="n">start_level</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span>
-                           <span class="n">start_image</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">markov</span><span class="p">(</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span>
+            <span class="n">state_size</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">state_size</span><span class="p">,</span>
+            <span class="n">start_level</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">level</span><span class="p">,</span>
+            <span class="n">start_image</span><span class="o">=</span><span class="n">start</span>
+        <span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 </pre></div>
@@ -611,7 +616,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -4,14 +4,6 @@ markovchain\.image package
 Submodules
 ----------
 
-markovchain\.image\.cli module
-------------------------------
-
-.. automodule:: markovchain.image.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 markovchain\.image\.markov module
 ---------------------------------
 

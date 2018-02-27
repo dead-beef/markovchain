@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.cli.util &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.cli.util &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../../../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -102,16 +102,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -185,9 +184,7 @@
   <h1>Source code for markovchain.cli.util</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">bz2</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -197,13 +194,12 @@
     <span class="n">tqdm</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">TQDM_IMPORT_ERROR</span> <span class="o">=</span> <span class="n">err</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">MarkovBase</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">,</span> <span class="n">MarkovSqliteMixin</span>
+<span class="kn">from</span> <span class="nn">..storage</span> <span class="k">import</span> <span class="n">JsonStorage</span><span class="p">,</span> <span class="n">SqliteStorage</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">extend</span>
 
 
 <span class="n">JSON</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">SQLITE</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">IJSON_MIN_SIZE</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
-<span class="n">IJSON_MIN_COMPRESSED_SIZE</span> <span class="o">=</span> <span class="mi">512</span> <span class="o">*</span> <span class="mi">1024</span>
 
 <span class="n">BAR_DESC_SIZE</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">BAR_N_SIZE</span> <span class="o">=</span> <span class="mi">8</span>
@@ -302,71 +298,70 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Load a markov chain generator.</span>
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a generator.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    markov : `type`</span>
-<span class="sd">        Markov chain generator class.</span>
+<span class="sd">    cls : `type`</span>
+<span class="sd">        Generator class.</span>
 <span class="sd">    fname : `str`</span>
 <span class="sd">        Input file path.</span>
 <span class="sd">    args : `argparse.Namespace`</span>
 <span class="sd">        Command arguments.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `cls`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">):</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;bz2&#39;</span><span class="p">):</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
-            <span class="n">maxsize</span> <span class="o">=</span> <span class="n">IJSON_MIN_COMPRESSED_SIZE</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">JSON</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bz2&#39;</span><span class="p">):</span>
+            <span class="n">open_</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="nb">open</span>
-            <span class="n">maxsize</span> <span class="o">=</span> <span class="n">IJSON_MIN_SIZE</span>
-
-        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">maxsize</span><span class="p">:</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;rb&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;rt&#39;</span>
+            <span class="n">open_</span> <span class="o">=</span> <span class="nb">open</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loading JSON data...&#39;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">op</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">open_</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="n">JsonStorage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">markov</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span></div>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">SqliteStorage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">extend</span><span class="p">(</span><span class="n">storage</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">storage</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="save"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.save">[docs]</a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Save a markov chain generator.</span>
+    <span class="sd">&quot;&quot;&quot;Save a generator.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    markov : `MarkovBase`</span>
-<span class="sd">        Markov chain generator.</span>
+<span class="sd">    markov : `markovchain.Markov`</span>
+<span class="sd">        Generator to save.</span>
 <span class="sd">    fname : `str`</span>
 <span class="sd">        Output file path.</span>
 <span class="sd">    args : `argparse.Namespace`</span>
 <span class="sd">        Command arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">MarkovJsonMixin</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">markov</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="n">JsonStorage</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;bz2&#39;</span><span class="p">):</span>
-                <span class="n">op</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
+            <span class="k">if</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bz2&#39;</span><span class="p">):</span>
+                <span class="n">open_</span> <span class="o">=</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">op</span> <span class="o">=</span> <span class="nb">open</span>
-
+                <span class="n">open_</span> <span class="o">=</span> <span class="nb">open</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">progress</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Saving JSON data...&#39;</span><span class="p">)</span>
-
-            <span class="k">with</span> <span class="n">op</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">open_</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="set_args"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.set_args">[docs]</a><span class="k">def</span> <span class="nf">set_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+<div class="viewcode-block" id="set_args"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.set_args">[docs]</a><span class="k">def</span> <span class="nf">set_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set computed command arguments.</span>
 
 <span class="sd">    Parameters</span>
@@ -398,37 +393,19 @@
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;.json&#39;</span>
 
-    <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.bz2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.json.bz2&#39;</span><span class="p">):</span>
         <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">JSON</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">SQLITE</span>
 
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">JSON</span><span class="p">:</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">MarkovJsonMixin</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SQLITE</span><span class="p">:</span>
-        <span class="n">dtype</span> <span class="o">=</span> <span class="n">MarkovSqliteMixin</span>
-
-    <span class="n">base</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">chain</span><span class="p">((</span><span class="n">dtype</span><span class="p">,),</span> <span class="n">base</span><span class="p">,</span> <span class="p">(</span><span class="n">MarkovBase</span><span class="p">,)))</span>
-
-    <span class="k">class</span> <span class="nc">Markov</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">):</span> <span class="c1"># pylint: disable=too-few-public-methods</span>
-        <span class="k">pass</span>
-
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span>
-        <span class="n">has_settings</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">has_settings</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="k">if</span> <span class="n">has_settings</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="n">args</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">markov</span> <span class="o">=</span> <span class="n">Markov</span></div>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">settings</span></div>
 
 <div class="viewcode-block" id="check_output_format"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.check_output_format">[docs]</a><span class="k">def</span> <span class="nf">check_output_format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validate file format string.</span>
@@ -538,10 +515,14 @@
 <span class="sd">    args : `argparse.Namespace`</span>
 <span class="sd">        Command arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">markov</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">get_save_data</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">SQLITE</span><span class="p">:</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">SqliteStorage</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">JsonStorage</span>
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">settings</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;markov&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
@@ -581,7 +562,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

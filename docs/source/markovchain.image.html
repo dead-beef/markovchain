@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.image package &mdash; markovchain 0.1.2 documentation</title>
+  <title>markovchain.image package &mdash; markovchain 0.2.0 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="markovchain 0.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../index.html"/>
         <link rel="up" title="markovchain package" href="markovchain.html"/>
-        <link rel="next" title="markovchain.text package" href="markovchain.text.html"/>
+        <link rel="next" title="markovchain.storage package" href="markovchain.storage.html"/>
         <link rel="prev" title="markovchain.cli package" href="markovchain.cli.html"/> 
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.2.0
               </div>
             
           
@@ -104,16 +104,15 @@
 <li class="toctree-l3 current"><a class="reference internal" href="markovchain.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="markovchain.cli.html">markovchain.cli package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markovchain.storage.html">markovchain.storage package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="markovchain.text.html">markovchain.text package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.base">markovchain.base module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.info">markovchain.info module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.json">markovchain.json module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.sqlite">markovchain.sqlite module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain.util">markovchain.util module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="markovchain.html#module-markovchain">Module contents</a></li>
 </ul>
@@ -193,238 +192,64 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-markovchain.image.cli">
-<span id="markovchain-image-cli-module"></span><h2>markovchain.image.cli module<a class="headerlink" href="#module-markovchain.image.cli" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="markovchain.image.cli.TraversalProgressWrapper">
-<em class="property">class </em><code class="descclassname">markovchain.image.cli.</code><code class="descname">TraversalProgressWrapper</code><span class="sig-paren">(</span><em>obj</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#TraversalProgressWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.TraversalProgressWrapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.util.ObjectWrapper" title="markovchain.util.ObjectWrapper"><code class="xref py py-class docutils literal"><span class="pre">markovchain.util.ObjectWrapper</span></code></a></p>
-<p>Traversal object wrapper.</p>
-<p>Shows image traversal progress.</p>
-<dl class="attribute">
-<dt id="markovchain.image.cli.TraversalProgressWrapper.pbar_parent">
-<code class="descname">pbar_parent</code><a class="headerlink" href="#markovchain.image.cli.TraversalProgressWrapper.pbar_parent" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">tqdm.tqdm</span></code> – Parent progress bar.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.cli.TraversalProgressWrapper.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>ends=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#TraversalProgressWrapper.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.TraversalProgressWrapper.__call__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.cli.TraversalProgressWrapper.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>obj</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#TraversalProgressWrapper.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.TraversalProgressWrapper.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.cmd_convert">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">cmd_convert</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#cmd_convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.cmd_convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an image.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.cmd_create">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">cmd_create</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#cmd_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.cmd_create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a generator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.cmd_filter">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">cmd_filter</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#cmd_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.cmd_filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filter an image.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.cmd_generate">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">cmd_generate</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#cmd_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.cmd_generate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate images.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.cmd_update">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">cmd_update</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#cmd_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.cmd_update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update a generator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.Namespace</span></code>) – Command arguments.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.create_arg_parser">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">create_arg_parser</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#create_arg_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.create_arg_parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create command subparsers.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<code class="xref py py-obj docutils literal"><span class="pre">argparse.ArgumentParser</span></code>) – Command parser.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.outfiles">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">outfiles</code><span class="sig-paren">(</span><em>markov</em>, <em>fmt</em>, <em>nfiles</em>, <em>progress</em>, <em>start=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#outfiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.outfiles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get output file paths.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>markov</strong> (<a class="reference internal" href="markovchain.html#markovchain.base.MarkovBase" title="markovchain.base.MarkovBase"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code></a>) – Markov chain generator.</li>
-<li><strong>fmt</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File path format string.</li>
-<li><strong>nfiles</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Number of files.</li>
-<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bars.</li>
-<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Initial image level (default: 0).</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Output file paths.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="markovchain.image.cli.read">
-<code class="descclassname">markovchain.image.cli.</code><code class="descname">read</code><span class="sig-paren">(</span><em>fnames</em>, <em>markov</em>, <em>progress</em>, <em>leave=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/cli.html#read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.cli.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read data files and update a generator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fnames</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – File paths.</li>
-<li><strong>markov</strong> (<a class="reference internal" href="markovchain.html#markovchain.base.MarkovBase" title="markovchain.base.MarkovBase"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.base.MarkovBase</span></code></a>) – Generator to update.</li>
-<li><strong>progress</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>) – Show progress bar.</li>
-<li><strong>leave</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Leave progress bars (default: <code class="xref py py-obj docutils literal"><span class="pre">True</span></code>).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
 <div class="section" id="module-markovchain.image.markov">
 <span id="markovchain-image-markov-module"></span><h2>markovchain.image.markov module<a class="headerlink" href="#module-markovchain.image.markov" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="markovchain.image.markov.MarkovImageMixin">
-<em class="property">class </em><code class="descclassname">markovchain.image.markov.</code><code class="descname">MarkovImageMixin</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImageMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Markov chain image generator mixin.</p>
+<dt id="markovchain.image.markov.MarkovImage">
+<em class="property">class </em><code class="descclassname">markovchain.image.markov.</code><code class="descname">MarkovImage</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.base.Markov" title="markovchain.base.Markov"><code class="xref py py-class docutils literal"><span class="pre">markovchain.base.Markov</span></code></a></p>
+<p>Markov image generator.</p>
 <dl class="attribute">
-<dt id="markovchain.image.markov.MarkovImageMixin.DEFAULT_PARSER">
-<code class="descname">DEFAULT_PARSER</code><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.DEFAULT_PARSER" title="Permalink to this definition">¶</a></dt>
+<dt id="markovchain.image.markov.MarkovImage.DEFAULT_SCANNER">
+<code class="descname">DEFAULT_SCANNER</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.DEFAULT_SCANNER" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default scanner class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.DEFAULT_PARSER">
+<code class="descname">DEFAULT_PARSER</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.DEFAULT_PARSER" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default parser class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.DEFAULT_STORAGE">
+<code class="descname">DEFAULT_STORAGE</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.DEFAULT_STORAGE" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">type</span></code> – Default storage class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.scanner">
+<code class="descname">scanner</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.scanner" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="markovchain.html#markovchain.scanner.Scanner" title="markovchain.scanner.Scanner"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.scanner.Scanner</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.parser">
+<code class="descname">parser</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.parser" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="markovchain.html#markovchain.parser.ParserBase" title="markovchain.parser.ParserBase"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.parser.ParserBase</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.storage">
+<code class="descname">storage</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.storage" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">DEFAULT_PARSER</code></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">LevelParser</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="markovchain.image.markov.MarkovImageMixin.DEFAULT_SCANNER">
-<code class="descname">DEFAULT_SCANNER</code><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.DEFAULT_SCANNER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">DEFAULT_SCANNER</code></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">ImageScanner</span></code></p>
 </dd></dl>
 
 <dl class="method">
-<dt id="markovchain.image.markov.MarkovImageMixin.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImageMixin.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Markov chain image generator constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of levels.</li>
-<li><strong>palette</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Image palette (default: <code class="xref py py-obj docutils literal"><span class="pre">markovchain.image.util.palette(8,</span> <span class="pre">4,</span> <span class="pre">8)</span></code>).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.markov.MarkovImageMixin.data">
-<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImageMixin.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse data and update links.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code>) – Data to parse.</li>
-<li><strong>part</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – <code class="xref py py-obj docutils literal"><span class="pre">True</span></code> if data is partial (default: <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.markov.MarkovImageMixin.get_save_data">
-<code class="descname">get_save_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImageMixin.get_save_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.get_save_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert generator settings to JSON.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON data.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.markov.MarkovImageMixin.image">
-<code class="descname">image</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>state_size=None</em>, <em>start=None</em>, <em>levels=None</em>, <em>start_level=-1</em>, <em>start_image=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImageMixin.image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.image" title="Permalink to this definition">¶</a></dt>
+<dt id="markovchain.image.markov.MarkovImage.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>state_size=None</em>, <em>start=None</em>, <em>levels=None</em>, <em>start_level=-1</em>, <em>start_image=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -433,9 +258,9 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>width</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image width.</li>
 <li><strong>height</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image height.</li>
-<li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – State size to use for generation (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
+<li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – State size (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
 <li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – Initial state (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
-<li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of generated levels (default: <code class="xref py py-obj docutils literal"><span class="pre">self.scanner.levels</span></code>).</li>
+<li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of levels to generate (default: <code class="xref py py-obj docutils literal"><span class="pre">self.scanner.levels</span></code>).</li>
 <li><strong>start_level</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Initial level (default: -1).</li>
 <li><strong>start_image</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>) – Initial level image (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
 </ul>
@@ -451,9 +276,61 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="markovchain.image.markov.MarkovImage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Markov image generator constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of levels.</li>
+<li><strong>palette</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Image palette (default: <code class="xref py py-obj docutils literal"><span class="pre">markovchain.image.util.palette(8,</span> <span class="pre">4,</span> <span class="pre">8)</span></code>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.markov.MarkovImage.data">
+<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse data and update links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code>) – Image to parse.</li>
+<li><strong>part</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – True if data is partial (default: <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.markov.MarkovImage.get_settings_json">
+<code class="descname">get_settings_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.get_settings_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.get_settings_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert generator settings to JSON.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
-<dt id="markovchain.image.markov.MarkovImageMixin.levels">
-<code class="descname">levels</code><a class="headerlink" href="#markovchain.image.markov.MarkovImageMixin.levels" title="Permalink to this definition">¶</a></dt>
+<dt id="markovchain.image.markov.MarkovImage.levels">
+<code class="descname">levels</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.levels" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Number of levels.</p>
 </dd></dl>
 
@@ -1084,7 +961,7 @@
 
 <dl class="attribute">
 <dt>
-<code class="descname">classes</code><em class="property"> = {'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;, 'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;, 'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;}</em></dt>
+<code class="descname">classes</code><em class="property"> = {'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;, 'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;}</em></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1215,7 +1092,7 @@ or min(<code class="xref py py-obj docutils literal"><span class="pre">hues</spa
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="markovchain.text.html" class="btn btn-neutral float-right" title="markovchain.text package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="markovchain.storage.html" class="btn btn-neutral float-right" title="markovchain.storage package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="markovchain.cli.html" class="btn btn-neutral" title="markovchain.cli package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -1249,7 +1126,7 @@ or min(<code class="xref py py-obj docutils literal"><span class="pre">hues</spa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.2',
+            VERSION:'0.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
