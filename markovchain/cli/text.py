@@ -157,7 +157,7 @@ def cmd_update(args):
     args : `argparse.Namespace`
         Command arguments.
     """
-    args.output = None
+    #args.output = None
 
     markov = load(MarkovText, args.state, args)
     read(args.input, markov, args.progress)
@@ -181,19 +181,20 @@ def cmd_generate(args):
         Command arguments.
     """
 
-    markov = load(MarkovText, args.state, args)
-    ss = range(args.sentences)
+    if args.start is not None:
+        args.start = args.start.lower()
 
+    markov = load(MarkovText, args.state, args)
+
+    ss = range(args.sentences)
     if args.progress:
         title = truncate(args.output.name, BAR_DESC_SIZE - 1, False)
         ss = tqdm(ss, desc=title,
                   bar_format=BAR_FORMAT, dynamic_ncols=True)
 
-    if args.start is not None:
-        args.start = args.start.lower()
-
     if not args.format:
         markov.do_format = lambda x: x
+    markov.scanner.join = args.word_separator.join
 
     for _ in ss:
         data = markov(args.words,

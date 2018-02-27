@@ -42,11 +42,15 @@ class MarkovText(Markov):
         parts : `iterable` of `str`
             Sentence parts.
         """
-        if isinstance(self.scanner, CharScanner):
-            join_with = ''
-        else:
-            join_with = ' '
-        return self.do_format(join_with.join(parts))
+        try:
+            string = self.scanner.join(parts)
+        except AttributeError:
+            if isinstance(self.scanner, CharScanner):
+                join_with = ''
+            else:
+                join_with = ' '
+            string = join_with.join(parts)
+        return self.do_format(string)
 
     def __call__(self, max_length=None, state_size=None, start=None):
         """Generate a sentence.
