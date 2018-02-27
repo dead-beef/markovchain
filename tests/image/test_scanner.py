@@ -6,7 +6,7 @@ from markovchain.image import ImageScanner, HLines, VLines
 from markovchain.image.util import palette as default_palette
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def image_test():
     data = b'\x00\x00\x00\xaa\xaa\xaa\xdd\xdd\xdd\x44\x44\x44'
     palette = [

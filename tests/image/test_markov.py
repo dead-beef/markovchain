@@ -5,7 +5,7 @@ from markovchain import Scanner, Parser, LevelParser
 from markovchain.image import MarkovImage, ImageScanner, HLines, VLines
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def palette_test():
     palette = [
         0x00, 0x00, 0x00,
