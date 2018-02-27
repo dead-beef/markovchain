@@ -132,14 +132,14 @@ def test_image_scanner_scan_levels(image_test):
     assert [list(level) for level in scan(image)] in [
         [
             ['00', scan.END],
-            [(scan.START, '0000'),
-             '0100', '0103', '0102', '0101',
+            [(scan.START, '00'),
+             '00', '03', '02', '01',
              scan.END]
         ],
         [
             ['01', scan.END],
-            [(scan.START, '0001'),
-             '0100', '0103', '0102', '0101',
+            [(scan.START, '01'),
+             '00', '03', '02', '01',
              scan.END]
         ]
     ]

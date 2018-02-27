@@ -360,3 +360,35 @@ def truncate(string, maxlen, end=True):
         return string[:maxlen - 3] + '...'
 
     return '...' + string[3 - maxlen:]
+
+
+def state_size_dataset(sz):
+    """Get dataset key part for state size.
+
+    Parameters
+    ----------
+    sz : `int`
+        State size.
+
+    Returns
+    -------
+    `str`
+        Dataset key part.
+    """
+    return '_ss%d' % sz
+
+
+def level_dataset(lv):
+    """Get dataset key part for level.
+
+    Parameters
+    ----------
+    lv : `int`
+        Level.
+
+    Returns
+    -------
+    `str`
+        Dataset key part.
+    """
+    return '_lv%d' % lv

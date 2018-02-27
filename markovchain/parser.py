@@ -1,7 +1,10 @@
 from collections import deque
-from itertools import repeat, islice
+from itertools import repeat, islice, count
 
-from .util import SaveLoad, to_list, fill, load
+from .util import (
+    SaveLoad, to_list, fill, load,
+    state_size_dataset, level_dataset
+)
 from .scanner import Scanner
 
 
@@ -32,7 +35,7 @@ class ParserBase(SaveLoad):
         if parse is not None:
             self.parse = parse
 
-    def __call__(self, data, part=False):
+    def __call__(self, data, part=False, dataset=''):
         """Parse data.
 
         Parameters
@@ -41,6 +44,8 @@ class ParserBase(SaveLoad):
             Data to parse.
         part : `bool`, optional
             True if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
 
         Returns
         -------
@@ -134,7 +139,7 @@ class Parser(ParserBase):
             self.state.extend(repeat('', self.state_size))
         self.end = True
 
-    def __call__(self, data, part=False):
+    def __call__(self, data, part=False, dataset=''):
         """Parse tokens.
 
         Parameters
@@ -143,12 +148,18 @@ class Parser(ParserBase):
             Tokens to parse.
         part : `bool`, optional
             `True` if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
 
         Returns
         -------
-        generator of (`islice` of `str`, `str`)
+        generator of (`str`, `islice` of `str`, `str`)
             Link generator.
         """
+        datasets = [
+            dataset + state_size_dataset(ss)
+            for ss in self.state_sizes
+        ]
         for word in data:
             if isinstance(word, tuple):
                 cmd, arg = word
@@ -163,9 +174,13 @@ class Parser(ParserBase):
                     self.reset()
                 self.end = True
             else:
-                for sz in self.state_sizes:
+                for dataset, sz in zip(datasets, self.state_sizes):
                     start = self.state_size - sz
-                    yield islice(self.state, start, self.state_size), word
+                    yield (
+                        dataset,
+                        islice(self.state, start, self.state_size),
+                        word
+                    )
                 self.state.append(word)
                 self.end = False
 
@@ -251,7 +266,7 @@ class LevelParser(ParserBase):
         for parser in self.parsers:
             parser.reset()
 
-    def __call__(self, data, part=False):
+    def __call__(self, data, part=False, dataset=''):
         """Parse tokens.
 
         Parameters
@@ -260,16 +275,18 @@ class LevelParser(ParserBase):
             Levels to parse.
         part : `bool`, optional
             `True` if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
 
         Returns
         -------
-        `generator` of (`islice` of `str`, `str`)
+        `generator` of (`str`, `islice` of `str`, `str`)
             Link generator.
         """
         #if part:
         #    raise NotImplementedError()
-        for level, parser in zip(data, self.parsers):
-            yield from parser(level, part)
+        for level, level_data, parser in zip(count(0), data, self.parsers):
+            yield from parser(level_data, part, dataset + level_dataset(level))
 
     def __eq__(self, parser):
         return (self.levels == parser.levels

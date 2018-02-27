@@ -14,19 +14,19 @@ def test_markov_base_properties():
     assert isinstance(markov.scanner, Scanner)
     assert markov.storage is storage
 
-@pytest.mark.parametrize('data,part', [
-    ([], False),
-    ([1, 2, 3], True)
+@pytest.mark.parametrize('data,part,dataset', [
+    ([], False, ''),
+    ([1, 2, 3], True, 'data')
 ])
-def test_markov_base_data(data, part):
+def test_markov_base_data(data, part, dataset):
     storage = Mock(settings={})
     scanner = Mock(return_value=0)
     parser = Mock(return_value=1)
     markov = Markov(parser=parser, scanner=scanner, storage=storage)
-    markov.data(data, part)
+    markov.data(data, part, dataset)
     scanner.assert_called_once_with(data, part)
-    parser.assert_called_once_with(0, part)
-    storage.links.assert_called_once_with(1)
+    parser.assert_called_once_with(0, part, dataset)
+    storage.add_links.assert_called_once_with(1)
 
 def test_markov_base_generate_empty():
     markov = Markov(parser=Mock(state_sizes=[]))
@@ -45,22 +45,29 @@ def test_markov_base_generate_error():
     (3, 'a b', ['', 'a', 'b']),
     (3, range(2), ['', 0, 1])
 ])
-def test_markov_base_generate(state_size, start, res):
+def test_markov_base_generate(mocker, state_size, start, res):
+    state_size_dataset = mocker.patch(
+        'markovchain.base.state_size_dataset',
+        return_value='_0'
+    )
     storage = Mock(
         random_link=Mock(side_effect=[('link', 'state'), (None, None)]),
-        split_state=lambda s: s.split()
+        split_state=lambda s: s.split(),
+        get_dataset=Mock(wraps=lambda s: 0)
     )
     markov = Markov(
         parser=Mock(),
         scanner=Mock(),
         storage=storage
     )
-    assert list(markov.generate(start=start, state_size=state_size)) == ['link']
+    assert list(markov.generate(state_size, start, 'data')) == ['link']
     assert storage.random_link.call_count == 2
     storage.random_link.assert_has_calls([
-        call(deque(res, maxlen=state_size)),
-        call('state')
+        call(0, deque(res, maxlen=state_size)),
+        call(0, 'state')
     ])
+    storage.get_dataset.assert_called_once_with('data_0')
+    state_size_dataset.assert_called_with(state_size)
 
 def test_markov_base_get_settings_json():
     markov = Markov(

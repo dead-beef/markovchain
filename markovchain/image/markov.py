@@ -5,7 +5,7 @@ from .scanner import ImageScanner
 from .util import palette as default_palette
 from ..base import Markov
 from ..parser import LevelParser
-from ..util import fill
+from ..util import fill, level_dataset
 
 
 class MarkovImage(Markov):
@@ -54,7 +54,11 @@ class MarkovImage(Markov):
             self.parser.levels = levels
         self._levels = levels
 
-    def _imgdata(self, width, height, state_size=None, start=None):
+    def _imgdata(self,
+                 width, height,
+                 state_size=None,
+                 start=None,
+                 dataset=''):
         """Generate image pixels.
 
         Parameters
@@ -67,6 +71,8 @@ class MarkovImage(Markov):
             State size to use for generation (default: `None`).
         start : `str` or `None`, optional
             Initial state (default: `None`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
 
         Raises
         ------
@@ -80,26 +86,25 @@ class MarkovImage(Markov):
         """
         size = width * height
         if size > 0 and start is not None:
-            yield int(start[-2:], 16)
+            yield int(start, 16)
             size -= 1
 
         while size > 0:
             prev_size = size
-            pixels = self.generate(state_size=state_size, start=start)
+            pixels = self.generate(state_size, start, dataset)
             pixels = islice(pixels, 0, size)
 
             for pixel in pixels:
-                yield int(pixel[-2:], 16)
+                yield int(pixel, 16)
                 size -= 1
 
             if prev_size == size:
                 if start is not None:
-                    pixel = int(start[-2:], 16)
-                    yield from repeat(pixel, size)
+                    yield from repeat(int(start, 16), size)
                 else:
                     raise RuntimeError('empty generator')
 
-    def data(self, data, part=False):
+    def data(self, data, part=False, dataset=''):
         """
         Parameters
         ----------
@@ -107,14 +112,18 @@ class MarkovImage(Markov):
             Image to parse.
         part : `bool`, optional
             True if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
         """
         #if self.parser is None:
         #    raise ValueError('no parser')
+        data = self.scanner(data, part)
         if isinstance(self.parser, LevelParser):
-            self.storage.links(self.parser(self.scanner(data, part), part))
+            self.storage.add_links(self.parser(data, part, dataset))
         else:
-            data = chain.from_iterable(self.scanner(data, part))
-            self.storage.links(self.parser(data, part))
+            for level, level_data in enumerate(data):
+                key = dataset + level_dataset(level)
+                self.storage.add_links(self.parser(level_data, part, key))
 
     def get_settings_json(self):
         data = super().get_settings_json()
@@ -130,7 +139,8 @@ class MarkovImage(Markov):
     def __call__(self, width, height,
                  state_size=None,
                  start=None, levels=None,
-                 start_level=-1, start_image=None):
+                 start_level=-1, start_image=None,
+                 dataset=''):
         """Generate an image.
 
         Parameters
@@ -149,6 +159,8 @@ class MarkovImage(Markov):
             Initial level (default: -1).
         start_image : `PIL.Image` or `None`
             Initial level image (default: `None`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
 
         Returns
         -------
@@ -186,11 +198,13 @@ class MarkovImage(Markov):
             width, height = prev.size
 
         for level, state_size in gen_levels:
+            key = dataset + level_dataset(level)
+
             if state_size is None:
-                try:
+                if isinstance(self.parser, LevelParser):
                     state_size = self.parser.parsers[level].state_sizes[0]
-                except AttributeError:
-                    pass
+                else:
+                    state_size = self.parser.state_sizes[0]
 
             if prev is not None:
                 scale = self.scanner.level_scale[level - 1]
@@ -202,7 +216,7 @@ class MarkovImage(Markov):
 
             if prev is None:
                 tr = self.scanner.traversal[0](width, height, ends=False)
-                data = self._imgdata(width, height, state_size, start)
+                data = self._imgdata(width, height, state_size, start, key)
                 for xy, pixel in zip(tr, data):
                     ret.putpixel(xy, pixel)
             else:
@@ -212,11 +226,11 @@ class MarkovImage(Markov):
                     ends=False
                 )
                 for xy in tr:
-                    start = '%02X%02X' % (level - 1, prev.getpixel(xy))
+                    start = '%02X' % prev.getpixel(xy)
                     x0, y0 = xy
                     x0 *= scale
                     y0 *= scale
-                    data = self._imgdata(scale, scale, state_size, start)
+                    data = self._imgdata(scale, scale, state_size, start, key)
                     blk = self.scanner.traversal[level](scale, scale, False)
                     for pixel, (x1, y1) in zip(data, blk):
                         ret.putpixel((x0 + x1, y0 + y1), pixel)

@@ -262,15 +262,13 @@ class ImageScanner(Scanner):
                 y0 = xy[1] * scale
                 start = (
                     self.START,
-                    '%02X%02X' % (level - 1, prev.getpixel(xy))
+                    '%02X' % prev.getpixel(xy)
                 )
                 yield start
                 for dxy in self.traversal[level](scale, scale, True):
                     if dxy is None:
                         yield start
-                    yield '%02X%02X' % (
-                        level, img.getpixel((x0 + dxy[0], y0 + dxy[1]))
-                    )
+                    yield '%02X' % img.getpixel((x0 + dxy[0], y0 + dxy[1]))
                 yield self.END
 
     def __call__(self, img, part=False):

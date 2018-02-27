@@ -13,7 +13,7 @@ class MarkovText(Markov):
     DEFAULT_SCANNER = RegExpScanner
     DEFAULT_PARSER = Parser
 
-    def data(self, data, part=False):
+    def data(self, data, part=False, dataset=''):
         """
         Parameters
         ----------
@@ -21,6 +21,8 @@ class MarkovText(Markov):
             Text to parse.
         part : `bool`, optional
             True if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
         """
         return super().data(data, part)
 
@@ -52,7 +54,11 @@ class MarkovText(Markov):
             string = join_with.join(parts)
         return self.do_format(string)
 
-    def __call__(self, max_length=None, state_size=None, start=None):
+    def __call__(self,
+                 max_length=None,
+                 state_size=None,
+                 start=None,
+                 dataset=''):
         """Generate a sentence.
 
         Parameters
@@ -63,6 +69,8 @@ class MarkovText(Markov):
             State size (default: parser.state_sizes[0]).
         start : `None` or `str` or `iterable` of `str`, optional
             Starting state (default: []).
+        dataset: `str`, optional
+            Dataset key prefix (default: '').
 
         Returns
         -------
@@ -83,7 +91,7 @@ class MarkovText(Markov):
         else:
             state = None
 
-        parts = self.generate(state_size, state)
+        parts = self.generate(state_size, state, dataset)
         if max_length is not None:
             parts = islice(parts, 0, max_length)
 

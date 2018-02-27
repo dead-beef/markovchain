@@ -1,4 +1,4 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 import pytest
 
 from markovchain import Parser, LevelParser, Scanner
@@ -6,8 +6,8 @@ from markovchain.parser import ParserBase
 
 
 def parse(parser, data, part=False, separator=' '):
-    return [(separator.join(src), dst)
-            for src, dst in parser(data, part)]
+    return [(dataset, separator.join(src), dst)
+            for dataset, src, dst in parser(data, part)]
 
 
 def test_parser_properties():
@@ -34,39 +34,60 @@ def test_parser_properties():
     parser.state_sizes = [3]
     assert list(parser.state) == ['', '', '']
 
-def test_parser_parse():
+def test_parser_parse(mocker):
+    state_size_dataset = mocker.patch(
+        'markovchain.parser.state_size_dataset',
+        return_value='0'
+    )
     parser = Parser(state_sizes=[2], reset_on_sentence_end=False)
     res = parse(parser, ['a', Scanner.END, 'b'], True, '::')
-    assert res == [('::', 'a'), ('::a', 'b')]
+    assert res == [('0', '::', 'a'), ('0', '::a', 'b')]
     res = parse(parser, 'c', separator='::')
-    assert res == [('a::b', 'c')]
+    assert res == [('0', 'a::b', 'c')]
+    state_size_dataset.assert_has_calls(
+        call(parser.state_sizes[0]) for _ in range(2)
+    )
 
-def test_parser_parse_default():
+def test_parser_parse_default(mocker):
+    state_size_dataset = mocker.patch(
+        'markovchain.parser.state_size_dataset',
+        return_value='0'
+    )
     parser = Parser()
     assert parse(parser, '') == []
     assert parse(parser, 'abc', True) == [
-        ('', 'a'), ('a', 'b'), ('b', 'c')
+        ('0', '', 'a'), ('0', 'a', 'b'), ('0', 'b', 'c')
     ]
     assert parse(parser, ['a', 'b', Scanner.END, 'c']) == [
-        ('c', 'a'), ('a', 'b'), ('', 'c')
+        ('0', 'c', 'a'), ('0', 'a', 'b'), ('0', '', 'c')
     ]
     assert parse(parser, ['a', Scanner.END, Scanner.END, 'c']) == [
-        ('', 'a'), ('', 'c')
+        ('0', '', 'a'), ('0', '', 'c')
     ]
     assert parse(parser, [Scanner.END] * 4) == []
+    state_size_dataset.assert_has_calls(
+        call(parser.state_sizes[0]) for _ in range(4)
+    )
 
 @pytest.mark.parametrize('test,res', [
-    ('abcde', [('  ', 'a'), ('  a', 'b'),
-               (' a b', 'c'), ('a b c', 'd'), ('b c d', 'e')]),
+    ('abcde', [('0', '  ', 'a'),
+               ('0', '  a', 'b'), ('0', ' a b', 'c'),
+               ('0', 'a b c', 'd'), ('0', 'b c d', 'e')]),
     (['a', 'b', 'c', Scanner.END, 'd', 'e'],
-     [('  ', 'a'), ('  a', 'b'),
-      (' a b', 'c'), ('  ', 'd'), ('  d', 'e')]),
+     [('0', '  ', 'a'), ('0', '  a', 'b'),
+      ('0', ' a b', 'c'), ('0', '  ', 'd'), ('0', '  d', 'e')]),
     (['a', 'b', 'c', (Scanner.START, 'd'), 'e'],
-     [('  ', 'a'), ('  a', 'b'), (' a b', 'c'), ('  d', 'e')])
+     [('0', '  ', 'a'), ('0', '  a', 'b'),
+      ('0', ' a b', 'c'), ('0', '  d', 'e')])
 ])
-def test_parser_state_size(test, res):
+def test_parser_state_size(mocker, test, res):
+    state_size_dataset = mocker.patch(
+        'markovchain.parser.state_size_dataset',
+        return_value='0'
+    )
     parser = Parser(state_sizes=[3])
     assert parse(parser, test) == res
+    state_size_dataset.assert_called_once_with(3)
 
 @pytest.mark.parametrize('test,test2,res', [
     ((), (), True),
@@ -128,13 +149,25 @@ def test_level_parser_reset():
     ([[0]] * 5, [0, 1]),
     ([], [])
 ])
-def test_level_parser_parse(test, res):
+def test_level_parser_parse(mocker, test, res):
+    level_dataset = mocker.patch(
+        'markovchain.parser.level_dataset',
+        return_value='0'
+    )
+    parsers = [
+        Mock(wraps=ParserBase(lambda x: [0])),
+        Mock(wraps=ParserBase(lambda x: [1]))
+    ]
     parser = LevelParser(
         levels=2,
-        parsers=[ParserBase(lambda x: [0]),
-                 ParserBase(lambda x: [1])]
+        parsers=parsers
     )
-    assert list(parser(test)) == res
+    assert list(parser(test, dataset='data')) == res
+    if test:
+        assert level_dataset.call_count == 2
+        level_dataset.assert_has_calls([call(0), call(1)])
+    for parser, data in zip(parsers, test):
+        parser.assert_called_once_with(data, False, 'data0')
 
 @pytest.mark.parametrize('test,test2,res', [
     ((), (), True),

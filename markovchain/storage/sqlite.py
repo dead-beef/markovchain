@@ -1,7 +1,7 @@
 import json
 import sqlite3
 from random import randint
-from itertools import chain, islice
+from itertools import chain, islice, tee
 
 from .base import Storage
 
@@ -33,6 +33,9 @@ class SqliteStorage(Storage):
         self.create_node_tables()
         self.update_main_table()
 
+        self.cursor.execute('SELECT key, id FROM datasets')
+        self.datasets = dict(self.cursor.fetchall())
+
     def __eq__(self, markov):
         raise NotImplementedError()
         #return super().__eq__(markov)
@@ -43,25 +46,42 @@ class SqliteStorage(Storage):
             (old_separator, new_separator)
         )
 
-    def links(self, links):
-        for src, dst in links:
-            src = list(src)
+    def get_dataset(self, key, create=False):
+        try:
+            return self.datasets[key]
+        except KeyError:
+            if not create:
+                raise
+            self.cursor.execute(
+                'INSERT INTO datasets (key) VALUES (?)',
+                (key,)
+            )
+            ret = self.cursor.lastrowid
+            self.datasets[key] = ret
+            return ret
+
+    def add_links(self, links, dataset_prefix=''):
+        for dataset, src, dst in links:
+            src, src2 = tee(src)
             source = self.get_node(self.join_state(src))
             target = self.get_node(self.join_state(
-                chain(islice(src, 1, None), (dst,))
+                chain(islice(src2, 1, None), (dst,))
             ))
+            dataset = self.get_dataset(dataset_prefix + dataset, True)
             self.cursor.execute(
-                'UPDATE links SET count = count + 1 WHERE source=? AND target=?',
-                (source, target)
+                '''UPDATE links
+                   SET count = count + 1
+                   WHERE source=? AND target=? AND dataset=?''',
+                (source, target, dataset)
             )
             self.cursor.execute(
-                '''INSERT INTO links (source, target, value)
-                   SELECT ?, ?, ?
+                '''INSERT INTO links (dataset, source, target, value)
+                   SELECT ?, ?, ?, ?
                    WHERE (SELECT Changes() = 0)''',
-                (source, target, dst)
+                (dataset, source, target, dst)
             )
 
-    def random_link(self, state):
+    def random_link(self, dataset, state):
         if not isinstance(state, int):
             self.cursor.execute(
                 'SELECT id FROM nodes WHERE value=?',
@@ -74,8 +94,10 @@ class SqliteStorage(Storage):
             state = state[0]
 
         self.cursor.execute(
-            'SELECT count, value, target FROM links WHERE source=?',
-            (state,)
+            '''SELECT count, value, target
+               FROM links
+               WHERE dataset=? AND source=?''',
+            (dataset, state)
         )
         links = self.cursor.fetchall()
         if not links:
@@ -149,6 +171,12 @@ class SqliteStorage(Storage):
         """
         self.cursor.execute('PRAGMA foreign_keys=1')
         self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS datasets (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                key TEXT NOT NULL
+            )
+        ''')
+        self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS nodes (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 value TEXT NOT NULL
@@ -156,6 +184,7 @@ class SqliteStorage(Storage):
         ''')
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS links (
+                dataset REFERENCES datasets (id),
                 source REFERENCES nodes (id),
                 target REFERENCES nodes (id),
                 value TEXT NOT NULL,
@@ -164,6 +193,9 @@ class SqliteStorage(Storage):
         ''')
         self.cursor.execute(
             'CREATE UNIQUE INDEX IF NOT EXISTS node ON nodes (value)'
+        )
+        self.cursor.execute(
+            'CREATE INDEX IF NOT EXISTS link_source ON links (dataset)'
         )
         self.cursor.execute(
             'CREATE INDEX IF NOT EXISTS link_source ON links (source)'

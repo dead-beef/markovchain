@@ -40,19 +40,6 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
             self.replace_state_separator(self._state_separator, separator)
         self._state_separator = separator
 
-    @abstractmethod
-    def replace_state_separator(self, old_separator, new_separator):
-        """Replace state separator.
-
-        Parameters
-        ----------
-        old_separator : `str`
-            Old state separator.
-        new_separator : `str`
-            New state separator.
-        """
-        pass
-
     def split_state(self, state):
         """Split state string.
 
@@ -64,7 +51,9 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         -------
         `list` of `str`
         """
-        return state.split(self.state_separator)
+        if self.state_separator:
+            return state.split(self.state_separator)
+        return list(state)
 
     def join_state(self, state):
         """Join states.
@@ -80,22 +69,62 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         return self.state_separator.join(state)
 
     @abstractmethod
-    def links(self, links):
-        """Add links.
+    def get_dataset(self, key, create=False):
+        """Get data set by key.
 
         Parameters
         ----------
-        links : `generator` of (`islice` of `str`, `str`)
-            Links to add.
+        key : `str`
+            Dataset key.
+        create : `bool`, optional
+            Create dataset if it does not exist.
+
+        Returns
+        -------
+        `object`
+            Dataset.
+
+        Raises
+        ------
+        KeyError
+            If dataset does not exist and `create` == `False`.
         """
         pass
 
     @abstractmethod
-    def random_link(self, state):
+    def replace_state_separator(self, old_separator, new_separator):
+        """Replace state separator.
+
+        Parameters
+        ----------
+        old_separator : `str`
+            Old state separator.
+        new_separator : `str`
+            New state separator.
+        """
+        pass
+
+    @abstractmethod
+    def add_links(self, links, dataset_prefix=''):
+        """Add links.
+
+        Parameters
+        ----------
+        links : `generator` of (`str`, `islice` of `str`, `str`)
+            Links to add.
+        dataset_prefix : `str`, optional
+            Dataset key prefix.
+        """
+        pass
+
+    @abstractmethod
+    def random_link(self, dataset, state):
         """Get a random link.
 
         Parameters
         ----------
+        dataset : `object`
+            Dataset from `Storage.get_dataset`.
         state : `deque` of `str`
             Link source.
 

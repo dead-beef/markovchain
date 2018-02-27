@@ -34,7 +34,7 @@ def test_markov_image_properties():
 
 def test_markov_image_generate_error():
     markov = MarkovImage()
-    with pytest.raises(RuntimeError):
+    with pytest.raises(KeyError):
         markov(2, 2)
 
 @pytest.mark.parametrize('test,res', [
@@ -55,7 +55,7 @@ def test_markov_image_generate(palette_test, test, res):
     assert list(markov(*test).getdata()) == res
 
 @pytest.mark.parametrize('args,kwargs,data,res', [
-    ((2, 2), {}, False, RuntimeError),
+    ((2, 2), {}, False, KeyError),
     ((2, 2), {'levels': 0}, True, ValueError),
     ((2, 2), {'levels': 3}, True, ValueError),
     ((2, 2), {'levels': 1}, True, [0, 1, 2, 3]),
@@ -64,10 +64,10 @@ def test_markov_image_generate(palette_test, test, res):
         {'levels': 2},
         True,
         [
-            0, 1, 1, 2,
-            1, 1, 2, 2,
-            2, 3, 3, 0,
-            3, 3, 0, 0
+            0, 2, 1, 3,
+            1, 3, 2, 0,
+            2, 0, 3, 1,
+            3, 1, 0, 2
         ]
     ),
     (
@@ -92,7 +92,7 @@ def test_markov_image_generate(palette_test, test, res):
         (None, None),
         {'levels': 2, 'start_level': 0, 'start_image': True},
         True,
-        [1, 2, 2, 2]
+        [1, 3, 2, 0]
     ),
 ])
 def test_markov_image_generate_levels(palette_test, args, kwargs, data, res):
@@ -106,12 +106,13 @@ def test_markov_image_generate_levels(palette_test, args, kwargs, data, res):
 
     if data:
         markov.data([
-            ['00', '01', '02', '03',],
-            [(Scanner.START, '0000'), '0101',
-             (Scanner.START, '0001'), '0102',
-             (Scanner.START, '0002'), '0103',
-             (Scanner.START, '0003'), '0100',]
+            ['00', '01', '02', '03'],
+            [(Scanner.START, '00'), '01',
+             (Scanner.START, '01'), '02',
+             (Scanner.START, '02'), '03',
+             (Scanner.START, '03'), '00']
         ])
+        print(markov.storage.nodes)
 
     if 'start_image' in kwargs:
         img = Image.new('P', (1, 1))

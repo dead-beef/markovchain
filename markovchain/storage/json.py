@@ -29,16 +29,29 @@ class JsonStorage(Storage):
                 and super().__eq__(storage))
 
     def replace_state_separator(self, old_separator, new_separator):
-        self.nodes = dict(
-            (k.replace(old_separator, new_separator), v)
-            for k, v in self.nodes.items()
-        )
+        for key, data in self.nodes.items():
+            self.nodes[key] = dict(
+                (k.replace(old_separator, new_separator), v)
+                for k, v in data.items()
+            )
 
-    def links(self, links):
-        for src, dst in links:
+    def get_dataset(self, key, create=False):
+        try:
+            return self.nodes[key]
+        except KeyError:
+            if create:
+                data = {}
+                self.nodes[key] = data
+                return data
+            else:
+                raise
+
+    def add_links(self, links, dataset_prefix=''):
+        for dataset, src, dst in links:
+            dataset = self.get_dataset(dataset_prefix + dataset, True)
             src = self.join_state(src)
             try:
-                node = self.nodes[src]
+                node = dataset[src]
                 nodes, values = node
                 if isinstance(nodes, list):
                     try:
@@ -53,11 +66,11 @@ class JsonStorage(Storage):
                     node[0] = [nodes, dst]
                     node[1] = [values, 1]
             except KeyError:
-                self.nodes[src] = [dst, 1]
+                dataset[src] = [dst, 1]
 
-    def random_link(self, state):
+    def random_link(self, dataset, state):
         try:
-            node = self.nodes[self.join_state(state)]
+            node = dataset[self.join_state(state)]
             if not isinstance(node[0], list):
                 state.append(node[0])
                 return node[0], state

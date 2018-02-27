@@ -24,7 +24,7 @@ def test_markov_text_format(mocker, test, scanner, join_with):
     fmt.assert_called_with(join_with.join(test))
 
 @pytest.mark.parametrize('data,args,res', [
-    ([], (), []),
+    ([], (), KeyError),
     ('xy', (), ['x', 'y']),
     ('xy', (None, None, 'z'), ['z']),
     ('xy', (None, None, 'xyx'), ['xyx', 'y']),
@@ -40,5 +40,9 @@ def test_markov_text_generate(mocker, data, args, res):
     )
     markov = MarkovText(scanner=Scanner(lambda x: x))
     markov.data(data)
-    assert markov(*args) == res
-    assert fmt.call_count == 1
+    if isinstance(res, type):
+        with pytest.raises(res):
+            markov(*args)
+    else:
+        assert markov(*args) == res
+        assert fmt.call_count == 1

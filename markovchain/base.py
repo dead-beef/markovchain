@@ -4,7 +4,7 @@ from itertools import chain, repeat
 from .storage import JsonStorage
 from .scanner import Scanner, CharScanner
 from .parser import ParserBase, Parser
-from .util import load, DOC_INHERIT
+from .util import load, DOC_INHERIT, state_size_dataset
 
 
 class Markov(metaclass=DOC_INHERIT):
@@ -56,7 +56,7 @@ class Markov(metaclass=DOC_INHERIT):
                 and self.parser == markov.parser
                 and self.storage == markov.storage)
 
-    def data(self, data, part=False):
+    def data(self, data, part=False, dataset=''):
         """Parse data and update links.
 
         Parameters
@@ -65,10 +65,13 @@ class Markov(metaclass=DOC_INHERIT):
             Data to parse.
         part : `bool`, optional
             True if data is partial (default: `False`).
+        dataset : `str`, optional
+            Dataset key prefix (default: '').
         """
-        self.storage.links(self.parser(self.scanner(data, part), part))
+        links = self.parser(self.scanner(data, part), part, dataset)
+        self.storage.add_links(links)
 
-    def generate(self, state_size=None, start=None):
+    def generate(self, state_size=None, start=None, dataset=''):
         """Generate a sequence.
 
         Parameters
@@ -77,6 +80,8 @@ class Markov(metaclass=DOC_INHERIT):
             State size (default: parser.state_sizes[0]).
         start : `iterable` of `str`, optional
             Starting state (default: []).
+        dataset: `str`, optional
+            Dataset key prefix.
 
         Returns
         -------
@@ -104,9 +109,11 @@ class Markov(metaclass=DOC_INHERIT):
             state = chain(repeat('', state_size), start)
 
         state = deque(state, maxlen=state_size)
+        dataset += state_size_dataset(state_size)
+        dataset = self.storage.get_dataset(dataset)
 
         while True:
-            link, state = self.storage.random_link(state)
+            link, state = self.storage.random_link(dataset, state)
             if link is None:
                 return
             yield link

@@ -7,9 +7,11 @@ from markovchain.storage.base import Storage
 class StorageTest(Storage):
     def replace_state_separator(self, old_separator, new_separator):
         pass
-    def links(self, links):
+    def get_dataset(self, key, create=False):
         pass
-    def random_link(self, state):
+    def add_links(self, links, dataset_prefix=''):
+        pass
+    def random_link(self, dataset, state):
         pass
     def do_save(self, fp=None):
         pass

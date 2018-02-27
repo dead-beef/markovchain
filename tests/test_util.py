@@ -2,7 +2,8 @@ import pytest
 
 from markovchain.util import (
     SaveLoad, ObjectWrapper, const,
-    fill, load, extend, to_list, truncate
+    fill, load, extend, to_list, truncate,
+    state_size_dataset, level_dataset
 )
 
 
@@ -177,3 +178,19 @@ def test_truncate_noop(test):
 ])
 def test_truncate(test, res):
     assert truncate(*test) == res
+
+
+@pytest.mark.parametrize('test', range(5))
+def test_state_size_dataset(test):
+    res = state_size_dataset(test)
+    assert isinstance(res, str)
+    assert len(res) > 0
+    assert res != state_size_dataset(test - 1)
+
+@pytest.mark.parametrize('test', range(5))
+def test_level_dataset(test):
+    res = level_dataset(test)
+    assert isinstance(res, str)
+    assert len(res) > 0
+    assert res != level_dataset(test - 1)
+    assert res != state_size_dataset(test)
