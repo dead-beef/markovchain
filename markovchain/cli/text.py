@@ -1,5 +1,4 @@
 from argparse import FileType
-from sys import stdout #, stderr
 from os import replace, remove, path, SEEK_SET, SEEK_END
 
 from .. import MarkovText, JsonStorage, SqliteStorage
@@ -81,7 +80,7 @@ def create_arg_parser(parent):
                       type=int, default=1,
                       help='number of generated sentences (default: %(default)s)')
     arg2.add_argument('-o', '--output',
-                      type=FileType('w'), default=stdout,
+                      type=FileType('w'), default=None,
                       help='output file (default: stdout)')
     arg2.add_argument('state',
                       help='state file')

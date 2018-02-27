@@ -1,4 +1,4 @@
-from sys import argv, stderr
+import sys
 from argparse import ArgumentParser
 
 from . import text
@@ -10,8 +10,13 @@ try:
 except ImportError:
     image = None
 
-def main():
+def main(args=None):
     """CLI main function.
+
+    Parameters
+    ----------
+    args : `list` of `str`, optional
+        CLI arguments (default: `sys.argv`).
     """
     parser = ArgumentParser()
     parser.add_argument('-v', '--version',
@@ -23,16 +28,16 @@ def main():
     if image is not None:
         image.create_arg_parser(parsers.add_parser('image'))
 
-    if len(argv) == 1:
+    if len(sys.argv if args is None else args) <= 1:
         parser.print_help()
-        exit(1)
+        sys.exit(1)
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     dtype = globals()[args.dtype]
     try:
         set_args(args)
         cmd = getattr(dtype, 'cmd_' + args.command)
         cmd(args)
     except ValueError as err:
-        print(str(err), file=stderr)
-        exit(1)
+        print(str(err), file=sys.stderr)
+        sys.exit(1)
