@@ -74,7 +74,7 @@ def create_arg_parser(parent):
                       type=int, default=256,
                       help='max sentence size (default: %(default)s)')
     arg2.add_argument('-ws', '--word-separator',
-                      default=' ',
+                      default=None,
                       help='output word separator (default: \' \')')
     arg2.add_argument('-S', '--sentences',
                       type=int, default=1,
@@ -193,7 +193,9 @@ def cmd_generate(args):
 
     if not args.format:
         markov.do_format = lambda x: x
-    markov.scanner.join = args.word_separator.join
+
+    if args.word_separator:
+        markov.scanner.join = args.word_separator.join
 
     for _ in ss:
         data = markov(args.words,
