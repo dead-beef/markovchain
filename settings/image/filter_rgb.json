@@ -5,10 +5,7 @@
     "markov": {
         "levels": 5,
         "imgtype": {
-            "__class__": "Indexed",
-            "palette": [ 8, 4, 8 ],
-            "convert_type": 1,
-            "dither": true
+            "__class__": "RGB"
         },
         "parser": {
             "__class__": "Parser",

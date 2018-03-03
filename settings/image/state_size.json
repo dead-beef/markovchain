@@ -1,0 +1,22 @@
+{
+    "storage": {
+        "state_separator": ""
+    },
+    "markov": {
+        "levels": 1,
+        "imgtype": {
+            "__class__": "Indexed"
+        },
+        "parser": {
+            "__class__": "Parser",
+            "state_sizes": [ 1, 2, 4, 8, 16, 32 ]
+        },
+        "scanner": {
+            "__class__": "ImageScanner",
+            "resize": [256, 256],
+            "traversal": {
+                "__class__": "Hilbert"
+            }
+        }
+    }
+}

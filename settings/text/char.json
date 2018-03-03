@@ -1,6 +1,6 @@
 {
     "storage": {
-        "state_separator": "|"
+        "state_separator": ""
     },
     "markov": {
         "parser": {

@@ -1,10 +1,15 @@
 {
     "storage": {
-        "state_separator": " "
+        "state_separator": ""
     },
     "markov": {
-        "palette": [ 8, 4, 8 ],
         "levels": 4,
+        "imgtype": {
+            "__class__": "Indexed",
+            "palette": [ 8, 4, 8 ],
+            "convert_type": 1,
+            "dither": true
+        },
         "parser": {
             "__class__": "LevelParser",
             "parsers": [
@@ -22,11 +27,8 @@
         },
         "scanner": {
             "__class__": "ImageScanner",
-            "resize": [ 800, 600 ],
-            "convert_type": 1,
-            "dither": true,
+            "resize": [ 400, 300 ],
             "scale": "BICUBIC",
-            "palette": [ 8, 4, 8 ],
             "level_scale": [ 3, 3, 3 ],
             "traversal": [
                 {

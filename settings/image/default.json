@@ -3,8 +3,13 @@
         "state_separator": " "
     },
     "markov": {
-        "palette": [ 8, 4, 8 ],
         "levels": 1,
+        "imgtype": {
+            "__class__": "Indexed",
+            "palette": [ 8, 4, 8 ],
+            "convert_type": 1,
+            "dither": true
+        },
         "parser": {
             "__class__": "Parser",
             "state_sizes": [ 1 ],
@@ -13,10 +18,7 @@
         "scanner": {
             "__class__": "ImageScanner",
             "resize": null,
-            "convert_type": 1,
-            "dither": false,
             "scale": "BICUBIC",
-            "palette": [ 8, 4, 8 ],
             "level_scale": 4,
             "traversal": {
                 "__class__": "HLines",
