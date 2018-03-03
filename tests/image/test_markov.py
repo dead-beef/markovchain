@@ -1,20 +1,9 @@
+from unittest.mock import Mock
 import pytest
 from PIL import Image
 
 from markovchain import Scanner, Parser, LevelParser
 from markovchain.image import MarkovImage, ImageScanner, HLines, VLines
-
-
-@pytest.fixture(scope='module')
-def palette_test():
-    palette = [
-        0x00, 0x00, 0x00,
-        0x44, 0x44, 0x44,
-        0xaa, 0xaa, 0xaa,
-        0xdd, 0xdd, 0xdd
-    ]
-    palette.extend(0 for _ in range((256 - len(palette)) * 3))
-    return palette
 
 
 def test_markov_image_properties():
@@ -41,16 +30,16 @@ def test_markov_image_generate_error():
     ((2, 2), [0, 1, 2, 3]),
     ((4, 2), [0, 1, 2, 3, 0, 1, 2, 3])
 ])
-def test_markov_image_generate(palette_test, test, res):
+def test_markov_image_generate(test, res):
     scanner = Scanner(lambda x: x)
     scanner.traversal = [HLines()]
     scanner.levels = 1
     scanner.level_scale = []
     markov = MarkovImage(
-        palette=palette_test,
         scanner=scanner,
         parser=Parser()
     )
+    markov.imgtype.convert = lambda x: [x]
     markov.data([['00', '01', '02', '03']])
     assert list(markov(*test).getdata()) == res
 
@@ -95,14 +84,14 @@ def test_markov_image_generate(palette_test, test, res):
         [1, 3, 2, 0]
     ),
 ])
-def test_markov_image_generate_levels(palette_test, args, kwargs, data, res):
+def test_markov_image_generate_levels(args, kwargs, data, res):
     scanner = Scanner(lambda x: x)
     scanner.traversal = [HLines(), VLines()]
     scanner.levels = 2
     scanner.level_scale = [2]
-    scanner.set_palette = lambda img: img
 
-    markov = MarkovImage(levels=2, palette=palette_test, scanner=scanner)
+    markov = MarkovImage(levels=2, scanner=scanner)
+    markov.imgtype.convert = lambda x: [x]
 
     if data:
         markov.data([
@@ -112,11 +101,9 @@ def test_markov_image_generate_levels(palette_test, args, kwargs, data, res):
              (Scanner.START, '02'), '03',
              (Scanner.START, '03'), '00']
         ])
-        print(markov.storage.nodes)
 
     if 'start_image' in kwargs:
         img = Image.new('P', (1, 1))
-        img.putpalette(palette_test)
         img.putpixel((0, 0), 1)
         kwargs['start_image'] = img
 
@@ -126,20 +113,20 @@ def test_markov_image_generate_levels(palette_test, args, kwargs, data, res):
     else:
         assert list(markov(*args, **kwargs).getdata()) == res
 
-def test_markov_image_get_settings_json(mocker, palette_test):
+def test_markov_image_get_settings_json(mocker):
     get_settings_json = mocker.patch(
         'markovchain.Markov.get_settings_json',
         return_value={'x': 0}
     )
     markov = MarkovImage(
         levels=2,
-        palette=palette_test
+        imgtype=Mock(save=lambda: 3)
     )
     data = markov.get_settings_json()
     assert data == {
         'x': 0,
         'levels': 2,
-        'palette': palette_test
+        'imgtype': 3
     }
     get_settings_json.assert_called_once_with()
 

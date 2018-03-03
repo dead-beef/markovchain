@@ -7,8 +7,7 @@ from itertools import islice
 from PIL import Image
 
 from .. import JsonStorage, SqliteStorage
-from ..image import ImageScanner, MarkovImage
-from ..image.util import palette
+from ..image import MarkovImage
 from ..util import ObjectWrapper, truncate
 from .util import (
     tqdm, load, save, infiles, outfiles as _outfiles,
@@ -123,16 +122,18 @@ class TraversalProgressWrapper(ObjectWrapper): # pylint: disable=too-few-public-
     pbar_parent : `tqdm.tqdm`
         Parent progress bar.
     """
-    def __init__(self, obj, parent=None):
+    def __init__(self, obj, channels, parent=None):
         super().__init__(obj)
         self.pbar_parent = parent
+        self.channels = channels
 
     def __call__(self, width, height, ends=True):
         size = width * height
-        if self.pbar_parent is not None:
-            title = 'Level ' + str(self.pbar_parent.n + 1)
-        else:
-            title = None
+        levels = self.pbar_parent.total // len(self.channels)
+        calls = self.pbar_parent.n
+        level = calls % levels + 1
+        channel = self.channels[calls // levels]
+        title = 'Level %d%s' % (level, channel)
         pbar = tqdm(total=size, desc=title,
                     leave=False, unit='px',
                     bar_format=BAR_FORMAT, dynamic_ncols=True)
@@ -143,8 +144,6 @@ class TraversalProgressWrapper(ObjectWrapper): # pylint: disable=too-few-public-
                 yield xy
         finally:
             pbar.close()
-
-        if self.pbar_parent is not None:
             self.pbar_parent.update(1)
 
 
@@ -162,22 +161,31 @@ def read(fnames, markov, progress, leave=True):
     leave : `bool`, optional
         Leave progress bars (default: `True`).
     """
+    pbar = None
+    channels = markov.imgtype.channels
+
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):
-        tr[0] = TraversalProgressWrapper(tr[0])
+        tr[0] = TraversalProgressWrapper(tr[0], channels)
     tr = tr[0]
 
-    with infiles(fnames, progress, leave) as fnames:
-        for fname in fnames:
-            if progress:
-                title = truncate(fname, BAR_DESC_SIZE - 1, False)
-                pbar = tqdm(total=markov.levels, desc=title,
-                            leave=False, unit='lvl',
-                            bar_format=BAR_FORMAT, dynamic_ncols=True)
-                tr.pbar_parent = pbar
-            markov.data(Image.open(fname), False)
-            if progress:
-                pbar.close()
+    try:
+        with infiles(fnames, progress, leave) as fnames:
+            for fname in fnames:
+                if progress:
+                    title = truncate(fname, BAR_DESC_SIZE - 1, False)
+                    pbar = tqdm(
+                        total=markov.levels * len(channels),
+                        desc=title, leave=False, unit='lvl',
+                        bar_format=BAR_FORMAT, dynamic_ncols=True
+                    )
+                    tr.pbar_parent = pbar
+                markov.data(Image.open(fname), False)
+                if progress:
+                    pbar.close()
+    finally:
+        if pbar is not None:
+            pbar.close()
 
 def outfiles(markov, fmt, nfiles, progress, start=0):
     """Get output file paths.
@@ -200,46 +208,33 @@ def outfiles(markov, fmt, nfiles, progress, start=0):
     `generator` of `str`
         Output file paths.
     """
+    pbar = None
+    channels = markov.imgtype.channels
+
     tr = markov.scanner.traversal
     if progress and not isinstance(tr[0], TraversalProgressWrapper):
-        tr[0] = TraversalProgressWrapper(tr[0])
+        tr[0] = TraversalProgressWrapper(tr[0], channels)
     tr = tr[0]
 
-    with _outfiles(fmt, nfiles, progress) as fnames:
-        for fname in fnames:
-            if progress:
-                title = truncate(fname, BAR_DESC_SIZE - 1, False)
-                pbar = tqdm(initial=start, total=markov.levels,
-                            desc=title, leave=False, unit='lvl',
-                            bar_format=BAR_FORMAT, dynamic_ncols=True)
-                tr.pbar_parent = pbar
-            yield fname
-            if progress:
-                pbar.close()
-
-def cmd_convert(args):
-    """Convert an image.
-
-    Parameters
-    ----------
-    args : `argparse.Namespace`
-        Command arguments.
-    """
-    scanner = ImageScanner(
-        levels=1,
-        resize=tuple(args.resize) if args.resize else None,
-        dither=args.dither,
-        convert_type=args.convert_type,
-        palette=palette(*args.palette)
-    )
-
-    for fname in args.input:
-        name, _ = path.splitext(fname)
-        name += '_convert.png'
-        img = scanner.input(Image.open(fname))
-        img = scanner.level(img, 0)
-        with open(name, 'wb') as fp:
-            img.save(fp)
+    try:
+        with _outfiles(fmt, nfiles, progress) as fnames:
+            for fname in fnames:
+                if progress:
+                    title = truncate(fname, BAR_DESC_SIZE - 1, False)
+                    pbar = tqdm(
+                        initial=start * len(channels),
+                        total=markov.levels * len(channels),
+                        desc=title, leave=False, unit='lvl',
+                        bar_format=BAR_FORMAT, dynamic_ncols=True
+                    )
+                    tr.pbar_parent = pbar
+                yield fname
+                if progress:
+                    pbar.close()
+                    pbar = None
+    finally:
+        if pbar is not None:
+            pbar.close()
 
 def cmd_create(args):
     """Create a generator.

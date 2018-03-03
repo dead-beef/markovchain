@@ -3,27 +3,17 @@ from PIL import Image
 
 from markovchain import Scanner
 from markovchain.image import ImageScanner, HLines, VLines
-from markovchain.image.util import palette as default_palette
 
 
 @pytest.fixture(scope='module')
 def image_test():
-    data = b'\x00\x00\x00\xaa\xaa\xaa\xdd\xdd\xdd\x44\x44\x44'
-    palette = [
-        0x00, 0x00, 0x00,
-        0x44, 0x44, 0x44,
-        0xaa, 0xaa, 0xaa,
-        0xdd, 0xdd, 0xdd
-    ]
-    palette.extend(0 for _ in range((256 - len(palette)) * 3))
-    image = Image.frombytes('RGB', (2, 2), data, 'raw', 'RGB')
-    return image, palette
+    data = b'\x00\x02\x03\x01'
+    image = Image.frombytes('P', (2, 2), data, 'raw', 'P')
+    return image
 
 
 def test_image_scanner_init():
     scan = ImageScanner()
-    assert scan.palette == default_palette(8, 4, 8)
-    assert isinstance(scan.palette_image, Image.Image)
     assert scan.levels is not None
     assert scan.min_size is not None
     assert isinstance(scan.level_scale, list)
@@ -31,14 +21,8 @@ def test_image_scanner_init():
     assert len(scan.level_scale) == scan.levels - 1
     assert len(scan.traversal) == scan.levels
 
-def test_image_scanner_properties(image_test):
-    _, palette = image_test
+def test_image_scanner_properties():
     scan = ImageScanner()
-
-    scan.palette = palette
-
-    assert scan.palette == palette
-    assert isinstance(scan.palette_image, Image.Image)
 
     with pytest.raises(ValueError):
         scan.levels = 0
@@ -74,11 +58,10 @@ def test_image_scanner_properties(image_test):
     (1, 1), (4, 1), (1, 4)
 ])
 def test_image_scanner_input(test, image_test):
-    image, palette = image_test
-    scan = ImageScanner(palette=palette, resize=test)
-    img = scan.input(image)
+    scan = ImageScanner(resize=test)
+    img = scan.input(image_test)
     assert img.size <= test
-    assert img.mode == 'RGB'
+    assert img.mode == 'P'
     img = [scan.level(img, level) for level in range(scan.levels)]
     assert len(img) == 1
     img = img[0]
@@ -87,19 +70,17 @@ def test_image_scanner_input(test, image_test):
     assert list(img.getdata()) in [[0], [1]]
 
 def test_image_scanner_input_error(image_test):
-    image, palette = image_test
-    scan = ImageScanner(palette=palette, levels=3, level_scale=2)
+    scan = ImageScanner(levels=3, level_scale=2)
     with pytest.raises(ValueError):
-        scan.input(image)
+        scan.input(image_test)
 
 def test_image_scanner_input_levels(image_test):
-    image, palette = image_test
-    scan = ImageScanner(palette=palette, levels=2, level_scale=2)
+    scan = ImageScanner(resize=(4, 4), levels=3, level_scale=2)
 
-    img = scan.input(image)
+    img = scan.input(image_test)
     img = [scan.level(img, level) for level in range(scan.levels)]
 
-    assert len(img) == 2
+    assert len(img) == 3
 
     assert img[0].mode == 'P'
     assert img[0].size == (1, 1)
@@ -109,45 +90,49 @@ def test_image_scanner_input_levels(image_test):
     assert img[1].size == (2, 2)
     assert list(img[1].getdata()) == [0, 2, 3, 1]
 
-def test_image_scanner_input_level_scale(image_test):
+    assert img[2].mode == 'P'
+    assert img[2].size == (4, 4)
+    assert list(img[2].getdata()) == [
+        0, 0, 2, 2,
+        0, 0, 2, 2,
+        3, 3, 1, 1,
+        3, 3, 1, 1
+    ]
+
+def test_image_scanner_input_level_scale():
     img = Image.new(mode='RGB', size=(48, 48))
-    scan = ImageScanner(palette=image_test[1],
-                        levels=4, level_scale=[2, 3, 4])
+    scan = ImageScanner(levels=4, level_scale=[2, 3, 4])
     img = scan.input(img)
     size = [scan.level(img, level).size for level in range(scan.levels)]
     assert size == [(2, 2), (4, 4), (12, 12), (48, 48)]
 
 def test_image_scanner_scan(image_test):
-    image, palette = image_test
-    scan = ImageScanner(palette=palette, traversal=HLines())
-    assert [list(level) for level in scan(image)] == [
-        ['00', '02', '03', '01', scan.END]
+    scan = ImageScanner(traversal=HLines())
+    assert [list(level) for level in scan(image_test)] == [
+        ['\x00', '\x02', '\x03', '\x01', scan.END]
     ]
 
 def test_image_scanner_scan_levels(image_test):
-    image, palette = image_test
-    scan = ImageScanner(palette=palette,
-                        levels=2, level_scale=2,
+    scan = ImageScanner(levels=2, level_scale=2,
                         traversal=[HLines(), VLines()])
-    assert [list(level) for level in scan(image)] in [
+    assert [list(level) for level in scan(image_test)] in [
         [
-            ['00', scan.END],
-            [(scan.START, '00'),
-             '00', '03', '02', '01',
+            ['\x00', scan.END],
+            [(scan.START, '\x00'),
+             '\x00', '\x03', '\x02', '\x01',
              scan.END]
         ],
         [
-            ['01', scan.END],
-            [(scan.START, '01'),
-             '00', '03', '02', '01',
+            ['\x01', scan.END],
+            [(scan.START, '\x01'),
+             '\x00', '\x03', '\x02', '\x01',
              scan.END]
         ]
     ]
 
 @pytest.mark.parametrize('test', [
     (),
-    ((4, 4), 0, True, image_test()[1], 2, 2,
-     Image.NEAREST, [HLines(), VLines()])
+    ((4, 4), 2, 2, Image.NEAREST, [HLines(), VLines()])
 ])
 def test_image_scanner_save_load(test):
     scanner = ImageScanner(*test)

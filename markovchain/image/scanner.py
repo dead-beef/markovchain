@@ -5,7 +5,6 @@ from PIL import Image
 
 from ..scanner import Scanner
 from ..util import fill, to_list, load
-from .util import convert, palette as default_palette
 from .traversal import Traversal, HLines
 
 class ImageScanner(Scanner):
@@ -13,22 +12,13 @@ class ImageScanner(Scanner):
 
     Attributes
     ----------
-    palette_image : `PIL.Image` or `None`
-        Palette source image.
     resize : (`int`, `int`) or `None`
         If not None, resize images before scanning.
     min_size : `int`
         Minimum image size.
-    convert : `int`
-        Image conversion type.
-    dither : `bool`
-        If True, enable image dithering.
     """
     def __init__(self,
                  resize=None,
-                 convert_type=1,
-                 dither=False,
-                 palette=None,
                  levels=1,
                  level_scale=4,
                  scale=Image.BICUBIC,
@@ -64,11 +54,8 @@ class ImageScanner(Scanner):
         self.min_size = None
         self.palette_image = None
         self.resize = tuple(resize) if resize is not None else None
-        self.palette = palette
-        self.convert = convert_type
         self.levels = levels
         self.level_scale = level_scale
-        self.dither = dither
         if isinstance(scale, str):
             scale = Image.__getattribute__(scale)
         self.scale = scale
@@ -138,22 +125,6 @@ class ImageScanner(Scanner):
         self._level_scale = filled
         self.min_size = size
 
-    @property
-    def palette(self):
-        """`list` of `int` : Image palette.
-        """
-        return self._palette
-
-    @palette.setter
-    def palette(self, palette):
-        if palette is None:
-            palette = [8, 4, 8]
-        if len(palette) == 3:
-            palette = default_palette(*palette)
-        self.palette_image = Image.new('P', (1, 1))
-        self.palette_image.putpalette(palette)
-        self._palette = palette
-
     def input(self, img):
         """Resize input image if necessary.
 
@@ -187,21 +158,6 @@ class ImageScanner(Scanner):
 
         return img
 
-    def set_palette(self, img):
-        """Set image palette.
-
-        Parameters
-        ----------
-        img : `PIL.Image`
-            Input image.
-
-        Returns
-        -------
-        `PIL.Image`
-            Converted image.
-        """
-        return convert(self.convert, img, self.palette_image, self.dither)
-
     def level(self, img, level):
         """Get image level.
 
@@ -222,8 +178,7 @@ class ImageScanner(Scanner):
             scale = reduce(lambda x, y: x * y,
                            islice(self.level_scale, level, self.levels))
             img = img.resize((width // scale, height // scale), self.scale)
-
-        return self.set_palette(img)
+        return img
 
     def _scan_level(self, level, prev, img):
         """Scan a level.
@@ -304,9 +259,6 @@ class ImageScanner(Scanner):
 
     def __eq__(self, scanner):
         return (self.resize == scanner.resize
-                and self.convert == scanner.convert
-                and self.dither == scanner.dither
-                and self.palette == scanner.palette
                 and self.traversal == scanner.traversal
                 and self.levels == scanner.levels
                 and self.level_scale == scanner.level_scale
@@ -322,9 +274,6 @@ class ImageScanner(Scanner):
         """
         data = super().save()
         data['resize'] = list(self.resize) if self.resize is not None else None
-        data['convert_type'] = self.convert
-        data['dither'] = self.dither
-        data['palette'] = self.palette
         data['traversal'] = [t.save() for t in self.traversal]
         data['levels'] = self.levels
         data['level_scale'] = self.level_scale
