@@ -10,14 +10,14 @@ class JsonStorage(Storage):
 
     Attributes
     ----------
-    nodes : `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`))
+    nodes : `dict` of `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`))
     """
     def __init__(self, nodes=None, settings=None):
         """JSON storage constructor.
 
         Parameters
         ----------
-            nodes : `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`)), optional
+            nodes : `dict` of `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`)), optional
         """
         if nodes is None:
             nodes = {}

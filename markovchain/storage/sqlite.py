@@ -63,9 +63,12 @@ class SqliteStorage(Storage):
         for dataset, src, dst in links:
             src, src2 = tee(src)
             source = self.get_node(self.join_state(src))
-            target = self.get_node(self.join_state(
-                chain(islice(src2, 1, None), (dst,))
-            ))
+            if dst is None:
+                target = None
+            else:
+                target = self.get_node(self.join_state(
+                    chain(islice(src2, 1, None), (dst,))
+                ))
             dataset = self.get_dataset(dataset_prefix + dataset, True)
             self.cursor.execute(
                 '''UPDATE links
@@ -186,7 +189,7 @@ class SqliteStorage(Storage):
                 dataset REFERENCES datasets (id),
                 source REFERENCES nodes (id),
                 target REFERENCES nodes (id),
-                value TEXT NOT NULL,
+                value TEXT,
                 count INTEGER NOT NULL DEFAULT 1
             )
         ''')

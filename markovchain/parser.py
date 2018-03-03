@@ -169,11 +169,9 @@ class Parser(ParserBase):
                     self.end = False
                 else:
                     raise ValueError('invalid parser input: {0}'.format(word))
-            elif word == Scanner.END:
-                if not self.end and self.reset_on_sentence_end:
-                    self.reset()
-                self.end = True
             else:
+                if word == Scanner.END and self.end:
+                    continue
                 for dataset, sz in zip(datasets, self.state_sizes):
                     start = self.state_size - sz
                     yield (
@@ -181,8 +179,13 @@ class Parser(ParserBase):
                         islice(self.state, start, self.state_size),
                         word
                     )
-                self.state.append(word)
-                self.end = False
+                if word == Scanner.END:
+                    if self.reset_on_sentence_end:
+                        self.reset()
+                        continue
+                else:
+                    self.state.append(word)
+                    self.end = False
 
         if not part:
             self.reset()

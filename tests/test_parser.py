@@ -41,7 +41,7 @@ def test_parser_parse(mocker):
     )
     parser = Parser(state_sizes=[2], reset_on_sentence_end=False)
     res = parse(parser, ['a', Scanner.END, 'b'], True, '::')
-    assert res == [('0', '::', 'a'), ('0', '::a', 'b')]
+    assert res == [('0', '::', 'a'), ('0', '::a', None), ('0', '::a', 'b')]
     res = parse(parser, 'c', separator='::')
     assert res == [('0', 'a::b', 'c')]
     state_size_dataset.assert_has_calls(
@@ -59,10 +59,10 @@ def test_parser_parse_default(mocker):
         ('0', '', 'a'), ('0', 'a', 'b'), ('0', 'b', 'c')
     ]
     assert parse(parser, ['a', 'b', Scanner.END, 'c']) == [
-        ('0', 'c', 'a'), ('0', 'a', 'b'), ('0', '', 'c')
+        ('0', 'c', 'a'), ('0', 'a', 'b'), ('0', 'b', None), ('0', '', 'c')
     ]
     assert parse(parser, ['a', Scanner.END, Scanner.END, 'c']) == [
-        ('0', '', 'a'), ('0', '', 'c')
+        ('0', '', 'a'), ('0', 'a', None), ('0', '', 'c')
     ]
     assert parse(parser, [Scanner.END] * 4) == []
     state_size_dataset.assert_has_calls(
@@ -75,7 +75,8 @@ def test_parser_parse_default(mocker):
                ('0', 'a b c', 'd'), ('0', 'b c d', 'e')]),
     (['a', 'b', 'c', Scanner.END, 'd', 'e'],
      [('0', '  ', 'a'), ('0', '  a', 'b'),
-      ('0', ' a b', 'c'), ('0', '  ', 'd'), ('0', '  d', 'e')]),
+      ('0', ' a b', 'c'), ('0', 'a b c', None),
+      ('0', '  ', 'd'), ('0', '  d', 'e')]),
     (['a', 'b', 'c', (Scanner.START, 'd'), 'e'],
      [('0', '  ', 'a'), ('0', '  a', 'b'),
       ('0', ' a b', 'c'), ('0', '  d', 'e')])
