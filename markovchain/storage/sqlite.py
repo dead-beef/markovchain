@@ -32,7 +32,6 @@ class SqliteStorage(Storage):
         self.cursor = db.cursor()
         self.create_node_tables()
         self.update_main_table()
-
         self.cursor.execute('SELECT key, id FROM datasets')
         self.datasets = dict(self.cursor.fetchall())
 
@@ -195,7 +194,7 @@ class SqliteStorage(Storage):
             'CREATE UNIQUE INDEX IF NOT EXISTS node ON nodes (value)'
         )
         self.cursor.execute(
-            'CREATE INDEX IF NOT EXISTS link_source ON links (dataset)'
+            'CREATE INDEX IF NOT EXISTS link_dataset ON links (dataset)'
         )
         self.cursor.execute(
             'CREATE INDEX IF NOT EXISTS link_source ON links (source)'
