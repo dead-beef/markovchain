@@ -280,36 +280,13 @@ Image
 
     > markovchain image -h
     usage: markovchain image [-h]
-                             {convert,create,update,settings,generate,filter} ...
+                             {create,update,settings,generate,filter} ...
 
     positional arguments:
-      {convert,create,update,settings,generate,filter}
+      {create,update,settings,generate,filter}
 
     optional arguments:
       -h, --help            show this help message and exit
-
-convert
-^^^^^^^
-
-::
-
-    > markovchain image convert -h
-    usage: markovchain image convert [-h] [-p HUES SATURATIONS VALUES] [-c {0,1}]
-                                     [-d] [-r WIDTH HEIGHT]
-                                     input [input ...]
-
-    positional arguments:
-      input                 input file
-
-    optional arguments:
-      -h, --help            show this help message and exit
-      -p HUES SATURATIONS VALUES, --palette HUES SATURATIONS VALUES
-                            palette color division (default: [8, 4, 8])
-      -c {0,1}, --convert-type {0,1}
-                            conversion type (default: 1)
-      -d, --dither          enable dithering
-      -r WIDTH HEIGHT, --resize WIDTH HEIGHT
-                            resize images (default: None)
 
 create
 ^^^^^^

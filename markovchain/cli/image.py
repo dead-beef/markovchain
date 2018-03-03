@@ -29,24 +29,6 @@ def create_arg_parser(parent):
 
     arg1 = parent.add_subparsers(dest='command')
 
-    arg2 = arg1.add_parser('convert')
-    arg2.add_argument('-p', '--palette',
-                      nargs=3, metavar=('HUES', 'SATURATIONS', 'VALUES'),
-                      type=int, default=[8, 4, 8],
-                      help='palette color division (default: %(default)s)')
-    arg2.add_argument('-c', '--convert-type',
-                      type=int, default=1, choices=(0, 1),
-                      help='conversion type (default: %(default)s)')
-    arg2.add_argument('-d', '--dither',
-                      action='store_true',
-                      help='enable dithering')
-    arg2.add_argument('-r', '--resize', metavar=('WIDTH', 'HEIGHT'),
-                      type=int, nargs=2,
-                      default=None,
-                      help='resize images (default: %(default)s)')
-    arg2.add_argument('input', nargs='+',
-                      help='input file')
-
     arg2 = arg1.add_parser('create')
     arg2.add_argument('-P', '--progress',
                       action='store_true',
