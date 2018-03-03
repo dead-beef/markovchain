@@ -1,9 +1,10 @@
+from abc import abstractmethod
 from math import ceil, log2
 
-from ..util import SaveLoad, load
+from ..util import SaveLoad, load, DOC_INHERIT_ABSTRACT
 
 
-class Traversal(SaveLoad):
+class Traversal(SaveLoad, metaclass=DOC_INHERIT_ABSTRACT):
     """Base image traversal class.
 
     Attributes
@@ -13,6 +14,7 @@ class Traversal(SaveLoad):
     """
     classes = {}
 
+    @abstractmethod
     def __call__(self, width, height, ends=True):
         """Traverse an image.
 
@@ -34,7 +36,7 @@ class Traversal(SaveLoad):
         `generator` of ((`int`, `int`) or `None`)
             Points and block ends.
         """
-        raise NotImplementedError()
+        pass
 
 
 class Lines(Traversal): # pylint: disable=abstract-method
