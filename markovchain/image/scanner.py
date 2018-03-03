@@ -6,6 +6,8 @@ from PIL import Image
 from ..scanner import Scanner
 from ..util import fill, to_list, load
 from .traversal import Traversal, HLines
+from .util import pixel_to_state
+
 
 class ImageScanner(Scanner):
     """Image scanner class.
@@ -208,7 +210,7 @@ class ImageScanner(Scanner):
                 if xy is None:
                     yield self.END
                 else:
-                    yield '%02X' % img.getpixel(xy)
+                    yield pixel_to_state(img.getpixel(xy))
             yield self.END
         else:
             scale = self.level_scale[level - 1]
@@ -217,13 +219,15 @@ class ImageScanner(Scanner):
                 y0 = xy[1] * scale
                 start = (
                     self.START,
-                    '%02X' % prev.getpixel(xy)
+                    pixel_to_state(prev.getpixel(xy))
                 )
                 yield start
                 for dxy in self.traversal[level](scale, scale, True):
                     if dxy is None:
                         yield start
-                    yield '%02X' % img.getpixel((x0 + dxy[0], y0 + dxy[1]))
+                    yield pixel_to_state(
+                        img.getpixel((x0 + dxy[0], y0 + dxy[1]))
+                    )
                 yield self.END
 
     def __call__(self, img, part=False):

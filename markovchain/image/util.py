@@ -2,6 +2,32 @@ from colorsys import hsv_to_rgb
 from math import floor
 
 
+def pixel_to_state(px):
+    """Convert pixel value to generator state.
+
+    Parameters
+    ----------
+    px : `int`
+
+    Returns
+    -------
+    `str`
+    """
+    return chr(px)#'%02X' % px
+
+def state_to_pixel(state):
+    """Convert generator state to pixel value.
+
+    Parameters
+    ----------
+    state : `str`
+
+    Returns
+    -------
+    `int`
+    """
+    return ord(state[-1])#int(state[-2:], 16)
+
 def palette(hues, saturations, values):
     """Generate a palette.
 

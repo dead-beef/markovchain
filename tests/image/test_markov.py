@@ -40,7 +40,7 @@ def test_markov_image_generate(test, res):
         parser=Parser()
     )
     markov.imgtype.convert = lambda x: [x]
-    markov.data([['00', '01', '02', '03']])
+    markov.data([['\x00', '\x01', '\x02', '\x03']])
     assert list(markov(*test).getdata()) == res
 
 @pytest.mark.parametrize('args,kwargs,data,res', [
@@ -50,7 +50,7 @@ def test_markov_image_generate(test, res):
     ((2, 2), {'levels': 1}, True, [0, 1, 2, 3]),
     (
         (2, 2),
-        {'levels': 2},
+        {},
         True,
         [
             0, 2, 1, 3,
@@ -69,7 +69,7 @@ def test_markov_image_generate(test, res):
         (None, None),
         {'levels': 1, 'start_level': 0, 'start_image': True},
         True,
-        [1]
+        [1, 3, 2, 0]
     ),
     (
         (None, None),
@@ -81,7 +81,7 @@ def test_markov_image_generate(test, res):
         (None, None),
         {'levels': 2, 'start_level': 0, 'start_image': True},
         True,
-        [1, 3, 2, 0]
+        ValueError
     ),
 ])
 def test_markov_image_generate_levels(args, kwargs, data, res):
@@ -95,11 +95,11 @@ def test_markov_image_generate_levels(args, kwargs, data, res):
 
     if data:
         markov.data([
-            ['00', '01', '02', '03'],
-            [(Scanner.START, '00'), '01',
-             (Scanner.START, '01'), '02',
-             (Scanner.START, '02'), '03',
-             (Scanner.START, '03'), '00']
+            ['\x00', '\x01', '\x02', '\x03'],
+            [(Scanner.START, '\x00'), '\x01',
+             (Scanner.START, '\x01'), '\x02',
+             (Scanner.START, '\x02'), '\x03',
+             (Scanner.START, '\x03'), '\x00']
         ])
 
     if 'start_image' in kwargs:
