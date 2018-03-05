@@ -84,8 +84,7 @@ class MarkovImage(Markov):
                 and super().__eq__(markov))
 
     def __call__(self, width, height,
-                 state_size=None,
-                 start=None, levels=None,
+                 state_size=None, levels=None,
                  start_level=-1, start_image=None,
                  dataset=''):
         """Generate an image.
@@ -98,8 +97,6 @@ class MarkovImage(Markov):
             Image height.
         state_size : `None` or `int` or `list` of `int`, optional
             State size (default: `None`).
-        start : `str` or `None`, optional
-            Initial state (default: `None`).
         levels : `int`, optional
             Number of levels to generate (default: `self.scanner.levels`).
         start_level : `int`, optional
@@ -152,8 +149,7 @@ class MarkovImage(Markov):
         channels = [
             self._channel(
                 width, height, state_sizes,
-                start, start_level, img,
-                dataset + channel
+                start_level, img, dataset + channel
             )
             for channel, img in zip(self.imgtype.channels, start_image)
         ]
@@ -161,7 +157,7 @@ class MarkovImage(Markov):
         return self.imgtype.merge(channels)
 
     def _imgdata(self, width, height,
-                 state_size=None, start=None, dataset=''):
+                 state_size=None, start='', dataset=''):
         """Generate image pixels.
 
         Parameters
@@ -172,8 +168,8 @@ class MarkovImage(Markov):
             Image height.
         state_size : `int` or `None`, optional
             State size to use for generation (default: `None`).
-        start : `str` or `None`, optional
-            Initial state (default: `None`).
+        start : `str`, optional
+            Initial state (default: '').
         dataset : `str`, optional
             Dataset key prefix (default: '').
 
@@ -188,7 +184,7 @@ class MarkovImage(Markov):
             Pixel generator.
         """
         size = width * height
-        if size > 0 and start is not None:
+        if size > 0 and start:
             yield state_to_pixel(start)
             size -= 1
 
@@ -203,7 +199,7 @@ class MarkovImage(Markov):
                 size -= 1
 
             if prev_size == size:
-                if start is not None:
+                if start:
                     yield from repeat(state_to_pixel(start), size)
                 else:
                     raise RuntimeError('empty generator')
@@ -230,8 +226,7 @@ class MarkovImage(Markov):
         return img
 
     def _channel(self, width, height, state_sizes,
-                 start, start_level, start_image,
-                 dataset):
+                 start_level, start_image, dataset):
         """Generate a channel.
 
         Parameters
@@ -242,8 +237,6 @@ class MarkovImage(Markov):
             Image height.
         state_sizes : `list` of (`int` or `None`)
             Level state sizes.
-        start : `str` or `None`
-            Initial state.
         start_level : `int`
             Initial level.
         start_image : `PIL.Image` or `None`
@@ -266,7 +259,7 @@ class MarkovImage(Markov):
             ret = self.imgtype.create_channel(width, height)
             if start_image is None:
                 tr = self.scanner.traversal[0](width, height, ends=False)
-                data = self._imgdata(width, height, state_size, start, key)
+                data = self._imgdata(width, height, state_size, '', key)
                 self._write_imgdata(ret, data, tr)
             else:
                 tr = self.scanner.traversal[0](
