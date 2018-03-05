@@ -56,29 +56,41 @@ def test_sqlite_storage_add_links():
         (1, 'y', 2), (1, 'z', 1), (2, 'y', 1)
     ]
 
-@pytest.mark.parametrize('links,state,random,call,res', [
-    ([('0', ('x',), 'y')], 'y', None, None, None),
-    ([('0', ('x',), 'y')], 'x', 0, (0, 0), 'y'),
-    ([('0', ('x',), 'y'), ('0', ('x',), 'z')], 'x', 0, (0, 1), 'y'),
-    ([('0', ('x',), 'y'), ('0', ('x',), 'z')], 'x', 1, (0, 1), 'z')
+@pytest.mark.parametrize('state,size,res', [
+    ([], 4, None),
+    (['x'], 1, 1),
+    (['x', 'y'], 1, 2),
+    (['x', 'y'], 2, 3)
 ])
-def test_sqlite_storage_random_link(mocker, links, state, random, call, res):
-    randint = mocker.patch(
-        'markovchain.storage.sqlite.randint',
-        return_value=random
-    )
+def test_sqlite_storage_get_state(state, size, res):
     storage = SqliteStorage()
-    storage.add_links(links)
-    link, next_state = storage.random_link(storage.get_dataset('0'), state)
-    assert link == res
-    if res is None:
-        assert next_state is None
-    else:
-        assert next_state == storage.get_node(link)
-    if call is None:
-        assert randint.call_count == 0
-    else:
-        randint.assert_called_once_with(*call)
+    storage.add_links([('0', ('x',), 'y'), ('0', ('x', 'y'), 'z')])
+    assert storage.get_state(state, size) == res
+
+@pytest.mark.parametrize('args,res', [
+    ((1,), [(1, 'y', 2), (1, 'z', 3)]),
+    ((2,), [(1, 'z', 3)]),
+    ((3,), []),
+    ((1, True), []),
+    ((2, True), [(1, 'x', 1)]),
+    ((3, True), [(1, 'x', 1), (1, 'y', 2)])
+])
+def test_sqlite_storage_get_links(args, res):
+    storage = SqliteStorage()
+    storage.add_links([
+        ('0', ('x',), 'y'),
+        ('0', ('x',), 'z'),
+        ('0', ('y',), 'z')
+    ])
+    assert storage.get_links(1, *args) == res
+
+@pytest.mark.parametrize('args,res', [
+    (((0, 1, 2), 3, False), 2),
+    (((1, 2, 3), 4, True), 3),
+])
+def test_sqlite_storage_follow_link(args, res):
+    storage = SqliteStorage()
+    assert storage.follow_link(*args) == res
 
 def test_sqlite_storage_state_separator():
     storage = SqliteStorage()

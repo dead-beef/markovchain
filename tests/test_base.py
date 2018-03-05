@@ -28,46 +28,28 @@ def test_markov_base_data(data, part, dataset):
     parser.assert_called_once_with(0, part, dataset)
     storage.add_links.assert_called_once_with(1)
 
-def test_markov_base_generate_empty():
-    markov = Markov(parser=Mock(state_sizes=[]))
-    assert list(markov.generate(state_size=None)) == []
-
-def test_markov_base_generate_error():
-    markov = Markov()
-    markov.parser = None
-    with pytest.raises(ValueError):
-        list(markov.generate(state_size=None))
-
-@pytest.mark.parametrize('state_size,start,res', [
-    (1, None, ['']),
-    (2, None, ['', '']),
-    (3, None, ['', '', '']),
-    (3, 'a b', ['', 'a', 'b']),
-    (3, range(2), ['', 0, 1])
+@pytest.mark.parametrize('state_sizes, args, call', [
+    ([1], (1, 'x', 'd'), ('x', 1, 'd_1')),
+    ([2, 1], (None, 'y', 'dd'), ('y', 2, 'dd_2')),
+    ([], (None, 'y', 'dd'), None)
 ])
-def test_markov_base_generate(mocker, state_size, start, res):
-    state_size_dataset = mocker.patch(
+def test_markov_base_generate(mocker, state_sizes, args, call):
+    mocker.patch(
         'markovchain.base.state_size_dataset',
-        return_value='_0'
-    )
-    storage = Mock(
-        random_link=Mock(side_effect=[('link', 'state'), (None, None)]),
-        split_state=lambda s: s.split(),
-        get_dataset=Mock(wraps=lambda s: 0)
+        wraps=lambda ss: '_%d' % ss
     )
     markov = Markov(
-        parser=Mock(),
+        parser=Mock(state_sizes=state_sizes),
         scanner=Mock(),
-        storage=storage
+        storage=Mock(generate=Mock(return_value=0))
     )
-    assert list(markov.generate(state_size, start, 'data')) == ['link']
-    assert storage.random_link.call_count == 2
-    storage.random_link.assert_has_calls([
-        call(0, deque(res, maxlen=state_size)),
-        call(0, 'state')
-    ])
-    storage.get_dataset.assert_called_once_with('data_0')
-    state_size_dataset.assert_called_with(state_size)
+    res = markov.generate(*args)
+    if call is not None:
+        assert res == 0
+        markov.storage.generate.assert_called_with(*call)
+    else:
+        assert res is None
+        assert markov.storage.generate.call_count == 0
 
 def test_markov_base_get_settings_json():
     markov = Markov(
