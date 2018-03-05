@@ -182,6 +182,8 @@ def cmd_generate(args):
 
     if args.start is not None:
         args.start = args.start.lower()
+    else:
+        args.start = ()
 
     markov = load(MarkovText, args.state, args)
 

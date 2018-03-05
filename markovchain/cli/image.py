@@ -340,6 +340,7 @@ def cmd_filter(args):
     if args.state is not None:
         markov = load(MarkovImage, args.state, args)
     else:
+        args.state = ()
         if args.type == JSON:
             storage = JsonStorage(settings=args.settings)
         else:

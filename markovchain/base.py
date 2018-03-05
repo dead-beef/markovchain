@@ -71,15 +71,15 @@ class Markov(metaclass=DOC_INHERIT):
         links = self.parser(self.scanner(data, part), part, dataset)
         self.storage.add_links(links)
 
-    def generate(self, state_size=None, start=None, dataset=''):
+    def generate(self, state_size=None, start=(), dataset=''):
         """Generate a sequence.
 
         Parameters
         ----------
         state_size : `int`, optional
             State size (default: parser.state_sizes[0]).
-        start : `iterable` of `str`, optional
-            Starting state (default: []).
+        start : `str` or `iterable` of `str`, optional
+            Initial state (default: ()).
         dataset: `str`, optional
             Dataset key prefix.
 
@@ -89,8 +89,6 @@ class Markov(metaclass=DOC_INHERIT):
             State generator.
         """
         if state_size is None:
-            if self.parser is None:
-                raise ValueError('parser is None and state_size is None')
             try:
                 state_size = next(iter(self.parser.state_sizes))
             except StopIteration:
@@ -99,24 +97,8 @@ class Markov(metaclass=DOC_INHERIT):
         #      and state_size not in self.parser.state_sizes):
         #    raise ValueError('invalid state size: {0}: not in {1}'
         #                     .format(state_size, self.parser.state_sizes))
-
-        if start is None:
-            start = self.storage.join_state(repeat('', state_size))
-            state = repeat('', state_size)
-        else:
-            if isinstance(start, str):
-                start = self.storage.split_state(start)
-            state = chain(repeat('', state_size), start)
-
-        state = deque(state, maxlen=state_size)
         dataset += state_size_dataset(state_size)
-        dataset = self.storage.get_dataset(dataset)
-
-        while True:
-            link, state = self.storage.random_link(dataset, state)
-            if link is None:
-                return
-            yield link
+        return self.storage.generate(start, state_size, dataset)
 
     def get_settings_json(self):
         """Convert generator settings to JSON.

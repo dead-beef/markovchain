@@ -1,6 +1,7 @@
 import sys
 import json
-from random import randint
+from collections import deque
+from itertools import chain, repeat
 
 from .base import Storage
 
@@ -10,14 +11,14 @@ class JsonStorage(Storage):
 
     Attributes
     ----------
-    nodes : `dict` of `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`))
+    nodes : `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])
     """
     def __init__(self, nodes=None, settings=None):
         """JSON storage constructor.
 
         Parameters
         ----------
-            nodes : `dict` of `dict` of ((`str`, `int`) or (`list` of `str`, `list` of `int`)), optional
+            nodes : `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`]), optional
         """
         if nodes is None:
             nodes = {}
@@ -52,7 +53,7 @@ class JsonStorage(Storage):
             src = self.join_state(src)
             try:
                 node = dataset[src]
-                nodes, values = node
+                values, nodes = node
                 if isinstance(nodes, list):
                     try:
                         idx = nodes.index(dst)
@@ -61,33 +62,40 @@ class JsonStorage(Storage):
                         nodes.append(dst)
                         values.append(1)
                 elif nodes == dst:
-                    node[1] += 1
+                    node[0] += 1
                 else:
-                    node[0] = [nodes, dst]
-                    node[1] = [values, 1]
+                    node[0] = [values, 1]
+                    node[1] = [nodes, dst]
             except KeyError:
-                dataset[src] = [dst, 1]
+                dataset[src] = [1, dst]
 
-    def random_link(self, dataset, state):
+    def get_state(self, state, size):
+        return deque(chain(repeat('', size), state), maxlen=size)
+
+    def get_links(self, dataset, state, backward=False):
+        """
+        Raises
+        ------
+        NotImplementedError
+            If backward == `True`.
+        """
+        if backward:
+            raise NotImplementedError()
         try:
             node = dataset[self.join_state(state)]
             if not isinstance(node[0], list):
-                state.append(node[0])
-                return node[0], state
+                return [(node[0], node[1])]
+            return list(zip(*node))
         except KeyError:
-            return None, None
+            return []
 
-        nodes, values = node
-        link_sum = sum(values)
-
-        x = randint(0, link_sum - 1)
-        for value, count in zip(nodes, values):
-            if x < count:
-                state.append(value)
-                return value, state
-            x -= count
-
-        raise ValueError('invalid link sum: ' + str(self))
+    def follow_link(self, link, state, backward=False):
+        value = link[1]
+        if backward:
+            state.appendleft(value)
+        else:
+            state.append(value)
+        return state
 
     def do_save(self, fp=None):
         """Save to file.

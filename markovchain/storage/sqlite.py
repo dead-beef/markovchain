@@ -1,7 +1,7 @@
 import json
 import sqlite3
-from random import randint
-from itertools import chain, islice, tee
+from collections import deque
+from itertools import chain, repeat, islice
 
 from .base import Storage
 
@@ -61,13 +61,13 @@ class SqliteStorage(Storage):
 
     def add_links(self, links, dataset_prefix=''):
         for dataset, src, dst in links:
-            src, src2 = tee(src)
+            src = list(src)
             source = self.get_node(self.join_state(src))
             if dst is None:
                 target = None
             else:
                 target = self.get_node(self.join_state(
-                    chain(islice(src2, 1, None), (dst,))
+                    chain(islice(src, 1, None), (dst,))
                 ))
             dataset = self.get_dataset(dataset_prefix + dataset, True)
             self.cursor.execute(
@@ -77,40 +77,37 @@ class SqliteStorage(Storage):
                 (source, target, dataset)
             )
             self.cursor.execute(
-                '''INSERT INTO links (dataset, source, target, value)
-                   SELECT ?, ?, ?, ?
+                '''INSERT INTO links (dataset, source, target, value, bvalue)
+                   SELECT ?, ?, ?, ?, ?
                    WHERE (SELECT Changes() = 0)''',
-                (dataset, source, target, dst)
+                (dataset, source, target, dst, src[-1])
             )
 
-    def random_link(self, dataset, state):
-        if not isinstance(state, int):
-            self.cursor.execute(
-                'SELECT id FROM nodes WHERE value=?',
-                (self.join_state(state),)
-            )
-            x = state
-            state = self.cursor.fetchone()
-            if state is None:
-                return None, None
-            state = state[0]
-
+    def get_state(self, state, size):
+        state = deque(chain(repeat('', size), state), maxlen=size)
         self.cursor.execute(
-            '''SELECT count, value, target
-               FROM links
-               WHERE dataset=? AND source=?''',
-            (dataset, state)
+            'SELECT id FROM nodes WHERE value=?',
+            (self.join_state(state),)
         )
-        links = self.cursor.fetchall()
-        if not links:
-            return None, None
-        count = sum(link[0] for link in links)
-        x = randint(0, count - 1)
-        for count, value, target in links:
-            if x < count:
-                return value, target
-            x -= count
-        raise RuntimeError('no link')
+        state = self.cursor.fetchone()
+        if state is None:
+            return None
+        return state[0]
+
+    def get_links(self, dataset, state, backward=False):
+        if backward:
+            query = ('SELECT count, bvalue, source'
+                     ' FROM links'
+                     ' WHERE dataset=? AND target=?')
+        else:
+            query = ('SELECT count, value, target'
+                     ' FROM links'
+                     ' WHERE dataset=? AND source=?')
+        self.cursor.execute(query, (dataset, state))
+        return self.cursor.fetchall()
+
+    def follow_link(self, link, state, backward=False):
+        return link[2]
 
     def get_tables(self):
         """Get all table names.
@@ -190,6 +187,7 @@ class SqliteStorage(Storage):
                 source REFERENCES nodes (id),
                 target REFERENCES nodes (id),
                 value TEXT,
+                bvalue TEXT,
                 count INTEGER NOT NULL DEFAULT 1
             )
         ''')
@@ -202,9 +200,9 @@ class SqliteStorage(Storage):
         self.cursor.execute(
             'CREATE INDEX IF NOT EXISTS link_source ON links (source)'
         )
-        #self.cursor.execute(
-        #    'CREATE INDEX IF NOT EXISTS link_target ON links (target)'
-        #)
+        self.cursor.execute(
+            'CREATE INDEX IF NOT EXISTS link_target ON links (target)'
+        )
 
     def do_save(self, fp=None):
         """Save.

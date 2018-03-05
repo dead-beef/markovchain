@@ -57,7 +57,7 @@ class MarkovText(Markov):
     def __call__(self,
                  max_length=None,
                  state_size=None,
-                 start=None,
+                 start=(),
                  dataset=''):
         """Generate a sentence.
 
@@ -67,7 +67,7 @@ class MarkovText(Markov):
             Maximum sentence length (default: None).
         state_size : `int`, optional
             State size (default: parser.state_sizes[0]).
-        start : `None` or `str` or `iterable` of `str`, optional
+        start : `str` or `iterable` of `str`, optional
             Starting state (default: []).
         dataset: `str`, optional
             Dataset key prefix (default: '').
@@ -86,10 +86,8 @@ class MarkovText(Markov):
             state = list(self.parser.state)
             self.scanner.reset()
             self.parser.reset()
-        elif start is not None:
-            state, start = tee(start)
         else:
-            state = None
+            state, start = tee(start)
 
         parts = self.generate(state_size, state, dataset)
         if max_length is not None:

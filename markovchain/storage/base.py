@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from random import randint
 
 from ..util import DOC_INHERIT_ABSTRACT
 
@@ -68,6 +69,81 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         """
         return self.state_separator.join(state)
 
+    def random_link(self, dataset, state, backward=False):
+        """Get a random link.
+
+        Parameters
+        ----------
+        dataset : `object`
+            Dataset from `self.get_dataset()`.
+        state : `object`
+            Link source.
+        backward : `bool`, optional
+            Link direction.
+
+        Raises
+        ------
+        ValueError
+            If link count is invalid.
+
+        Returns
+        -------
+        (`str` or `None`, `object` or `None`)
+            Link value and next state.
+        """
+        links = self.get_links(dataset, state, backward)
+        if not links:
+            return None, None
+        x = randint(0, sum(link[0] for link in links) - 1)
+        for link in links:
+            count = link[0]
+            if x < count:
+                return link[1], self.follow_link(link, state, backward)
+            x -= count
+        raise RuntimeError('invalid link sum')
+
+    def generate(self, state, size, dataset, backward=False):
+        """Generate a sequence.
+
+        Parameters
+        ----------
+        state : `str` or `iterable` of `str`
+            Initial state.
+        size : `int`
+            State size.
+        dataset : `str`
+            Dataset key.
+        backward : `bool`, optional
+            Link direction.
+
+        Returns
+        -------
+        `generator` of `str`
+            Node value generator.
+        """
+        if isinstance(state, str):
+            state = self.split_state(state)
+        state = self.get_state(state, size)
+        dataset = self.get_dataset(dataset)
+        while True:
+            link, state = self.random_link(dataset, state, backward)
+            if link is None:
+                return
+            yield link
+
+    def save(self, fp=None):
+        """Update settings JSON data and save to file.
+
+        Parameters
+        ----------
+        fp : `file` or `str`, optional
+            Output file.
+        """
+        self.settings['storage'] = {
+            'state_separator': self.state_separator
+        }
+        self.do_save(fp)
+
     @abstractmethod
     def get_dataset(self, key, create=False):
         """Get data set by key.
@@ -118,25 +194,60 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         pass
 
     @abstractmethod
-    def random_link(self, dataset, state):
-        """Get a random link.
+    def get_state(self, state, size):
+        """Get state from node values.
+
+        Parameters
+        ----------
+        state : `iterable` of `str`
+            Node values.
+        size : `int`
+            State size.
+
+        Returns
+        -------
+        `object`
+            State.
+        """
+        pass
+
+    @abstractmethod
+    def get_links(self, dataset, state, backward=False):
+        """Get links.
 
         Parameters
         ----------
         dataset : `object`
-            Dataset from `Storage.get_dataset`.
-        state : `deque` of `str`
-            Link source.
-
-        Raises
-        ------
-        ValueError
-            If link count is invalid.
+            Dataset from `self.get_dataset()`.
+        state : `object`
+            State from `self.get_state()`.
+        backward : `bool`, optional
+            Link direction.
 
         Returns
         -------
-        (`str`, `deque` of `str`)
-            Link value and updated state.
+        `None` or `list` of (`int`, `str`, `object`)
+            Links (count, value, data).
+        """
+        pass
+
+    @abstractmethod
+    def follow_link(self, link, state, backward=False):
+        """Follow a link.
+
+        Parameters
+        ----------
+        link : (`int`, `str`, `object`)
+            Link to follow.
+        state : `object`
+            State.
+        backward : `bool`, optional
+            Link direction.
+
+        Returns
+        -------
+        `object`
+            New state.
         """
         pass
 
@@ -146,23 +257,10 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
 
         Parameters
         ----------
-        fp : `file`
+        fp : `file` or `str`, optional
             Output file.
         """
         pass
-
-    def save(self, fp=None):
-        """Update settings JSON data and save to file.
-
-        Parameters
-        ----------
-        fp : `file`
-            Output file.
-        """
-        self.settings['storage'] = {
-            'state_separator': self.state_separator
-        }
-        self.do_save(fp)
 
     @classmethod
     @abstractmethod
