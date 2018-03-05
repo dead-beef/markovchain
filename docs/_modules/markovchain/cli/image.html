@@ -191,8 +191,7 @@
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">JsonStorage</span><span class="p">,</span> <span class="n">SqliteStorage</span>
-<span class="kn">from</span> <span class="nn">..image</span> <span class="k">import</span> <span class="n">ImageScanner</span><span class="p">,</span> <span class="n">MarkovImage</span>
-<span class="kn">from</span> <span class="nn">..image.util</span> <span class="k">import</span> <span class="n">palette</span>
+<span class="kn">from</span> <span class="nn">..image</span> <span class="k">import</span> <span class="n">MarkovImage</span>
 <span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">ObjectWrapper</span><span class="p">,</span> <span class="n">truncate</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">tqdm</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="n">infiles</span><span class="p">,</span> <span class="n">outfiles</span> <span class="k">as</span> <span class="n">_outfiles</span><span class="p">,</span>
@@ -212,24 +211,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">arg1</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
-
-    <span class="n">arg2</span> <span class="o">=</span> <span class="n">arg1</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;convert&#39;</span><span class="p">)</span>
-    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--palette&#39;</span><span class="p">,</span>
-                      <span class="n">nargs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;HUES&#39;</span><span class="p">,</span> <span class="s1">&#39;SATURATIONS&#39;</span><span class="p">,</span> <span class="s1">&#39;VALUES&#39;</span><span class="p">),</span>
-                      <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;palette color division (default: </span><span class="si">%(default)s</span><span class="s1">)&#39;</span><span class="p">)</span>
-    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--convert-type&#39;</span><span class="p">,</span>
-                      <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;conversion type (default: </span><span class="si">%(default)s</span><span class="s1">)&#39;</span><span class="p">)</span>
-    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--dither&#39;</span><span class="p">,</span>
-                      <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;enable dithering&#39;</span><span class="p">)</span>
-    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--resize&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;WIDTH&#39;</span><span class="p">,</span> <span class="s1">&#39;HEIGHT&#39;</span><span class="p">),</span>
-                      <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;resize images (default: </span><span class="si">%(default)s</span><span class="s1">)&#39;</span><span class="p">)</span>
-    <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;input file&#39;</span><span class="p">)</span>
 
     <span class="n">arg2</span> <span class="o">=</span> <span class="n">arg1</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">)</span>
     <span class="n">arg2</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-P&#39;</span><span class="p">,</span> <span class="s1">&#39;--progress&#39;</span><span class="p">,</span>
@@ -325,16 +306,18 @@
 <span class="sd">    pbar_parent : `tqdm.tqdm`</span>
 <span class="sd">        Parent progress bar.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="TraversalProgressWrapper.__init__"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TraversalProgressWrapper.__init__"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">parent</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channels</span> <span class="o">=</span> <span class="n">channels</span></div>
 
 <div class="viewcode-block" id="TraversalProgressWrapper.__call__"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.TraversalProgressWrapper.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">ends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">size</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Level &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">levels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">total</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span>
+        <span class="n">calls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="n">calls</span> <span class="o">%</span> <span class="n">levels</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">calls</span> <span class="o">//</span> <span class="n">levels</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Level </span><span class="si">%d%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
         <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
                     <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;px&#39;</span><span class="p">,</span>
                     <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -345,8 +328,6 @@
                 <span class="k">yield</span> <span class="n">xy</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pbar_parent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div></div>
 
 
@@ -364,22 +345,31 @@
 <span class="sd">    leave : `bool`, optional</span>
 <span class="sd">        Leave progress bars (default: `True`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pbar</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">imgtype</span><span class="o">.</span><span class="n">channels</span>
+
     <span class="n">tr</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span>
     <span class="k">if</span> <span class="n">progress</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TraversalProgressWrapper</span><span class="p">):</span>
-        <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">TraversalProgressWrapper</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">TraversalProgressWrapper</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">channels</span><span class="p">)</span>
     <span class="n">tr</span> <span class="o">=</span> <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">with</span> <span class="n">infiles</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="p">)</span> <span class="k">as</span> <span class="n">fnames</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">BAR_DESC_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-                <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">markov</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
-                            <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;lvl&#39;</span><span class="p">,</span>
-                            <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">pbar</span>
-            <span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">infiles</span><span class="p">(</span><span class="n">fnames</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">leave</span><span class="p">)</span> <span class="k">as</span> <span class="n">fnames</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">title</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">BAR_DESC_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+                        <span class="n">total</span><span class="o">=</span><span class="n">markov</span><span class="o">.</span><span class="n">levels</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+                        <span class="n">desc</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;lvl&#39;</span><span class="p">,</span>
+                        <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">pbar</span>
+                <span class="n">markov</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="outfiles"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.outfiles">[docs]</a><span class="k">def</span> <span class="nf">outfiles</span><span class="p">(</span><span class="n">markov</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get output file paths.</span>
@@ -402,46 +392,33 @@
 <span class="sd">    `generator` of `str`</span>
 <span class="sd">        Output file paths.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pbar</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">imgtype</span><span class="o">.</span><span class="n">channels</span>
+
     <span class="n">tr</span> <span class="o">=</span> <span class="n">markov</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span>
     <span class="k">if</span> <span class="n">progress</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TraversalProgressWrapper</span><span class="p">):</span>
-        <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">TraversalProgressWrapper</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">TraversalProgressWrapper</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">channels</span><span class="p">)</span>
     <span class="n">tr</span> <span class="o">=</span> <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">with</span> <span class="n">_outfiles</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span> <span class="k">as</span> <span class="n">fnames</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
-                <span class="n">title</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">BAR_DESC_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-                <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">markov</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span>
-                            <span class="n">desc</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;lvl&#39;</span><span class="p">,</span>
-                            <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">pbar</span>
-            <span class="k">yield</span> <span class="n">fname</span>
-            <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
-                <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="cmd_convert"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_convert">[docs]</a><span class="k">def</span> <span class="nf">cmd_convert</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert an image.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    args : `argparse.Namespace`</span>
-<span class="sd">        Command arguments.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">scanner</span> <span class="o">=</span> <span class="n">ImageScanner</span><span class="p">(</span>
-        <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">resize</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">resize</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">resize</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dither</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">dither</span><span class="p">,</span>
-        <span class="n">convert_type</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">convert_type</span><span class="p">,</span>
-        <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="o">.</span><span class="n">palette</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_convert.png&#39;</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="n">level</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_outfiles</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">,</span> <span class="n">progress</span><span class="p">)</span> <span class="k">as</span> <span class="n">fnames</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fnames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">title</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">BAR_DESC_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+                        <span class="n">initial</span><span class="o">=</span><span class="n">start</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+                        <span class="n">total</span><span class="o">=</span><span class="n">markov</span><span class="o">.</span><span class="n">levels</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">),</span>
+                        <span class="n">desc</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;lvl&#39;</span><span class="p">,</span>
+                        <span class="n">bar_format</span><span class="o">=</span><span class="n">BAR_FORMAT</span><span class="p">,</span> <span class="n">dynamic_ncols</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">pbar_parent</span> <span class="o">=</span> <span class="n">pbar</span>
+                <span class="k">yield</span> <span class="n">fname</span>
+                <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+                    <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="n">pbar</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="cmd_create"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.image.cmd_create">[docs]</a><span class="k">def</span> <span class="nf">cmd_create</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a generator.</span>
@@ -547,6 +524,7 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">markov</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">MarkovImage</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">()</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">JSON</span><span class="p">:</span>
             <span class="n">storage</span> <span class="o">=</span> <span class="n">JsonStorage</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>

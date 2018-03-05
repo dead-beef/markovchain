@@ -248,7 +248,7 @@
 
 <dl class="method">
 <dt id="markovchain.text.markov.MarkovText.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>max_length=None</em>, <em>state_size=None</em>, <em>start=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.__call__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>max_length=None</em>, <em>state_size=None</em>, <em>start=()</em>, <em>dataset=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a sentence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -257,7 +257,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>max_length</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – Maximum sentence length (default: None).</li>
 <li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – State size (default: parser.state_sizes[0]).</li>
-<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Starting state (default: []).</li>
+<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Starting state (default: []).</li>
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix (default: ‘’).</li>
 </ul>
 </td>
 </tr>
@@ -273,7 +274,7 @@
 
 <dl class="method">
 <dt id="markovchain.text.markov.MarkovText.data">
-<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em>, <em>dataset=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/text/markov.html#MarkovText.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.text.markov.MarkovText.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse data and update links.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -282,6 +283,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Text to parse.</li>
 <li><strong>part</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – True if data is partial (default: <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>).</li>
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix (default: ‘’).</li>
 </ul>
 </td>
 </tr>

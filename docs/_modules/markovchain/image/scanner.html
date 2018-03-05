@@ -189,30 +189,22 @@
 
 <span class="kn">from</span> <span class="nn">..scanner</span> <span class="k">import</span> <span class="n">Scanner</span>
 <span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">fill</span><span class="p">,</span> <span class="n">to_list</span><span class="p">,</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">convert</span><span class="p">,</span> <span class="n">palette</span> <span class="k">as</span> <span class="n">default_palette</span>
 <span class="kn">from</span> <span class="nn">.traversal</span> <span class="k">import</span> <span class="n">Traversal</span><span class="p">,</span> <span class="n">HLines</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">pixel_to_state</span>
+
 
 <div class="viewcode-block" id="ImageScanner"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner">[docs]</a><span class="k">class</span> <span class="nc">ImageScanner</span><span class="p">(</span><span class="n">Scanner</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Image scanner class.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    palette_image : `PIL.Image` or `None`</span>
-<span class="sd">        Palette source image.</span>
 <span class="sd">    resize : (`int`, `int`) or `None`</span>
 <span class="sd">        If not None, resize images before scanning.</span>
 <span class="sd">    min_size : `int`</span>
 <span class="sd">        Minimum image size.</span>
-<span class="sd">    convert : `int`</span>
-<span class="sd">        Image conversion type.</span>
-<span class="sd">    dither : `bool`</span>
-<span class="sd">        If True, enable image dithering.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="ImageScanner.__init__"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">resize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">convert_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                 <span class="n">dither</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">levels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                  <span class="n">level_scale</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                  <span class="n">scale</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
@@ -248,11 +240,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">resize</span><span class="p">)</span> <span class="k">if</span> <span class="n">resize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="n">palette</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">convert</span> <span class="o">=</span> <span class="n">convert_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span> <span class="o">=</span> <span class="n">level_scale</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">=</span> <span class="n">dither</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
@@ -322,22 +311,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_level_scale</span> <span class="o">=</span> <span class="n">filled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="n">size</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">palette</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;`list` of `int` : Image palette.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_palette</span>
-
-    <span class="nd">@palette</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">palette</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">palette</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">palette</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">palette</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">palette</span> <span class="o">=</span> <span class="n">default_palette</span><span class="p">(</span><span class="o">*</span><span class="n">palette</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span><span class="o">.</span><span class="n">putpalette</span><span class="p">(</span><span class="n">palette</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_palette</span> <span class="o">=</span> <span class="n">palette</span>
-
 <div class="viewcode-block" id="ImageScanner.input"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.input">[docs]</a>    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resize input image if necessary.</span>
 
@@ -371,21 +344,6 @@
 
         <span class="k">return</span> <span class="n">img</span></div>
 
-<div class="viewcode-block" id="ImageScanner.set_palette"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.set_palette">[docs]</a>    <span class="k">def</span> <span class="nf">set_palette</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set image palette.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        img : `PIL.Image`</span>
-<span class="sd">            Input image.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        `PIL.Image`</span>
-<span class="sd">            Converted image.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">convert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette_image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="ImageScanner.level"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.markov.ImageScanner.level">[docs]</a>    <span class="k">def</span> <span class="nf">level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get image level.</span>
 
@@ -406,8 +364,7 @@
             <span class="n">scale</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span>
                            <span class="n">islice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">))</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span> <span class="o">//</span> <span class="n">scale</span><span class="p">,</span> <span class="n">height</span> <span class="o">//</span> <span class="n">scale</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">img</span></div>
 
     <span class="k">def</span> <span class="nf">_scan_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Scan a level.</span>
@@ -437,7 +394,7 @@
                 <span class="k">if</span> <span class="n">xy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="n">pixel_to_state</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span><span class="p">[</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
@@ -446,14 +403,14 @@
                 <span class="n">y0</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">START</span><span class="p">,</span>
-                    <span class="s1">&#39;</span><span class="si">%02X%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">prev</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
+                    <span class="n">pixel_to_state</span><span class="p">(</span><span class="n">prev</span><span class="o">.</span><span class="n">getpixel</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
                 <span class="p">)</span>
                 <span class="k">yield</span> <span class="n">start</span>
                 <span class="k">for</span> <span class="n">dxy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span><span class="p">[</span><span class="n">level</span><span class="p">](</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">dxy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">yield</span> <span class="n">start</span>
-                    <span class="k">yield</span> <span class="s1">&#39;</span><span class="si">%02X%02X</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                        <span class="n">level</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="k">yield</span> <span class="n">pixel_to_state</span><span class="p">(</span>
+                        <span class="n">img</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="n">x0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">dxy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
                     <span class="p">)</span>
                 <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span>
 
@@ -490,9 +447,6 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scanner</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">resize</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">convert</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">dither</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">palette</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">traversal</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">levels</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span> <span class="o">==</span> <span class="n">scanner</span><span class="o">.</span><span class="n">level_scale</span>
@@ -508,9 +462,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;resize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;convert_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dither&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dither</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;palette&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">palette</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;traversal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">traversal</span><span class="p">]</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;level_scale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_scale</span>

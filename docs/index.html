@@ -459,36 +459,14 @@
 <h3>Image<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="o">-</span><span class="n">h</span>
 <span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span>
-                         <span class="p">{</span><span class="n">convert</span><span class="p">,</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span> <span class="o">...</span>
+                         <span class="p">{</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span> <span class="o">...</span>
 
 <span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="p">{</span><span class="n">convert</span><span class="p">,</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span>
+  <span class="p">{</span><span class="n">create</span><span class="p">,</span><span class="n">update</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">generate</span><span class="p">,</span><span class="nb">filter</span><span class="p">}</span>
 
 <span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
   <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
 </pre></div>
-</div>
-<div class="section" id="convert">
-<h4>convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">convert</span> <span class="o">-</span><span class="n">h</span>
-<span class="n">usage</span><span class="p">:</span> <span class="n">markovchain</span> <span class="n">image</span> <span class="n">convert</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">}]</span>
-                                 <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">]</span>
-                                 <span class="nb">input</span> <span class="p">[</span><span class="nb">input</span> <span class="o">...</span><span class="p">]</span>
-
-<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="nb">input</span>                 <span class="nb">input</span> <span class="n">file</span>
-
-<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
-  <span class="o">-</span><span class="n">p</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span><span class="p">,</span> <span class="o">--</span><span class="n">palette</span> <span class="n">HUES</span> <span class="n">SATURATIONS</span> <span class="n">VALUES</span>
-                        <span class="n">palette</span> <span class="n">color</span> <span class="n">division</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-  <span class="o">-</span><span class="n">c</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span> <span class="o">--</span><span class="n">convert</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span>
-                        <span class="n">conversion</span> <span class="nb">type</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
-  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">dither</span>          <span class="n">enable</span> <span class="n">dithering</span>
-  <span class="o">-</span><span class="n">r</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span><span class="p">,</span> <span class="o">--</span><span class="n">resize</span> <span class="n">WIDTH</span> <span class="n">HEIGHT</span>
-                        <span class="n">resize</span> <span class="n">images</span> <span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="id7">
 <h4>create<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>

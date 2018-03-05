@@ -183,6 +183,7 @@
             
   <h1>Source code for markovchain.storage.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
 
 <span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">DOC_INHERIT_ABSTRACT</span>
 
@@ -224,19 +225,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_separator</span><span class="p">,</span> <span class="n">separator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_separator</span> <span class="o">=</span> <span class="n">separator</span>
 
-<div class="viewcode-block" id="Storage.replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.replace_state_separator">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Replace state separator.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        old_separator : `str`</span>
-<span class="sd">            Old state separator.</span>
-<span class="sd">        new_separator : `str`</span>
-<span class="sd">            New state separator.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
 <div class="viewcode-block" id="Storage.split_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.split_state">[docs]</a>    <span class="k">def</span> <span class="nf">split_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Split state string.</span>
 
@@ -248,7 +236,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        `list` of `str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Storage.join_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.join_state">[docs]</a>    <span class="k">def</span> <span class="nf">join_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Join states.</span>
@@ -263,25 +253,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Storage.links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.links">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add links.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        links : `generator` of (`islice` of `str`, `str`)</span>
-<span class="sd">            Links to add.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="Storage.random_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.random_link">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">random_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<div class="viewcode-block" id="Storage.random_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.random_link">[docs]</a>    <span class="k">def</span> <span class="nf">random_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a random link.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        state : `deque` of `str`</span>
+<span class="sd">        dataset : `object`</span>
+<span class="sd">            Dataset from `self.get_dataset()`.</span>
+<span class="sd">        state : `object`</span>
 <span class="sd">            Link source.</span>
+<span class="sd">        backward : `bool`, optional</span>
+<span class="sd">            Link direction.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -290,8 +272,166 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        (`str`, `deque` of `str`)</span>
-<span class="sd">            Link value and updated state.</span>
+<span class="sd">        (`str` or `None`, `object` or `None`)</span>
+<span class="sd">            Link value and next state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_links</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">links</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">link</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="n">link</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">link</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">follow_link</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">-=</span> <span class="n">count</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;invalid link sum&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Storage.generate"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a sequence.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : `str` or `iterable` of `str`</span>
+<span class="sd">            Initial state.</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            State size.</span>
+<span class="sd">        dataset : `str`</span>
+<span class="sd">            Dataset key.</span>
+<span class="sd">        backward : `bool`, optional</span>
+<span class="sd">            Link direction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of `str`</span>
+<span class="sd">            Node value generator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">link</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_link</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">yield</span> <span class="n">link</span></div>
+
+<div class="viewcode-block" id="Storage.save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update settings JSON data and save to file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fp : `file` or `str`, optional</span>
+<span class="sd">            Output file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;state_separator&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Storage.get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.get_dataset">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get data set by key.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : `str`</span>
+<span class="sd">            Dataset key.</span>
+<span class="sd">        create : `bool`, optional</span>
+<span class="sd">            Create dataset if it does not exist.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            Dataset.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        KeyError</span>
+<span class="sd">            If dataset does not exist and `create` == `False`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Storage.replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.replace_state_separator">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Replace state separator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        old_separator : `str`</span>
+<span class="sd">            Old state separator.</span>
+<span class="sd">        new_separator : `str`</span>
+<span class="sd">            New state separator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Storage.add_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.add_links">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">add_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">dataset_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add links.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        links : `generator` of (`str`, `islice` of `str`, `str`)</span>
+<span class="sd">            Links to add.</span>
+<span class="sd">        dataset_prefix : `str`, optional</span>
+<span class="sd">            Dataset key prefix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Storage.get_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.get_state">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get state from node values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state : `iterable` of `str`</span>
+<span class="sd">            Node values.</span>
+<span class="sd">        size : `int`</span>
+<span class="sd">            State size.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            State.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Storage.get_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.get_links">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get links.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset : `object`</span>
+<span class="sd">            Dataset from `self.get_dataset()`.</span>
+<span class="sd">        state : `object`</span>
+<span class="sd">            State from `self.get_state()`.</span>
+<span class="sd">        backward : `bool`, optional</span>
+<span class="sd">            Link direction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `None` or `list` of (`int`, `str`, `object`)</span>
+<span class="sd">            Links (count, value, data).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Storage.follow_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.follow_link">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">follow_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Follow a link.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        link : (`int`, `str`, `object`)</span>
+<span class="sd">            Link to follow.</span>
+<span class="sd">        state : `object`</span>
+<span class="sd">            State.</span>
+<span class="sd">        backward : `bool`, optional</span>
+<span class="sd">            Link direction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `object`</span>
+<span class="sd">            New state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
@@ -301,23 +441,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        fp : `file`</span>
+<span class="sd">        fp : `file` or `str`, optional</span>
 <span class="sd">            Output file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="Storage.save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update settings JSON data and save to file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        fp : `file`</span>
-<span class="sd">            Output file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;state_separator&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_separator</span>
-        <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">do_save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Storage.load"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.base.Storage.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="nd">@abstractmethod</span>

@@ -196,7 +196,7 @@
 <span id="markovchain-image-markov-module"></span><h2>markovchain.image.markov module<a class="headerlink" href="#module-markovchain.image.markov" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="markovchain.image.markov.MarkovImage">
-<em class="property">class </em><code class="descclassname">markovchain.image.markov.</code><code class="descname">MarkovImage</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">markovchain.image.markov.</code><code class="descname">MarkovImage</code><span class="sig-paren">(</span><em>levels=1</em>, <em>imgtype=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.base.Markov" title="markovchain.base.Markov"><code class="xref py py-class docutils literal"><span class="pre">markovchain.base.Markov</span></code></a></p>
 <p>Markov image generator.</p>
 <dl class="attribute">
@@ -236,6 +236,12 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="markovchain.image.markov.MarkovImage.DEFAULT_IMGTYPE">
+<code class="descname">DEFAULT_IMGTYPE</code><a class="headerlink" href="#markovchain.image.markov.MarkovImage.DEFAULT_IMGTYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Indexed</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt>
 <code class="descname">DEFAULT_PARSER</code></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">LevelParser</span></code></p>
@@ -249,7 +255,7 @@
 
 <dl class="method">
 <dt id="markovchain.image.markov.MarkovImage.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>state_size=None</em>, <em>start=None</em>, <em>levels=None</em>, <em>start_level=-1</em>, <em>start_image=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__call__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>state_size=None</em>, <em>levels=None</em>, <em>start_level=-1</em>, <em>start_image=None</em>, <em>dataset=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate an image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -258,18 +264,21 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>width</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image width.</li>
 <li><strong>height</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image height.</li>
-<li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – State size (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
-<li><strong>start</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – Initial state (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
+<li><strong>state_size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – State size (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
 <li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of levels to generate (default: <code class="xref py py-obj docutils literal"><span class="pre">self.scanner.levels</span></code>).</li>
 <li><strong>start_level</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Initial level (default: -1).</li>
 <li><strong>start_image</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>) – Initial level image (default: <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>).</li>
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix (default: ‘’).</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Generated image.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -278,7 +287,7 @@
 
 <dl class="method">
 <dt id="markovchain.image.markov.MarkovImage.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>levels=1</em>, <em>palette=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>levels=1</em>, <em>imgtype=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Markov image generator constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -286,7 +295,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>levels</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Number of levels.</li>
-<li><strong>palette</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, optional) – Image palette (default: <code class="xref py py-obj docutils literal"><span class="pre">markovchain.image.util.palette(8,</span> <span class="pre">4,</span> <span class="pre">8)</span></code>).</li>
+<li><strong>imgtype</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> or <a class="reference internal" href="#markovchain.image.type.ImageType" title="markovchain.image.type.ImageType"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.image.type.ImageType</span></code></a>) – </li>
 </ul>
 </td>
 </tr>
@@ -296,7 +305,7 @@
 
 <dl class="method">
 <dt id="markovchain.image.markov.MarkovImage.data">
-<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">data</code><span class="sig-paren">(</span><em>data</em>, <em>part=False</em>, <em>dataset=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/markov.html#MarkovImage.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.markov.MarkovImage.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse data and update links.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -305,6 +314,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code>) – Image to parse.</li>
 <li><strong>part</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – True if data is partial (default: <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>).</li>
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix (default: ‘’).</li>
 </ul>
 </td>
 </tr>
@@ -341,15 +351,9 @@
 <span id="markovchain-image-scanner-module"></span><h2>markovchain.image.scanner module<a class="headerlink" href="#module-markovchain.image.scanner" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="markovchain.image.scanner.ImageScanner">
-<em class="property">class </em><code class="descclassname">markovchain.image.scanner.</code><code class="descname">ImageScanner</code><span class="sig-paren">(</span><em>resize=None</em>, <em>convert_type=1</em>, <em>dither=False</em>, <em>palette=None</em>, <em>levels=1</em>, <em>level_scale=4</em>, <em>scale=3</em>, <em>traversal=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">markovchain.image.scanner.</code><code class="descname">ImageScanner</code><span class="sig-paren">(</span><em>resize=None</em>, <em>levels=1</em>, <em>level_scale=4</em>, <em>scale=3</em>, <em>traversal=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.scanner.Scanner" title="markovchain.scanner.Scanner"><code class="xref py py-class docutils literal"><span class="pre">markovchain.scanner.Scanner</span></code></a></p>
 <p>Image scanner class.</p>
-<dl class="attribute">
-<dt id="markovchain.image.scanner.ImageScanner.palette_image">
-<code class="descname">palette_image</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.palette_image" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code> – Palette source image.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="markovchain.image.scanner.ImageScanner.resize">
 <code class="descname">resize</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.resize" title="Permalink to this definition">¶</a></dt>
@@ -360,18 +364,6 @@
 <dt id="markovchain.image.scanner.ImageScanner.min_size">
 <code class="descname">min_size</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.min_size" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Minimum image size.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="markovchain.image.scanner.ImageScanner.convert">
-<code class="descname">convert</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Image conversion type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="markovchain.image.scanner.ImageScanner.dither">
-<code class="descname">dither</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.dither" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code> – If True, enable image dithering.</p>
 </dd></dl>
 
 <dl class="method">
@@ -403,7 +395,7 @@
 
 <dl class="method">
 <dt id="markovchain.image.scanner.ImageScanner.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>resize=None</em>, <em>convert_type=1</em>, <em>dither=False</em>, <em>palette=None</em>, <em>levels=1</em>, <em>level_scale=4</em>, <em>scale=3</em>, <em>traversal=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>resize=None</em>, <em>levels=1</em>, <em>level_scale=4</em>, <em>scale=3</em>, <em>traversal=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image scanner constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -481,12 +473,6 @@
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Number of levels.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="markovchain.image.scanner.ImageScanner.palette">
-<code class="descname">palette</code><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.palette" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Image palette.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="markovchain.image.scanner.ImageScanner.save">
 <code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.save" title="Permalink to this definition">¶</a></dt>
@@ -498,24 +484,6 @@
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON data.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.image.scanner.ImageScanner.set_palette">
-<code class="descname">set_palette</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner.set_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.set_palette" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set image palette.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code>) – Input image.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Converted image.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -640,6 +608,18 @@
 <em class="property">class </em><code class="descclassname">markovchain.image.traversal.</code><code class="descname">HLines</code><span class="sig-paren">(</span><em>reverse=0</em>, <em>line_sentences=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/traversal.html#HLines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.traversal.HLines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#markovchain.image.traversal.Lines" title="markovchain.image.traversal.Lines"><code class="xref py py-class docutils literal"><span class="pre">markovchain.image.traversal.Lines</span></code></a></p>
 <p>Horizontal line traversal.</p>
+<dl class="attribute">
+<dt id="markovchain.image.traversal.HLines.reverse">
+<code class="descname">reverse</code><a class="headerlink" href="#markovchain.image.traversal.HLines.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – If greater than 0, reverse every nth line.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.traversal.HLines.line_sentences">
+<code class="descname">line_sentences</code><a class="headerlink" href="#markovchain.image.traversal.HLines.line_sentences" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code> – Generate a block end after each line.</p>
+</dd></dl>
+
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">traverse</span> <span class="o">=</span> <span class="n">HLines</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">traverse</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -807,6 +787,32 @@
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code> – Generate a block end after each line.</p>
 </dd></dl>
 
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="markovchain.image.traversal.Lines.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>reverse=0</em>, <em>line_sentences=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/traversal.html#Lines.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.traversal.Lines.__init__" title="Permalink to this definition">¶</a></dt>
@@ -931,6 +937,32 @@
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> – Image traversal class group.</p>
 </dd></dl>
 
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="markovchain.image.traversal.Traversal.__call__">
 <code class="descname">__call__</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>ends=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/traversal.html#Traversal.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.traversal.Traversal.__call__" title="Permalink to this definition">¶</a></dt>
@@ -961,7 +993,7 @@
 
 <dl class="attribute">
 <dt>
-<code class="descname">classes</code><em class="property"> = {'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;, 'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;}</em></dt>
+<code class="descname">classes</code><em class="property"> = {'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;}</em></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -971,6 +1003,18 @@
 <em class="property">class </em><code class="descclassname">markovchain.image.traversal.</code><code class="descname">VLines</code><span class="sig-paren">(</span><em>reverse=0</em>, <em>line_sentences=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/traversal.html#VLines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.traversal.VLines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#markovchain.image.traversal.Lines" title="markovchain.image.traversal.Lines"><code class="xref py py-class docutils literal"><span class="pre">markovchain.image.traversal.Lines</span></code></a></p>
 <p>Vertical line traversal.</p>
+<dl class="attribute">
+<dt id="markovchain.image.traversal.VLines.reverse">
+<code class="descname">reverse</code><a class="headerlink" href="#markovchain.image.traversal.VLines.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – If greater than 0, reverse every nth line.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.traversal.VLines.line_sentences">
+<code class="descname">line_sentences</code><a class="headerlink" href="#markovchain.image.traversal.VLines.line_sentences" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code> – Generate a block end after each line.</p>
+</dd></dl>
+
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">traverse</span> <span class="o">=</span> <span class="n">VLines</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">traverse</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -1012,6 +1056,453 @@
 </tbody>
 </table>
 </dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-markovchain.image.type">
+<span id="markovchain-image-type-module"></span><h2>markovchain.image.type module<a class="headerlink" href="#module-markovchain.image.type" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="markovchain.image.type.Grayscale">
+<em class="property">class </em><code class="descclassname">markovchain.image.type.</code><code class="descname">Grayscale</code><a class="reference internal" href="../_modules/markovchain/image/type.html#Grayscale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Grayscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#markovchain.image.type.ImageType" title="markovchain.image.type.ImageType"><code class="xref py py-class docutils literal"><span class="pre">markovchain.image.type.ImageType</span></code></a></p>
+<p>Grayscale image type.</p>
+<dl class="attribute">
+<dt id="markovchain.image.type.Grayscale.classes">
+<code class="descname">classes</code><a class="headerlink" href="#markovchain.image.type.Grayscale.classes" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> – Image traversal class group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Grayscale.mode">
+<code class="descname">mode</code><a class="headerlink" href="#markovchain.image.type.Grayscale.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Grayscale.channel_mode">
+<code class="descname">channel_mode</code><a class="headerlink" href="#markovchain.image.type.Grayscale.channel_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or None – Channel image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Grayscale.channels">
+<code class="descname">channels</code><a class="headerlink" href="#markovchain.image.type.Grayscale.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Channel dataset keys.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt>
+<code class="descname">mode</code><em class="property"> = 'L'</em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="markovchain.image.type.ImageType">
+<em class="property">class </em><code class="descclassname">markovchain.image.type.</code><code class="descname">ImageType</code><a class="reference internal" href="../_modules/markovchain/image/type.html#ImageType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.ImageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="markovchain.html#markovchain.util.SaveLoad" title="markovchain.util.SaveLoad"><code class="xref py py-class docutils literal"><span class="pre">markovchain.util.SaveLoad</span></code></a></p>
+<p>Base image type class.</p>
+<dl class="attribute">
+<dt id="markovchain.image.type.ImageType.classes">
+<code class="descname">classes</code><a class="headerlink" href="#markovchain.image.type.ImageType.classes" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> – Image traversal class group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.ImageType.mode">
+<code class="descname">mode</code><a class="headerlink" href="#markovchain.image.type.ImageType.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.ImageType.channel_mode">
+<code class="descname">channel_mode</code><a class="headerlink" href="#markovchain.image.type.ImageType.channel_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or None – Channel image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.ImageType.channels">
+<code class="descname">channels</code><a class="headerlink" href="#markovchain.image.type.ImageType.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Channel dataset keys.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt>
+<code class="descname">channel_mode</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">channels</code><em class="property"> = ['']</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">classes</code><em class="property"> = {'Grayscale': &lt;class 'markovchain.image.type.Grayscale'&gt;, 'Indexed': &lt;class 'markovchain.image.type.Indexed'&gt;, 'RGB': &lt;class 'markovchain.image.type.RGB'&gt;}</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.ImageType.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#ImageType.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.ImageType.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an image to type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.ImageType.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#ImageType.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.ImageType.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an image of type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>width</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image width.</li>
+<li><strong>height</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.ImageType.create_channel">
+<code class="descname">create_channel</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#ImageType.create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.ImageType.create_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>width</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image width.</li>
+<li><strong>height</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.ImageType.merge">
+<code class="descname">merge</code><span class="sig-paren">(</span><em>imgs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#ImageType.merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.ImageType.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge image channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>imgs</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If image channel list is empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mode</code><em class="property"> = None</em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="markovchain.image.type.Indexed">
+<em class="property">class </em><code class="descclassname">markovchain.image.type.</code><code class="descname">Indexed</code><span class="sig-paren">(</span><em>palette=None</em>, <em>dither=True</em>, <em>convert_type=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#Indexed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Indexed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#markovchain.image.type.ImageType" title="markovchain.image.type.ImageType"><code class="xref py py-class docutils literal"><span class="pre">markovchain.image.type.ImageType</span></code></a></p>
+<p>Indexed image type.</p>
+<dl class="attribute">
+<dt id="markovchain.image.type.Indexed.palette">
+<code class="descname">palette</code><a class="headerlink" href="#markovchain.image.type.Indexed.palette" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Indexed.dither">
+<code class="descname">dither</code><a class="headerlink" href="#markovchain.image.type.Indexed.dither" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Indexed.convert_type">
+<code class="descname">convert_type</code><a class="headerlink" href="#markovchain.image.type.Indexed.convert_type" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="markovchain.image.type.Indexed.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>palette=None</em>, <em>dither=True</em>, <em>convert_type=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#Indexed.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Indexed.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Indexed.channel_mode">
+<code class="descname">channel_mode</code><em class="property"> = None</em><a class="headerlink" href="#markovchain.image.type.Indexed.channel_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.Indexed.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#Indexed.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Indexed.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an image to type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.Indexed.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#Indexed.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Indexed.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an image of type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>width</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image width.</li>
+<li><strong>height</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Image height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.Indexed.mode">
+<code class="descname">mode</code><em class="property"> = 'P'</em><a class="headerlink" href="#markovchain.image.type.Indexed.mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">palette</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.Indexed.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#Indexed.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.Indexed.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an object to JSON.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="markovchain.image.type.RGB">
+<em class="property">class </em><code class="descclassname">markovchain.image.type.</code><code class="descname">RGB</code><a class="reference internal" href="../_modules/markovchain/image/type.html#RGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.RGB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#markovchain.image.type.ImageType" title="markovchain.image.type.ImageType"><code class="xref py py-class docutils literal"><span class="pre">markovchain.image.type.ImageType</span></code></a></p>
+<p>RGB image type.</p>
+<dl class="attribute">
+<dt id="markovchain.image.type.RGB.classes">
+<code class="descname">classes</code><a class="headerlink" href="#markovchain.image.type.RGB.classes" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> – Image traversal class group.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.RGB.mode">
+<code class="descname">mode</code><a class="headerlink" href="#markovchain.image.type.RGB.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.RGB.channel_mode">
+<code class="descname">channel_mode</code><a class="headerlink" href="#markovchain.image.type.RGB.channel_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or None – Channel image mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="markovchain.image.type.RGB.channels">
+<code class="descname">channels</code><a class="headerlink" href="#markovchain.image.type.RGB.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code> – Channel dataset keys.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadGroup</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SaveLoadObject</span><span class="p">(</span><span class="n">SaveLoadGroup</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">data</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">SaveLoadObject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">classes</span>
+<span class="go">{&#39;SaveLoadObject&#39;: &lt;class &#39;__main__.SaveLoadObject&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SaveLoadObject</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">{&#39;attr&#39;: 0, &#39;__class__&#39;: &#39;SaveLoadObject&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span> <span class="o">=</span> <span class="n">SaveLoadGroup</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">obj2</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.SaveLoadObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj2</span><span class="o">.</span><span class="n">attr</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt>
+<code class="descname">channel_mode</code><em class="property"> = 'L'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">channels</code><em class="property"> = ['_R', '_G', '_B']</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="markovchain.image.type.RGB.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/type.html#RGB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.type.RGB.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an image to type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img</strong> (<code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">tuple</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">PIL.Image.Image</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">mode</code><em class="property"> = 'RGB'</em></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1071,6 +1562,42 @@ or min(<code class="xref py py-obj docutils literal"><span class="pre">hues</spa
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code></p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.image.util.pixel_to_state">
+<code class="descclassname">markovchain.image.util.</code><code class="descname">pixel_to_state</code><span class="sig-paren">(</span><em>px</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/util.html#pixel_to_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.util.pixel_to_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert pixel value to generator state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>px</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="markovchain.image.util.state_to_pixel">
+<code class="descclassname">markovchain.image.util.</code><code class="descname">state_to_pixel</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/util.html#state_to_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.util.state_to_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert generator state to pixel value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></td>
 </tr>
 </tbody>
 </table>

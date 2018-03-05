@@ -184,8 +184,8 @@
   <h1>Source code for markovchain.storage.sqlite</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
-<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">islice</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">Storage</span>
 
@@ -215,7 +215,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_node_tables</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_main_table</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_main_table</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT key, id FROM datasets&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span></div>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markov</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
@@ -227,50 +229,69 @@
             <span class="p">(</span><span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SqliteStorage.links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.links">[docs]</a>    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+<div class="viewcode-block" id="SqliteStorage.get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s1">&#39;INSERT INTO datasets (key) VALUES (?)&#39;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
+            <span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">lastrowid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span>
+            <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="SqliteStorage.add_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.add_links">[docs]</a>    <span class="k">def</span> <span class="nf">add_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">dataset_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
             <span class="n">src</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
             <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
-            <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span>
-                <span class="n">chain</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="n">dst</span><span class="p">,))</span>
-            <span class="p">))</span>
+            <span class="k">if</span> <span class="n">dst</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span>
+                    <span class="n">chain</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="n">dst</span><span class="p">,))</span>
+                <span class="p">))</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_prefix</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s1">&#39;UPDATE links SET count = count + 1 WHERE source=? AND target=?&#39;</span><span class="p">,</span>
-                <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                <span class="sd">&#39;&#39;&#39;UPDATE links</span>
+<span class="sd">                   SET count = count + 1</span>
+<span class="sd">                   WHERE source=? AND target=? AND dataset=?&#39;&#39;&#39;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="sd">&#39;&#39;&#39;INSERT INTO links (source, target, value)</span>
-<span class="sd">                   SELECT ?, ?, ?</span>
+                <span class="sd">&#39;&#39;&#39;INSERT INTO links (dataset, source, target, value, bvalue)</span>
+<span class="sd">                   SELECT ?, ?, ?, ?, ?</span>
 <span class="sd">                   WHERE (SELECT Changes() = 0)&#39;&#39;&#39;</span><span class="p">,</span>
-                <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+                <span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SqliteStorage.random_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.random_link">[docs]</a>    <span class="k">def</span> <span class="nf">random_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="s1">&#39;SELECT id FROM nodes WHERE value=?&#39;</span><span class="p">,</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span><span class="n">state</span><span class="p">),)</span>
-            <span class="p">)</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">state</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
+<div class="viewcode-block" id="SqliteStorage.get_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">state</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s1">&#39;SELECT count, value, target FROM links WHERE source=?&#39;</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">state</span><span class="p">,)</span>
+            <span class="s1">&#39;SELECT id FROM nodes WHERE value=?&#39;</span><span class="p">,</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span><span class="n">state</span><span class="p">),)</span>
         <span class="p">)</span>
-        <span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">links</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">link</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">target</span>
-            <span class="n">x</span> <span class="o">-=</span> <span class="n">count</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;no link&#39;</span><span class="p">)</span></div>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SqliteStorage.get_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SELECT count, bvalue, source&#39;</span>
+                     <span class="s1">&#39; FROM links&#39;</span>
+                     <span class="s1">&#39; WHERE dataset=? AND target=?&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SELECT count, value, target&#39;</span>
+                     <span class="s1">&#39; FROM links&#39;</span>
+                     <span class="s1">&#39; WHERE dataset=? AND source=?&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SqliteStorage.follow_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.follow_link">[docs]</a>    <span class="k">def</span> <span class="nf">follow_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">link</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="SqliteStorage.get_tables"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_tables">[docs]</a>    <span class="k">def</span> <span class="nf">get_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all table names.</span>
@@ -333,6 +354,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys=1&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS datasets (</span>
+<span class="s1">                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s1">                key TEXT NOT NULL</span>
+<span class="s1">            )</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">            CREATE TABLE IF NOT EXISTS nodes (</span>
 <span class="s1">                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,</span>
 <span class="s1">                value TEXT NOT NULL</span>
@@ -340,9 +367,11 @@
 <span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">            CREATE TABLE IF NOT EXISTS links (</span>
+<span class="s1">                dataset REFERENCES datasets (id),</span>
 <span class="s1">                source REFERENCES nodes (id),</span>
 <span class="s1">                target REFERENCES nodes (id),</span>
-<span class="s1">                value TEXT NOT NULL,</span>
+<span class="s1">                value TEXT,</span>
+<span class="s1">                bvalue TEXT,</span>
 <span class="s1">                count INTEGER NOT NULL DEFAULT 1</span>
 <span class="s1">            )</span>
 <span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
@@ -350,11 +379,14 @@
             <span class="s1">&#39;CREATE UNIQUE INDEX IF NOT EXISTS node ON nodes (value)&#39;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_dataset ON links (dataset)&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
             <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_source ON links (source)&#39;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_target ON links (target)&#39;</span>
         <span class="p">)</span></div>
-        <span class="c1">#self.cursor.execute(</span>
-        <span class="c1">#    &#39;CREATE INDEX IF NOT EXISTS link_target ON links (target)&#39;</span>
-        <span class="c1">#)</span>
 
 <div class="viewcode-block" id="SqliteStorage.do_save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.do_save">[docs]</a>    <span class="k">def</span> <span class="nf">do_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save.</span>

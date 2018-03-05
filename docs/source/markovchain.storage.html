@@ -226,6 +226,24 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="markovchain.storage.base.Storage.add_links">
+<code class="descname">add_links</code><span class="sig-paren">(</span><em>links</em>, <em>dataset_prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.add_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.add_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</li>
+<li><strong>dataset_prefix</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="markovchain.storage.base.Storage.do_save">
 <code class="descname">do_save</code><span class="sig-paren">(</span><em>fp=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.do_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.do_save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save to file.</p>
@@ -233,7 +251,134 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code>) – Output file.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Output file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.follow_link">
+<code class="descname">follow_link</code><span class="sig-paren">(</span><em>link</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.follow_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.follow_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow a link.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>link</strong> ((<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)) – Link to follow.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New state.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><em>state</em>, <em>size</em>, <em>dataset</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Initial state.</li>
+<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – State size.</li>
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Dataset key.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Node value generator.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><em>key</em>, <em>create=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data set by key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Dataset key.</li>
+<li><strong>create</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Create dataset if it does not exist.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">KeyError</span></code> – If dataset does not exist and <code class="xref py py-obj docutils literal"><span class="pre">create</span></code> == <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.get_links">
+<code class="descname">get_links</code><span class="sig-paren">(</span><em>dataset</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.get_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.get_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – Dataset from <code class="xref py py-obj docutils literal"><span class="pre">self.get_dataset()</span></code>.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State from <code class="xref py py-obj docutils literal"><span class="pre">self.get_state()</span></code>.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Links (count, value, data).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.base.Storage.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><em>state</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get state from node values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Node values.</li>
+<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – State size.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">State.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -252,20 +397,6 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.storage.base.Storage.links">
-<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.links" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add links.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
 </tr>
 </tbody>
 </table>
@@ -291,19 +422,27 @@
 
 <dl class="method">
 <dt id="markovchain.storage.base.Storage.random_link">
-<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.random_link" title="Permalink to this definition">¶</a></dt>
+<code class="descname">random_link</code><span class="sig-paren">(</span><em>dataset</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/base.html#Storage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.base.Storage.random_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a random link.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – Dataset from <code class="xref py py-obj docutils literal"><span class="pre">self.get_dataset()</span></code>.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – Link source.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Link value and next state.</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>)</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -335,7 +474,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code>) – Output file.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">file</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Output file.</td>
 </tr>
 </tbody>
 </table>
@@ -378,7 +517,7 @@
 <dl class="attribute">
 <dt id="markovchain.storage.json.JsonStorage.nodes">
 <code class="descname">nodes</code><a class="headerlink" href="#markovchain.storage.json.JsonStorage.nodes" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ((<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) or (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>))</p>
+<dd><p><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ([<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>] or [<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>])</p>
 </dd></dl>
 
 <dl class="method">
@@ -389,7 +528,25 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nodes</strong> (<code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ((<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) or (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>)), optional) – </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nodes</strong> (<code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">dict</span></code> of ([<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>] or [<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>]), optional) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.add_links">
+<code class="descname">add_links</code><span class="sig-paren">(</span><em>links</em>, <em>dataset_prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.add_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.add_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</li>
+<li><strong>dataset_prefix</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -410,14 +567,104 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="markovchain.storage.json.JsonStorage.links">
-<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.links" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add links.</p>
+<dt id="markovchain.storage.json.JsonStorage.follow_link">
+<code class="descname">follow_link</code><span class="sig-paren">(</span><em>link</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.follow_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.follow_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow a link.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>link</strong> ((<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)) – Link to follow.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New state.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><em>key</em>, <em>create=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data set by key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Dataset key.</li>
+<li><strong>create</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Create dataset if it does not exist.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">KeyError</span></code> – If dataset does not exist and <code class="xref py py-obj docutils literal"><span class="pre">create</span></code> == <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.get_links">
+<code class="descname">get_links</code><span class="sig-paren">(</span><em>dataset</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.get_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.get_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – Dataset from <code class="xref py py-obj docutils literal"><span class="pre">self.get_dataset()</span></code>.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State from <code class="xref py py-obj docutils literal"><span class="pre">self.get_state()</span></code>.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Links (count, value, data).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></code> – If backward == <code class="xref py py-obj docutils literal"><span class="pre">True</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.json.JsonStorage.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><em>state</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get state from node values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Node values.</li>
+<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – State size.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">State.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -436,26 +683,6 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Loaded storage.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.storage.json.JsonStorage.random_link">
-<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/json.html#JsonStorage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.json.JsonStorage.random_link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a random link.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
 </tr>
 </tbody>
 </table>
@@ -520,6 +747,24 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.add_links">
+<code class="descname">add_links</code><span class="sig-paren">(</span><em>links</em>, <em>dataset_prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.add_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.add_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</li>
+<li><strong>dataset_prefix</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, optional) – Dataset key prefix.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="markovchain.storage.sqlite.SqliteStorage.create_node_tables">
 <code class="descname">create_node_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.create_node_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.create_node_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create node and link tables if they don’t exist.</p>
@@ -534,6 +779,83 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fp</strong> (<code class="xref py py-obj docutils literal"><span class="pre">None</span></code>, optional) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.follow_link">
+<code class="descname">follow_link</code><span class="sig-paren">(</span><em>link</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.follow_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.follow_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow a link.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>link</strong> ((<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)) – Link to follow.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New state.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.get_dataset">
+<code class="descname">get_dataset</code><span class="sig-paren">(</span><em>key</em>, <em>create=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data set by key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Dataset key.</li>
+<li><strong>create</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Create dataset if it does not exist.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataset.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">KeyError</span></code> – If dataset does not exist and <code class="xref py py-obj docutils literal"><span class="pre">create</span></code> == <code class="xref py py-obj docutils literal"><span class="pre">False</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.get_links">
+<code class="descname">get_links</code><span class="sig-paren">(</span><em>dataset</em>, <em>state</em>, <em>backward=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get links.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – Dataset from <code class="xref py py-obj docutils literal"><span class="pre">self.get_dataset()</span></code>.</li>
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">object</span></code>) – State from <code class="xref py py-obj docutils literal"><span class="pre">self.get_state()</span></code>.</li>
+<li><strong>backward</strong> (<code class="xref py py-obj docutils literal"><span class="pre">bool</span></code>, optional) – Link direction.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Links (count, value, data).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">None</span></code> or <code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">object</span></code>)</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -560,6 +882,30 @@ create it and return its ID.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="markovchain.storage.sqlite.SqliteStorage.get_state">
+<code class="descname">get_state</code><span class="sig-paren">(</span><em>state</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get state from node values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">iterable</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Node values.</li>
+<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – State size.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">State.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal"><span class="pre">object</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="markovchain.storage.sqlite.SqliteStorage.get_tables">
 <code class="descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.get_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.get_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all table names.</p>
@@ -570,20 +916,6 @@ create it and return its ID.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">set</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.storage.sqlite.SqliteStorage.links">
-<code class="descname">links</code><span class="sig-paren">(</span><em>links</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.links" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add links.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>links</strong> (<code class="xref py py-obj docutils literal"><span class="pre">generator</span></code> of (<code class="xref py py-obj docutils literal"><span class="pre">islice</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)) – Links to add.</td>
 </tr>
 </tbody>
 </table>
@@ -602,26 +934,6 @@ create it and return its ID.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Loaded storage.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal"><span class="pre">markovchain.storage.Storage</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="markovchain.storage.sqlite.SqliteStorage.random_link">
-<code class="descname">random_link</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/storage/sqlite.html#SqliteStorage.random_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.storage.sqlite.SqliteStorage.random_link" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a random link.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>) – Link source.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Link value and updated state.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<code class="xref py py-obj docutils literal"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal"><span class="pre">deque</span></code> of <code class="xref py py-obj docutils literal"><span class="pre">str</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> – If link count is invalid.</td>
 </tr>
 </tbody>
 </table>

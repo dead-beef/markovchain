@@ -544,6 +544,38 @@
         <span class="k">return</span> <span class="n">string</span><span class="p">[:</span><span class="n">maxlen</span> <span class="o">-</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span>
 
     <span class="k">return</span> <span class="s1">&#39;...&#39;</span> <span class="o">+</span> <span class="n">string</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="n">maxlen</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="state_size_dataset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.state_size_dataset">[docs]</a><span class="k">def</span> <span class="nf">state_size_dataset</span><span class="p">(</span><span class="n">sz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get dataset key part for state size.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sz : `int`</span>
+<span class="sd">        State size.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `str`</span>
+<span class="sd">        Dataset key part.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;_ss</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sz</span></div>
+
+
+<div class="viewcode-block" id="level_dataset"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.util.level_dataset">[docs]</a><span class="k">def</span> <span class="nf">level_dataset</span><span class="p">(</span><span class="n">lv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get dataset key part for level.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lv : `int`</span>
+<span class="sd">        Level.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `str`</span>
+<span class="sd">        Dataset key part.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;_lv</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">lv</span></div>
 </pre></div>
 
            </div>

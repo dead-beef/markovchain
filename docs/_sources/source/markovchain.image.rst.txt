@@ -28,6 +28,14 @@ markovchain\.image\.traversal module
     :undoc-members:
     :show-inheritance:
 
+markovchain\.image\.type module
+-------------------------------
+
+.. automodule:: markovchain.image.type
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 markovchain\.image\.util module
 -------------------------------
 

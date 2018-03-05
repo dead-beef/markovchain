@@ -186,6 +186,32 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">floor</span>
 
 
+<div class="viewcode-block" id="pixel_to_state"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.util.pixel_to_state">[docs]</a><span class="k">def</span> <span class="nf">pixel_to_state</span><span class="p">(</span><span class="n">px</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert pixel value to generator state.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    px : `int`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">px</span><span class="p">)</span><span class="c1">#&#39;%02X&#39; % px</span></div>
+
+<div class="viewcode-block" id="state_to_pixel"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.util.state_to_pixel">[docs]</a><span class="k">def</span> <span class="nf">state_to_pixel</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert generator state to pixel value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state : `str`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `int`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="c1">#int(state[-2:], 16)</span></div>
+
 <div class="viewcode-block" id="palette"><a class="viewcode-back" href="../../../source/markovchain.image.html#markovchain.image.util.palette">[docs]</a><span class="k">def</span> <span class="nf">palette</span><span class="p">(</span><span class="n">hues</span><span class="p">,</span> <span class="n">saturations</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate a palette.</span>
 
