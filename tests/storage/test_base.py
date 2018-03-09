@@ -13,6 +13,8 @@ class StorageTest(Storage):
         pass
     def get_state(self, state, size):
         pass
+    def get_states(self, dataset, string):
+        pass
     def get_links(self, dataset, state, backward=False):
         pass
     def follow_link(self, link, state, backward=False):

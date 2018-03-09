@@ -29,8 +29,8 @@ def test_markov_base_data(data, part, dataset):
     storage.add_links.assert_called_once_with(1)
 
 @pytest.mark.parametrize('state_sizes, args, call', [
-    ([1], (1, 'x', 'd'), ('x', 1, 'd_1')),
-    ([2, 1], (None, 'y', 'dd'), ('y', 2, 'dd_2')),
+    ([1], (1, 'x', 'd'), ('x', 1, 'd_1', False)),
+    ([2, 1], (None, 'y', 'dd', True), ('y', 2, 'dd_2', True)),
     ([], (None, 'y', 'dd'), None)
 ])
 def test_markov_base_generate(mocker, state_sizes, args, call):

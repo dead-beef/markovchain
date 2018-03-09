@@ -1,6 +1,3 @@
-from collections import deque
-from itertools import chain, repeat
-
 from .storage import JsonStorage
 from .scanner import Scanner, CharScanner
 from .parser import ParserBase, Parser
@@ -71,7 +68,7 @@ class Markov(metaclass=DOC_INHERIT):
         links = self.parser(self.scanner(data, part), part, dataset)
         self.storage.add_links(links)
 
-    def generate(self, state_size=None, start=(), dataset=''):
+    def generate(self, state_size=None, start=(), dataset='', backward=False):
         """Generate a sequence.
 
         Parameters
@@ -80,8 +77,10 @@ class Markov(metaclass=DOC_INHERIT):
             State size (default: parser.state_sizes[0]).
         start : `str` or `iterable` of `str`, optional
             Initial state (default: ()).
-        dataset: `str`, optional
+        dataset : `str`, optional
             Dataset key prefix.
+        backward : `bool`, optional
+            Link direction.
 
         Returns
         -------
@@ -98,7 +97,7 @@ class Markov(metaclass=DOC_INHERIT):
         #    raise ValueError('invalid state size: {0}: not in {1}'
         #                     .format(state_size, self.parser.state_sizes))
         dataset += state_size_dataset(state_size)
-        return self.storage.generate(start, state_size, dataset)
+        return self.storage.generate(start, state_size, dataset, backward)
 
     def get_settings_json(self):
         """Convert generator settings to JSON.

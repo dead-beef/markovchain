@@ -94,6 +94,20 @@ class SqliteStorage(Storage):
             return None
         return state[0]
 
+    def get_states(self, dataset, string):
+        dataset = self.get_dataset(dataset)
+        self.cursor.execute(
+            'SELECT DISTINCT nodes.value'
+            ' FROM nodes'
+            ' INNER JOIN links ON links.source = nodes.id AND links.dataset = ?'
+            ' WHERE nodes.value LIKE ?',
+            (dataset, '%%%s%%' % string)
+        )
+        ret = self.cursor.fetchall()
+        for i, row in enumerate(ret):
+            ret[i] = row[0]
+        return ret
+
     def get_links(self, dataset, state, backward=False):
         if backward:
             query = ('SELECT count, bvalue, source'

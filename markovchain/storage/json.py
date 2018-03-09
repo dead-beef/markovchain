@@ -72,6 +72,10 @@ class JsonStorage(Storage):
     def get_state(self, state, size):
         return deque(chain(repeat('', size), state), maxlen=size)
 
+    def get_states(self, dataset, string):
+        dataset = self.get_dataset(dataset)
+        return [key for key in dataset.keys() if string in key]
+
     def get_links(self, dataset, state, backward=False):
         """
         Raises

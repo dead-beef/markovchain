@@ -67,6 +67,26 @@ def test_json_storage_get_state(state, size, res):
     storage = JsonStorage()
     assert storage.get_state(state, size) == deque(res, maxlen=size)
 
+@pytest.mark.parametrize('dataset,string,res', [
+    ('0', 'x', ['xx', 'xy', 'xz']),
+    ('0', 'y', ['xy', 'yz']),
+    ('0', 'q', []),
+    ('1', 'x', ['x']),
+    ('1', 'y', [])
+])
+def test_json_storage_get_states(dataset, string, res):
+    storage = JsonStorage()
+    storage.add_links([
+        ('0', ('xx',), 'xy'),
+        ('0', ('xy',), 'yz'),
+        ('0', ('yz',), 'xz'),
+        ('0', ('xz',), None),
+        ('1', ('x',), 'y')
+    ])
+    test = storage.get_states(dataset, string)
+    test.sort()
+    assert test == res
+
 @pytest.mark.parametrize('args,res', [
     ((['x'],), [(1, 'y')]),
     ((['x', 'y'],), [(1, 'z')]),

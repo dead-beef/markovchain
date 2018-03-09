@@ -212,6 +212,24 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         pass
 
     @abstractmethod
+    def get_states(self, dataset, string):
+        """Get all states containing a substring.
+
+        Parameters
+        ----------
+        dataset : `str`
+            Dataset key.
+        string : `str`
+            String to search.
+
+        Returns
+        -------
+        `list` of `str`
+            States.
+        """
+        pass
+
+    @abstractmethod
     def get_links(self, dataset, state, backward=False):
         """Get links.
 

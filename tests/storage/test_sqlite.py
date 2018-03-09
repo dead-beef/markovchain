@@ -67,6 +67,26 @@ def test_sqlite_storage_get_state(state, size, res):
     storage.add_links([('0', ('x',), 'y'), ('0', ('x', 'y'), 'z')])
     assert storage.get_state(state, size) == res
 
+@pytest.mark.parametrize('dataset,string,res', [
+    ('0', 'x', ['xx', 'xy', 'xz']),
+    ('0', 'y', ['xy', 'yz']),
+    ('0', 'q', []),
+    ('1', 'x', ['x']),
+    ('1', 'y', [])
+])
+def test_json_storage_get_states(dataset, string, res):
+    storage = SqliteStorage()
+    storage.add_links([
+        ('0', ('xx',), 'xy'),
+        ('0', ('xy',), 'yz'),
+        ('0', ('yz',), 'xz'),
+        ('0', ('xz',), None),
+        ('1', ('x',), 'y')
+    ])
+    test = storage.get_states(dataset, string)
+    test.sort()
+    assert test == res
+
 @pytest.mark.parametrize('args,res', [
     ((1,), [(1, 'y', 2), (1, 'z', 3)]),
     ((2,), [(1, 'z', 3)]),
