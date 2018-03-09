@@ -83,7 +83,7 @@ def test_load_json(mocker, fname, bz2, stdout):
     else:
         handle = open_()
 
-    cls = Mock(load=Mock(return_value=0))
+    cls = Mock(from_storage=Mock(return_value=0))
     args = Namespace(type=JSON, progress=stdout, settings={})
 
     assert load(cls, fname, args) == 0
@@ -95,7 +95,7 @@ def test_load_json(mocker, fname, bz2, stdout):
         assert not bz2open.called
         open_.assert_called_with(fname, 'rt')
     json_storage_cls.load.assert_called_once_with(handle)
-    cls.load.assert_called_once_with(json_storage)
+    cls.from_storage.assert_called_once_with(json_storage)
 
 def test_load_sqlite(mocker):
     sqlite_storage = MagicMock()
@@ -104,11 +104,11 @@ def test_load_sqlite(mocker):
         load=Mock(return_value=sqlite_storage)
     )
     fname = 'test'
-    cls = Mock(load=Mock(return_value=0))
+    cls = Mock(from_storage=Mock(return_value=0))
     args = Namespace(type=SQLITE, progress=False, settings={})
     assert load(cls, fname, args) == 0
     sqlite_storage_cls.load.assert_called_once_with(fname)
-    cls.load.assert_called_once_with(sqlite_storage)
+    cls.from_storage.assert_called_once_with(sqlite_storage)
 
 
 @pytest.mark.parametrize('fname,bz2,stdout', [

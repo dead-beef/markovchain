@@ -125,7 +125,7 @@ class Markov(metaclass=DOC_INHERIT):
         self.storage.save(fp)
 
     @classmethod
-    def load(cls, storage):
+    def from_storage(cls, storage):
         """Load from storage.
 
         Parameters
@@ -139,3 +139,23 @@ class Markov(metaclass=DOC_INHERIT):
         args = dict(storage.settings.get('markov', {}))
         args['storage'] = storage
         return cls(**args)
+
+    @classmethod
+    def from_file(cls, fp, storage=None):
+        """Load from file.
+
+        Parameters
+        ----------
+        fp : `str` or `file`
+            File or path.
+        storage : `type`, optional
+            Storage class (default: cls.DEFAULT_STORAGE)
+
+        Returns
+        -------
+        `markovchain.Markov`
+        """
+        if storage is None:
+            storage = cls.DEFAULT_STORAGE
+        storage = storage.load(fp)
+        return cls.from_storage(storage)

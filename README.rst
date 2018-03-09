@@ -85,8 +85,7 @@ Text
 
     markov.save('markov.json')
 
-    storage = JsonStorage.load('markov.json')
-    markov = MarkovText.load(storage)
+    markov = MarkovText.from_file('markov.json')
 
 Image
 ^^^^^
@@ -108,8 +107,7 @@ Image
 
     markov.save('markov.json')
 
-    storage = JsonStorage.load('markov.json')
-    markov = MarkovText.load(storage)
+    markov = MarkovImage.from_file('markov.json')
 
 CLI usage
 ---------

@@ -148,7 +148,7 @@ def load(cls, fname, args):
     if args.settings is not None:
         extend(storage.settings, args.settings)
 
-    return cls.load(storage)
+    return cls.from_storage(storage)
 
 def save(markov, fname, args):
     """Save a generator.

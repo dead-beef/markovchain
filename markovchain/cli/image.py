@@ -251,7 +251,7 @@ def cmd_create(args):
     else:
         storage = JsonStorage(settings=args.settings)
 
-    markov = MarkovImage.load(storage)
+    markov = MarkovImage.from_storage(storage)
     read(args.input, markov, args.progress)
     save(markov, args.output, args)
 
@@ -345,7 +345,7 @@ def cmd_filter(args):
             storage = JsonStorage(settings=args.settings)
         else:
             storage = SqliteStorage(settings=args.settings)
-        markov = MarkovImage.load(storage)
+        markov = MarkovImage.from_storage(storage)
         read([args.input], markov, args.progress, False)
 
     args.level = min(args.level, markov.levels - 1) - 1

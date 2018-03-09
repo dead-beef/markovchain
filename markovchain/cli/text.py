@@ -144,7 +144,7 @@ def cmd_create(args):
         storage = SqliteStorage(db=args.output, settings=args.settings)
     else:
         storage = JsonStorage(settings=args.settings)
-    markov = MarkovText.load(storage)
+    markov = MarkovText.from_storage(storage)
     read(args.input, markov, args.progress)
     save(markov, args.output, args)
 
