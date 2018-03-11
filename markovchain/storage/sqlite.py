@@ -209,13 +209,10 @@ class SqliteStorage(Storage):
             'CREATE UNIQUE INDEX IF NOT EXISTS node ON nodes (value)'
         )
         self.cursor.execute(
-            'CREATE INDEX IF NOT EXISTS link_dataset ON links (dataset)'
+            'CREATE INDEX IF NOT EXISTS link_source ON links (source, dataset)'
         )
         self.cursor.execute(
-            'CREATE INDEX IF NOT EXISTS link_source ON links (source)'
-        )
-        self.cursor.execute(
-            'CREATE INDEX IF NOT EXISTS link_target ON links (target)'
+            'CREATE INDEX IF NOT EXISTS link_target ON links (target, dataset)'
         )
 
     def do_save(self, fp=None):
