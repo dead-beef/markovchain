@@ -29,6 +29,39 @@ class JsonStorage(Storage):
         return (self.nodes == storage.nodes
                 and super().__eq__(storage))
 
+    @staticmethod
+    def add_link(dataset, source, target, count=1):
+        """Add a link.
+
+        Parameters
+        ----------
+        dataset : `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])
+            Dataset.
+        source : `iterable` of `str`
+            Link source.
+        target : `str`
+            Link target.
+        count : `int`, optional
+            Link count (default: 1).
+        """
+        try:
+            node = dataset[source]
+            values, links = node
+            if isinstance(links, list):
+                try:
+                    idx = links.index(target)
+                    values[idx] += count
+                except ValueError:
+                    links.append(target)
+                    values.append(count)
+            elif links == target:
+                node[0] += count
+            else:
+                node[0] = [values, count]
+                node[1] = [links, target]
+        except KeyError:
+            dataset[source] = [count, target]
+
     def replace_state_separator(self, old_separator, new_separator):
         for key, data in self.nodes.items():
             self.nodes[key] = dict(
@@ -51,23 +84,7 @@ class JsonStorage(Storage):
         for dataset, src, dst in links:
             dataset = self.get_dataset(dataset_prefix + dataset, True)
             src = self.join_state(src)
-            try:
-                node = dataset[src]
-                values, nodes = node
-                if isinstance(nodes, list):
-                    try:
-                        idx = nodes.index(dst)
-                        values[idx] += 1
-                    except ValueError:
-                        nodes.append(dst)
-                        values.append(1)
-                elif nodes == dst:
-                    node[0] += 1
-                else:
-                    node[0] = [values, 1]
-                    node[1] = [nodes, dst]
-            except KeyError:
-                dataset[src] = [1, dst]
+            self.add_link(dataset, src, dst)
 
     def get_state(self, state, size):
         return deque(chain(repeat('', size), state), maxlen=size)
