@@ -27,7 +27,7 @@
         },
         "scanner": {
             "__class__": "ImageScanner",
-            "resize": [ 400, 300 ],
+            "resize": [ 800, 600 ],
             "scale": "BICUBIC",
             "level_scale": [ 3, 3, 3 ],
             "traversal": [
