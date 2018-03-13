@@ -54,6 +54,23 @@ class MarkovText(Markov):
             string = join_with.join(parts)
         return self.do_format(string)
 
+    def parse_state(self, string):
+        """
+        Parameters
+        ----------
+        string : `str`
+
+        Returns
+        -------
+        `list` of `str`
+        """
+        for _ in self.parser(self.scanner(string, True), True):
+            pass
+        state = list(self.parser.state)
+        self.scanner.reset()
+        self.parser.reset()
+        return state
+
     def __call__(self,
                  max_length=None,
                  state_size=None,
@@ -81,11 +98,7 @@ class MarkovText(Markov):
             return self.format('')
 
         if isinstance(start, str):
-            for _ in self.parser(self.scanner(start, True), True):
-                pass
-            state = list(self.parser.state)
-            self.scanner.reset()
-            self.parser.reset()
+            state = self.parse_state(start)
         else:
             state, start = tee(start)
 
