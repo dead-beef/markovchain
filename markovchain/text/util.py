@@ -10,10 +10,11 @@ FORMAT_REPLACE = [(re.compile(expr), repl) for expr, repl in [
 ]]
 
 RE_PUNCT = re.compile(r'^[^\w\s]+$')
+RE_WORD = re.compile(r'\w+')
 
 def ispunct(string):
     """Return `True` if all characters in a string are punctuation
-       and it is not empty.
+    and it is not empty.
 
     Parameters
     ----------
@@ -22,8 +23,37 @@ def ispunct(string):
     Returns
     -------
     `bool`
+
+    Examples
+    --------
+    >>> ispunct('.,?')
+    True
+    >>> ispunct('.x.')
+    False
+    >>> ispunct('. ')
+    False
+    >>> ispunct('')
+    False
     """
     return RE_PUNCT.match(string) is not None
+
+def get_words(string):
+    """Find all words in a string.
+
+    Parameters
+    ----------
+    string : `str`
+
+    Returns
+    -------
+    `list` of `str`
+
+    Examples
+    --------
+    >>> get_words('  ..?!word  ,  (Word)..  word')
+    ['word', 'Word', 'word']
+    """
+    return RE_WORD.findall(string)
 
 def lstrip_ws_and_chars(string, chars):
     """Remove leading whitespace and characters from a string.
