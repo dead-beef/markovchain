@@ -15,9 +15,15 @@ def test_json_storage_get_dataset():
     with pytest.raises(KeyError):
         storage.get_dataset('0')
     data = storage.get_dataset('0', True)
-    assert data == {}
-    assert storage.get_dataset('0', True) is data
-    assert storage.get_dataset('1', True) is not data
+    assert data == ({}, None)
+    assert storage.get_dataset('0', True)[0] is data[0]
+    assert storage.get_dataset('1', True)[0] is not data[0]
+
+def test_json_storage_get_dataset_backward():
+    storage = JsonStorage(nodes={}, backward=True)
+    data = storage.get_dataset('0', True)
+    assert data == ({}, {})
+    assert data[0] is not data[1]
 
 def test_json_storage_add_links():
     storage = JsonStorage()
@@ -57,6 +63,22 @@ def test_json_storage_add_links():
             'x': [1, 'y']
         }
     }
+    assert storage.backward is None
+
+def test_json_storage_add_links_backward():
+    storage = JsonStorage(backward=True)
+    storage.add_links([
+        ('0', ('x', 'y'), 'y'),
+        ('0', ('y', 'z'), 'z'),
+        ('0', ('z', 'x'), 'x')
+    ])
+    assert storage.backward == {
+        '0': {
+            'y y': [1, 'x'],
+            'z z': [1, 'y'],
+            'x x': [1, 'z']
+        }
+    }
 
 @pytest.mark.parametrize('state,size,res', [
     ([], 4, ['', '', '', '']),
@@ -68,7 +90,7 @@ def test_json_storage_get_state(state, size, res):
     assert storage.get_state(state, size) == deque(res, maxlen=size)
 
 @pytest.mark.parametrize('dataset,string,res', [
-    ('0', 'x', ['xx', 'xy', 'xz']),
+    ('0', 'x', ['XX', 'xy', 'xz']),
     ('0', 'y', ['xy', 'yz']),
     ('0', 'q', []),
     ('1', 'x', ['x']),
@@ -77,7 +99,7 @@ def test_json_storage_get_state(state, size, res):
 def test_json_storage_get_states(dataset, string, res):
     storage = JsonStorage()
     storage.add_links([
-        ('0', ('xx',), 'xy'),
+        ('0', ('XX',), 'xy'),
         ('0', ('xy',), 'yz'),
         ('0', ('yz',), 'xz'),
         ('0', ('xz',), None),
@@ -91,16 +113,23 @@ def test_json_storage_get_states(dataset, string, res):
     ((['x'],), [(1, 'y')]),
     ((['x', 'y'],), [(1, 'z')]),
     ((['y'],), [(1, 'x'), (2, 'y'), (3, 'z')]),
-    ((['z'],), [])
+    ((['z'],), []),
+    ((['x'], True), [(1, 'z')]),
+    ((['y'], True), [])
 ])
 def test_json_storage_get_links(args, res):
-    nodes = {
-        'x': [1, 'y'],
-        'y': [[1, 2, 3], ['x', 'y', 'z']],
-        'x y': [1, 'z'],
-    }
-    storage = JsonStorage()
-    assert storage.get_links(nodes, *args) == res
+    dataset = (
+        {
+            'x': [1, 'y'],
+            'y': [[1, 2, 3], ['x', 'y', 'z']],
+            'x y': [1, 'z']
+        },
+        {
+            'x': [1, 'z']
+        }
+    )
+    storage = JsonStorage(backward=True)
+    assert storage.get_links(dataset, *args) == res
 
 @pytest.mark.parametrize('args,res', [
     (((0, 'y'), deque(['x'])), ['x', 'y']),
@@ -111,7 +140,7 @@ def test_json_storage_follow_link(args, res):
     assert storage.follow_link(*args) == deque(res)
 
 def test_json_storage_state_separator():
-    storage = JsonStorage()
+    storage = JsonStorage(backward=True)
     storage.add_links([('0', ('x', 'y'), 'z'), ('1', ('y', 'z'), 'x')])
     assert storage.nodes == {
         '0': {
@@ -119,6 +148,14 @@ def test_json_storage_state_separator():
         },
         '1': {
             'y z': [1, 'x']
+        }
+    }
+    assert storage.backward == {
+        '0': {
+            'y z': [1, 'x']
+        },
+        '1': {
+            'z x': [1, 'y']
         }
     }
     storage.state_separator = ':'
@@ -130,10 +167,20 @@ def test_json_storage_state_separator():
             'y:z': [1, 'x']
         }
     }
+    assert storage.backward == {
+        '0': {
+            'y:z': [1, 'x']
+        },
+        '1': {
+            'z:x': [1, 'y']
+        }
+    }
 
 @pytest.mark.parametrize('test,test2,res', [
     ((), (), True),
-    ((), ({}), True),
+    ((), ({}, False), True),
+    ((), ({}, True), False),
+    (({}, {}), ({}, True), True),
     ((), ({'0': {'x':[1, 'y']}}), False),
     (({'0': {'x':[1, 'y']}}), ({'0': {'x':[1, 'y']}}), True),
     ((), ({}, {'state_separator': ':'}), False)
@@ -142,14 +189,13 @@ def test_json_storage_eq(test, test2, res):
     assert (JsonStorage(*test) == JsonStorage(*test2)) == res
 
 def test_json_storage_save_load():
-    storage = JsonStorage(settings={'state_separator': ':'})
+    storage = JsonStorage(backward=True, settings={'state_separator': ':'})
     storage.add_links([
         ('0', ('x',), 'y'),
         ('0', ('y',), 'z'),
         ('1', ('x',), 'y'),
         ('1', ('x',), 'z')
     ])
-
     fp = StringIO()
     storage.save(fp)
     fp.seek(0)
