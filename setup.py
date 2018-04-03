@@ -36,7 +36,7 @@ setup(name='markovchain',
       entry_points={
           'console_scripts': ['markovchain=markovchain.cli:main'],
       },
-      install_requires=['tqdm', 'custom_inherit'],
+      install_requires=['enum34', 'tqdm', 'custom_inherit'],
       extras_require={
           'image': ['pillow'],
           'dev': [
