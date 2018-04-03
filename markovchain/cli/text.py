@@ -194,7 +194,7 @@ def cmd_generate(args):
                   bar_format=BAR_FORMAT, dynamic_ncols=True)
 
     if not args.format:
-        markov.do_format = lambda x: x
+        markov.formatter = lambda x: x
 
     if args.word_separator:
         markov.scanner.join = args.word_separator.join

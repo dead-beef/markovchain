@@ -1,16 +1,27 @@
 import re
+import enum
 
-FORMAT_REPLACE = [(re.compile(expr), repl) for expr, repl in [
-    (r'\s+'               , r' '       ), # pylint:disable=bad-whitespace
-    (r'\s*([^\w\s]+)\s*'  , r'\1'      ), # pylint:disable=bad-whitespace
-    (r'([,.?!])(\w)'      , r'\1 \2'   ), # pylint:disable=bad-whitespace
-    (r'([\w,.?!])([[({<])', r'\1 \2'   ), # pylint:disable=bad-whitespace
-    (r'([])}>])(\w)'      , r'\1 \2'   ), # pylint:disable=bad-whitespace
-    (r'(\w)([-+*]+)(\w)'  , r'\1 \2 \3'), # pylint:disable=bad-whitespace
-]]
 
 RE_PUNCT = re.compile(r'^[^\w\s]+$')
 RE_WORD = re.compile(r'\w+')
+
+
+class CharCase(enum.IntEnum):
+    """Character case."""
+    PRESERVE = 0
+    TITLE = 1
+    UPPER = 2
+    LOWER = 3
+
+    def convert(self, string):
+        if self == self.__class__.TITLE:
+            return capitalize(string)
+        if self == self.__class__.UPPER:
+            return string.upper()
+        if self == self.__class__.LOWER:
+            return string.lower()
+        return string
+
 
 def ispunct(string):
     """Return `True` if all characters in a string are punctuation
@@ -104,81 +115,3 @@ def capitalize(string):
     if len(string) == 1:
         return string.upper()
     return string[0].upper() + string[1:].lower()
-
-def format_sentence_string(string, end_chars='.?!', default_end='.'):
-    """Format a sentence.
-
-    Parameters
-    ----------
-    string : `str`
-        Sentence.
-    end_chars : `str`, optional
-        Sentence ending characters (default: '.?!').
-    default_end : `str`, optional
-        Default sentence ending character (default: '.').
-
-    Returns
-    -------
-    str
-        Formatted sentence.
-
-    Examples
-    --------
-    >>> format_sentence_string('  ..?!word  ,  (word)..  word')
-    'Word, (word).. word.'
-    >>> format_sentence_string('word WORD', default_end='?')
-    'Word word?'
-    >>> format_sentence_string('word,', end_chars=',')
-    'Word,'
-    """
-    string = lstrip_ws_and_chars(string.rstrip(), end_chars)
-
-    if not string:
-        return string
-
-    if string[-1] not in end_chars:
-        string += default_end
-
-    string = capitalize(string)
-
-    for expr, repl in FORMAT_REPLACE:
-        string = re.sub(expr, repl, string)
-
-    return string
-
-def format_sentence(parts, join_with=' ', end_chars='.?!', default_end='.'):
-    """Format a sentence.
-
-    Parameters
-    ----------
-    parts : `str` or `iterable` of `str`
-        Sentence parts.
-    join_with : `str`, optional
-        Part separator (default: ' ').
-    end_chars : `str`, optional
-        Sentence ending characters (default: '.?!').
-    default_end : `str`, optional
-        Default sentence ending character (default: '.').
-
-    Returns
-    -------
-    str
-        Formatted sentence.
-
-    Examples
-    --------
-    >>> format_sentence('word WORD', default_end='?')
-    'Word word?'
-    >>> format_sentence('word,', end_chars=',')
-    'Word,'
-    >>> format_sentence('word' for _ in range(3))
-    'Word word word.'
-    >>> format_sentence(('word' for _ in range(3)), join_with=',')
-    'Word, word, word.'
-    """
-    if isinstance(parts, str):
-        sentence = parts
-    else:
-        sentence = join_with.join(parts)
-
-    return format_sentence_string(sentence, end_chars, default_end)

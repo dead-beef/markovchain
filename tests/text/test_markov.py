@@ -1,3 +1,4 @@
+from unittest.mock import Mock
 import pytest
 
 from markovchain.text import MarkovText
@@ -14,12 +15,9 @@ def test_markov_text_data(mocker):
     (['1', '2', '3'], CharScanner(), ''),
     (['1', '2', '3'], None, ' ')
 ])
-def test_markov_text_format(mocker, test, scanner, join_with):
-    fmt = mocker.patch(
-        'markovchain.text.markov.format_sentence',
-        return_value=2
-    )
-    markov = MarkovText(scanner=scanner)
+def test_markov_text_format(test, scanner, join_with):
+    fmt = Mock(return_value=2)
+    markov = MarkovText(scanner=scanner, formatter=fmt)
     assert markov.format(test) == 2
     fmt.assert_called_with(join_with.join(test))
 

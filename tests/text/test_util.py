@@ -1,8 +1,7 @@
 import pytest
 
 from markovchain.text.util import (
-    ispunct, lstrip_ws_and_chars, capitalize,
-    format_sentence_string, format_sentence
+    CharCase, ispunct, capitalize, lstrip_ws_and_chars
 )
 
 
@@ -33,33 +32,13 @@ def test_capitalize(test, res):
 def test_lstrip_ws_and_chars(test, res):
     assert lstrip_ws_and_chars(*test) == res
 
-@pytest.mark.parametrize('arg,kwargs,res', [
-    ('', {}, ''),
-    ('  ', {}, ''),
-    ('  ...', {}, ''),
-    ('.?!word', {}, 'Word.'),
-    ('word', {'default_end': '/'}, 'Word/'),
-    ('word', {'end_chars': 'd'}, 'Word'),
-    ('word  ,  (word)..  word', {}, 'Word, (word).. word.'),
-    ('word,wo[rd..wo]rd', {}, 'Word, wo [rd.. wo] rd.'),
-    ('wo--*--rd', {}, 'Wo --*-- rd.')
-])
-def test_format_sentence_string(arg, kwargs, res):
-    assert format_sentence_string(arg, **kwargs) == res
 
-@pytest.mark.parametrize('arg,kwargs,call', [
-    ('word', {}, ('word', '.?!', '.')),
-    (
-        (str(x) for x in range(3)),
-        {'end_chars': '/[', 'default_end': '/'},
-        ('0 1 2', '/[', '/')
-    ),
-    (['a', 'b', 'c'], {'join_with': '.'}, ('a.b.c', '.?!', '.'))
+@pytest.mark.parametrize('case,string,res', [
+    (CharCase.PRESERVE, 'a B c', 'a B c'),
+    (CharCase.TITLE, 'a B c', 'A b c'),
+    (CharCase.UPPER, 'a B c', 'A B C'),
+    (CharCase.LOWER, 'a B c', 'a b c')
 ])
-def test_format_sentence(mocker, arg, kwargs, call):
-    fmt = mocker.patch(
-        'markovchain.text.util.format_sentence_string',
-        return_value=1
-    )
-    assert format_sentence(arg, **kwargs) == 1
-    fmt.assert_called_once_with(*call)
+def test_char_case_convert(case, string, res):
+    case = CharCase(case)
+    assert case.convert(string) == res

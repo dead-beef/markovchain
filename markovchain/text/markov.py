@@ -1,9 +1,10 @@
 from itertools import chain, islice, tee
 
+from .format import FormatterBase, Formatter
 from ..scanner import CharScanner, RegExpScanner
 from ..parser import Parser
 from ..base import Markov
-from .util import format_sentence
+from ..util import load
 
 
 class MarkovText(Markov):
@@ -12,6 +13,24 @@ class MarkovText(Markov):
 
     DEFAULT_SCANNER = RegExpScanner
     DEFAULT_PARSER = Parser
+    DEFAULT_FORMATTER = Formatter
+
+    def __init__(self,
+                 scanner=None,
+                 parser=None,
+                 storage=None,
+                 formatter=None):
+        super().__init__(scanner, parser, storage)
+        self.formatter = load(formatter, FormatterBase, self.DEFAULT_FORMATTER)
+
+    def __eq__(self, markov):
+        return (super().__eq__(markov)
+                and self.formatter == markov.formatter)
+
+    def get_settings_json(self):
+        data = super().get_settings_json()
+        data['formatter'] = self.formatter.save()
+        return data
 
     def data(self, data, part=False, dataset=''):
         """
@@ -25,16 +44,6 @@ class MarkovText(Markov):
             Dataset key prefix (default: '').
         """
         return super().data(data, part)
-
-    def do_format(self, string):
-        """Format a sentence.
-
-        Parameters
-        ----------
-        string : `str`
-            Sentence to format.
-        """
-        return format_sentence(string)
 
     def format(self, parts):
         """Format a sentence.
@@ -52,7 +61,7 @@ class MarkovText(Markov):
             else:
                 join_with = ' '
             string = join_with.join(parts)
-        return self.do_format(string)
+        return self.formatter(string)
 
     def parse_state(self, string):
         """
