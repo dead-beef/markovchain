@@ -14,7 +14,7 @@ DOC_INHERIT_ABSTRACT = DocInheritMeta(
 )
 
 
-class SaveLoad:
+class SaveLoad(metaclass=DOC_INHERIT_ABSTRACT):
     """Base class for converting to/from JSON.
 
     Attributes
@@ -262,6 +262,30 @@ def fill(xs, length, copy=False):
             xs.extend(islice(repeat(xs[-1]), 0, length - len(xs)))
 
     return xs
+
+def int_enum(cls, val):
+    """Get int enum value.
+
+    Parameters
+    ----------
+    cls : `type`
+    val : `int` or `str`
+
+    Returns
+    -------
+    `IntEnum`
+
+    Raises
+    ------
+    ValueError
+    """
+    if isinstance(val, str):
+        val = val.upper()
+        try:
+            return getattr(cls, val)
+        except AttributeError:
+            raise ValueError('{0}.{1}'.format(cls, val))
+    return cls(val)
 
 def load(obj, cls, default_factory):
     """Create or load an object if necessary.

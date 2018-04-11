@@ -117,7 +117,7 @@ def read(fnames, markov, progress):
                 try:
                     line = fp.readline()
                     while line:
-                        markov.data(line.lower(), True)
+                        markov.data(line, True)
                         if pbar is not None:
                             pos = fp.tell()
                             if pos <= total:
@@ -181,7 +181,7 @@ def cmd_generate(args):
     """
 
     if args.start is not None:
-        args.start = args.start.lower()
+        args.start = args.start
     else:
         args.start = ()
 

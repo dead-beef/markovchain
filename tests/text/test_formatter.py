@@ -53,7 +53,7 @@ def test_formatter_save_load(kwargs):
     ({'case': 'upper'}, 'word', 'WORD.'),
     ({'case': 'lower'}, 'woRd', 'word.'),
     ({'case': 'preserve'}, 'woRd', 'woRd.'),
-    ({'case': 'xxx'}, 'woRd', AttributeError),
+    ({'case': 'xxx'}, 'woRd', ValueError),
     ({'replace': [(r'(x+)', r'_\1_')]}, 'axxb', 'A_xx_b.')
 ])
 def test_formatter_format(kwargs, test, res):

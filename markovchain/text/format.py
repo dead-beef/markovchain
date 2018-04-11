@@ -1,7 +1,7 @@
 import re
 from abc import abstractmethod
 
-from ..util import SaveLoad, DOC_INHERIT_ABSTRACT
+from ..util import SaveLoad, DOC_INHERIT_ABSTRACT, int_enum
 from .util import CharCase, lstrip_ws_and_chars
 
 
@@ -38,7 +38,7 @@ class Formatter(FormatterBase):
     Attributes
     ----------
     case : `markovchain.text.util.CharCase`
-        Character case
+        Output character case.
     replace : `list` of (_sre.SRE_Pattern, `str`)
         List of regular expressions to replace.
     end_chars : `str`
@@ -65,8 +65,8 @@ class Formatter(FormatterBase):
 
         Parameters
         ----------
-        case : `markovchain.text.util.CharCase` or `str`, optional
-            Character case
+        case : `int` or `str` or `markovchain.text.util.CharCase`, optional
+            Character case (default: `markovchain.text.util.CharCase.TITLE`).
         end_chars : `str`, optional
             Sentence ending characters (default: '.?!').
         default_end : `None` or `str`, optional
@@ -76,11 +76,7 @@ class Formatter(FormatterBase):
         """
         if replace is None:
             replace = self.DEFAULT_REPLACE
-        if isinstance(case, str):
-            case = getattr(CharCase, case.upper())
-        else:
-            case = CharCase(case)
-        self.case = case
+        self.case = int_enum(CharCase, case)
         self.replace = [(re.compile(expr), repl) for expr, repl in replace]
         self.end_chars = end_chars
         self.default_end = default_end

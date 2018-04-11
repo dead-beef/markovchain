@@ -1,8 +1,8 @@
 from unittest.mock import Mock
 import pytest
 
-from markovchain.text import MarkovText
-from markovchain.scanner import Scanner, CharScanner
+from markovchain.text import MarkovText, CharScanner
+from markovchain.scanner import Scanner
 
 
 def test_markov_text_data(mocker):

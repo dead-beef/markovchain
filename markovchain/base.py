@@ -1,5 +1,5 @@
 from .storage import JsonStorage
-from .scanner import Scanner, CharScanner
+from .scanner import Scanner
 from .parser import ParserBase, Parser
 from .util import load, DOC_INHERIT, state_size_dataset
 
@@ -19,7 +19,7 @@ class Markov(metaclass=DOC_INHERIT):
     parser : `markovchain.parser.ParserBase`
     storage : `markovchain.storage.Storage`
     """
-    DEFAULT_SCANNER = CharScanner
+    DEFAULT_SCANNER = Scanner
     DEFAULT_PARSER = Parser
     DEFAULT_STORAGE = JsonStorage
 

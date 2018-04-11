@@ -1,9 +1,10 @@
 import pytest
+from enum import IntEnum
 
 from markovchain.util import (
     SaveLoad, ObjectWrapper, const,
     fill, load, extend, to_list, truncate,
-    state_size_dataset, level_dataset
+    state_size_dataset, level_dataset, int_enum
 )
 
 
@@ -74,6 +75,27 @@ def test_object_wrapper_override():
     assert wrapped.z == 3
     assert wrapped.method() == 8
     assert wrapped.method2() == -3
+
+
+class IntEnumTest(IntEnum):
+    X = 0
+    Y = 1
+
+@pytest.mark.parametrize('test,res', [
+    (0, 0),
+    ('Y', 1),
+    ('y', 1),
+    ('z', ValueError),
+    (2, ValueError)
+])
+def test_int_enum(test, res):
+    if isinstance(res, type):
+        with pytest.raises(res):
+            int_enum(IntEnumTest, test)
+    else:
+        test = int_enum(IntEnumTest, test)
+        assert isinstance(test, IntEnumTest)
+        assert test == res
 
 
 def test_const():

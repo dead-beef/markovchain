@@ -1,7 +1,7 @@
 from itertools import chain, islice, tee
 
 from .format import FormatterBase, Formatter
-from ..scanner import CharScanner, RegExpScanner
+from .scanner import CharScanner, RegExpScanner
 from ..parser import Parser
 from ..base import Markov
 from ..util import load

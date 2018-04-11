@@ -1,5 +1,5 @@
 from .storage import JsonStorage, SqliteStorage
-from .scanner import Scanner, CharScanner, RegExpScanner
+from .scanner import Scanner
 from .parser import Parser, LevelParser
 from .base import Markov
 from .text import MarkovText
@@ -9,4 +9,3 @@ except ImportError:
     pass
 
 Parser.add_class(Parser, LevelParser)
-Scanner.add_class(CharScanner, RegExpScanner)

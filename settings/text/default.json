@@ -10,6 +10,7 @@
         },
         "scanner": {
             "__class__": "RegExpScanner",
+            "case": "lower",
             "expr": "(?:(?P<end>[.!?]+)|(?P<word>(?:[^\\w\\s]+|\\w+)))",
             "default_end": "."
         },

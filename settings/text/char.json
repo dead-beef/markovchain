@@ -5,13 +5,15 @@
     "markov": {
         "parser": {
             "__class__": "Parser",
-            "state_sizes": [ 1, 2, 4, 8 ],
-            "reset_on_sentence_end": true
+            "state_sizes": [ 1, 2, 4, 8 ]
         },
         "scanner": {
             "__class__": "CharScanner",
-            "end_chars": ".?!\n",
-            "default_end": "."
+            "case": "preserve"
+        },
+        "formatter": {
+            "__class__": "Formatter",
+            "case": "preserve"
         }
     }
 }
