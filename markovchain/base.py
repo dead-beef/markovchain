@@ -156,5 +156,23 @@ class Markov(metaclass=DOC_INHERIT):
         """
         if storage is None:
             storage = cls.DEFAULT_STORAGE
-        storage = storage.load(fp)
-        return cls.from_storage(storage)
+        return cls.from_storage(storage.load(fp))
+
+    @classmethod
+    def from_settings(cls, settings=None, storage=None):
+        """Create from settings.
+
+        Parameters
+        ----------
+        settings : `dict`, optional
+            Settings (default: None).
+        storage : `type`, optional
+            Storage class (default: cls.DEFAULT_STORAGE)
+
+        Returns
+        -------
+        `markovchain.Markov`
+        """
+        if storage is None:
+            storage = cls.DEFAULT_STORAGE
+        return cls.from_storage(storage(settings=settings))
