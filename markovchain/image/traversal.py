@@ -1,10 +1,10 @@
 from abc import abstractmethod
 from math import ceil, log2
 
-from ..util import SaveLoad, load, DOC_INHERIT_ABSTRACT
+from ..util import SaveLoad, load
 
 
-class Traversal(SaveLoad, metaclass=DOC_INHERIT_ABSTRACT):
+class Traversal(SaveLoad):
     """Base image traversal class.
 
     Attributes
@@ -414,7 +414,7 @@ class Hilbert(Traversal):
         idx : `int`
             Point index.
         size : `int`
-            Bounding box size.
+            Curve size.
 
         Returns
         -------

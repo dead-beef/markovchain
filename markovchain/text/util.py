@@ -5,6 +5,9 @@ import enum
 RE_PUNCT = re.compile(r'^[^\w\s]+$')
 RE_WORD = re.compile(r'\w+')
 
+RE_FLAGS = 'AILMSUX'
+RE_CUSTOM_FLAGS = 'O'
+
 
 class CharCase(enum.IntEnum):
     """Character case."""
@@ -21,6 +24,19 @@ class CharCase(enum.IntEnum):
         if self == self.__class__.LOWER:
             return string.lower()
         return string
+
+
+class ReFlags(enum.IntEnum):
+    """Custom regexp flags.
+
+    Attributes
+    ----------
+    O : `int`
+    OVERLAP : `int`
+        Replace overlapping occurrences of pattern.
+    """
+    O = 1
+    OVERLAP = 1
 
 
 def ispunct(string):
@@ -115,3 +131,87 @@ def capitalize(string):
     if len(string) == 1:
         return string.upper()
     return string[0].upper() + string[1:].lower()
+
+
+def re_flags(flags, custom=ReFlags):
+    """Parse regexp flag string.
+
+    Parameters
+    ----------
+    flags: `str`
+        Flag string.
+    custom: `type`, optional
+        Custom flags (default: None).
+
+    Returns
+    -------
+    (`int`, `int`)
+        (flags for `re.compile`, custom flags)
+
+    Raises
+    ------
+    ValueError
+    """
+    re_, custom_ = 0, 0
+    for flag in flags.upper():
+        try:
+            re_ |= getattr(re, flag)
+        except AttributeError:
+            if custom is not None:
+                try:
+                    custom_ |= getattr(custom, flag)
+                except AttributeError:
+                    raise ValueError('Invalid custom flag "%s"' % flag)
+            else:
+                raise ValueError('Invalid regexp flag "%s"' % flag)
+    return re_, custom_
+
+def re_flags_str(flags, custom_flags):
+    """Convert regexp flags to string.
+
+    Parameters
+    ----------
+    flags : `int`
+        Flags.
+    custom_flags : `int`
+        Custom flags.
+
+    Returns
+    -------
+    `str`
+        Flag string.
+    """
+    res = ''
+    for flag in RE_FLAGS:
+        if flags & getattr(re, flag):
+            res += flag
+    for flag in RE_CUSTOM_FLAGS:
+        if custom_flags & getattr(ReFlags, flag):
+            res += flag
+    return res
+
+def re_sub(pattern, repl, string, count=0, flags=0, custom_flags=0):
+    """Replace regular expression.
+
+    Parameters
+    ----------
+    pattern : `str` or `_sre.SRE_Pattern`
+        Compiled regular expression.
+    repl : `str` or `function`
+        Replacement.
+    string : `str`
+        Input string.
+    count: `int`
+        Maximum number of pattern occurrences.
+    flags : `int`
+        Flags.
+    custom_flags : `int`
+        Custom flags.
+    """
+    if custom_flags & ReFlags.OVERLAP:
+        prev_string = None
+        while string != prev_string:
+            prev_string = string
+            string = re.sub(pattern, repl, string, count, flags)
+        return string
+    return re.sub(pattern, repl, string, count, flags)

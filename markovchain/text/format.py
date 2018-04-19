@@ -1,11 +1,14 @@
 import re
 from abc import abstractmethod
 
-from ..util import SaveLoad, DOC_INHERIT_ABSTRACT, int_enum
-from .util import CharCase, lstrip_ws_and_chars
+from ..util import SaveLoad, int_enum
+from .util import (
+    CharCase, lstrip_ws_and_chars,
+    re_flags, re_flags_str, re_sub
+)
 
 
-class FormatterBase(SaveLoad, metaclass=DOC_INHERIT_ABSTRACT):
+class FormatterBase(SaveLoad):
     """Text formatter base class."""
     classes = {}
 
@@ -39,7 +42,7 @@ class Formatter(FormatterBase):
     ----------
     case : `markovchain.text.util.CharCase`
         Output character case.
-    replace : `list` of (_sre.SRE_Pattern, `str`)
+    replace : `list` of (_sre.SRE_Pattern, `str`, `int`)
         List of regular expressions to replace.
     end_chars : `str`
         Sentence ending characters.
@@ -71,20 +74,31 @@ class Formatter(FormatterBase):
             Sentence ending characters (default: '.?!').
         default_end : `None` or `str`, optional
             Default sentence ending character (default: '.').
-        replace : `list` of (`str`, `str`), optional
+        replace : `list` of ((`str`, `str`) or (`str`, `str`, `str`)), optional
             List of regular expressions to replace (default: DEFAULT_REPLACE).
         """
         if replace is None:
             replace = self.DEFAULT_REPLACE
         self.case = int_enum(CharCase, case)
-        self.replace = [(re.compile(expr), repl) for expr, repl in replace]
         self.end_chars = end_chars
         self.default_end = default_end
+        self.replace = []
+        for rule in replace:
+            try:
+                expr, repl, flags = rule
+            except ValueError:
+                expr, repl = rule
+                flags = 'u'
+            flags, custom_flags = re_flags(flags)
+            self.replace.append((re.compile(expr, flags), repl, custom_flags))
 
     def save(self):
         data = super().save()
         data['case'] = self.case
-        data['replace'] = [(expr.pattern, repl) for expr, repl in self.replace]
+        data['replace'] = [
+            (expr.pattern, repl, re_flags_str(expr.flags, flags))
+            for expr, repl, flags in self.replace
+        ]
         data['end_chars'] = self.end_chars
         data['default_end'] = self.default_end
         return data
@@ -109,7 +123,7 @@ class Formatter(FormatterBase):
 
         string = self.case.convert(string)
 
-        for expr, repl in self.replace:
-            string = re.sub(expr, repl, string)
+        for expr, repl, flags in self.replace:
+            string = re_sub(expr, repl, string, custom_flags=flags)
 
         return string
