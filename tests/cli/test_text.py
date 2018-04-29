@@ -10,22 +10,22 @@ from markovchain.cli.main import main
         'state.json',
         None,
         ['aa bb cc'],
-        ['-w', '16', '-S', '3'],
+        ['-w', '16', '-c', '3'],
         'Aa bb cc.\nAa bb cc.\nAa bb cc.\n'
+    ),
+    (
+        'state.json',
+        {'storage': {'backward': True}},
+        ['aa bb cc'],
+        ['-w', '16', '-E', 'bb'],
+        'Aa bb.\n'
     ),
     (
         'state.db',
         None,
         ['aa bb', 'aa bb cc dd'],
-        ['-nf', '-st', 'bb cc', '-ws', '|'],
-        'bb cc|dd|.\n'
-    ),
-    (
-        'state.db',
-        None,
-        ['a b', 'a b c d'],
-        ['-st', 'a   b c', '-ws', '|'],
-        'A b c|d|.\n'
+        ['-nf', '-S', 'bb  cc'],
+        'bb  cc dd .\n'
     ),
     (
         'state.json.bz2',
@@ -38,7 +38,7 @@ from markovchain.cli.main import main
             }
         },
         ['a b c.\na b c.\na b c.\nb b d.'],
-        ['-ss', '2', '-st', 'b b'],
+        ['-ss', '2', '-S', 'b b'],
         'B b d.\n'
     )
 ])

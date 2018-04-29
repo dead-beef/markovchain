@@ -5,7 +5,7 @@ import pytest
 class MockCLI:
     class Exit(Exception):
         def __init__(self, status=0):
-            super().__init__('Command exited with status ' + status)
+            super().__init__('Command exited with status %s' % status)
             self.status = status
 
     @classmethod

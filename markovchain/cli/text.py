@@ -1,7 +1,8 @@
 from argparse import FileType
 from os import replace, remove, path, SEEK_SET, SEEK_END
 
-from .. import MarkovText, JsonStorage, SqliteStorage
+from ..storage import JsonStorage, SqliteStorage
+from ..text import MarkovText, ReplyMode
 from ..util import truncate
 from .util import (
     load, save, infiles, JSON, SQLITE,
@@ -60,25 +61,28 @@ def create_arg_parser(parent):
     arg2.add_argument('-nf', '--no-format',
                       dest='format',
                       action='store_false',
-                      help='do not format sentences')
+                      help='do not format text')
     arg2.add_argument('-s', '--settings',
                       type=FileType('r'), default=None,
                       help='settings json file')
     arg2.add_argument('-ss', '--state-size',
                       type=int, default=None,
                       help='generator state size')
-    arg2.add_argument('-st', '--start',
+    arg2.add_argument('-S', '--start',
                       default=None,
-                      help='sentence start')
+                      help='text start')
+    arg2.add_argument('-E', '--end',
+                      default=None,
+                      help='text end')
+    arg2.add_argument('-R', '--reply',
+                      default=None,
+                      help='reply to text')
     arg2.add_argument('-w', '--words',
                       type=int, default=256,
-                      help='max sentence size (default: %(default)s)')
-    arg2.add_argument('-ws', '--word-separator',
-                      default=None,
-                      help='output word separator (default: \' \')')
-    arg2.add_argument('-S', '--sentences',
+                      help='max text size (default: %(default)s)')
+    arg2.add_argument('-c', '--count',
                       type=int, default=1,
-                      help='number of generated sentences (default: %(default)s)')
+                      help='number of generated texts (default: %(default)s)')
     arg2.add_argument('-o', '--output',
                       type=FileType('w'), default=None,
                       help='output file (default: stdout)')
@@ -180,14 +184,26 @@ def cmd_generate(args):
         Command arguments.
     """
 
-    if args.start is not None:
-        args.start = args.start
+    if args.start:
+        if args.end or args.reply:
+            raise ValueError('multiple input arguments')
+        args.reply_to = args.start
+        args.reply_mode = ReplyMode.END
+    elif args.end:
+        if args.reply:
+            raise ValueError('multiple input arguments')
+        args.reply_to = args.end
+        args.reply_mode = ReplyMode.START
+    elif args.reply:
+        args.reply_to = args.reply
+        args.reply_mode = ReplyMode.REPLY
     else:
-        args.start = ()
+        args.reply_to = None
+        args.reply_mode = ReplyMode.END
 
     markov = load(MarkovText, args.state, args)
 
-    ss = range(args.sentences)
+    ss = range(args.count)
     if args.progress:
         title = truncate(args.output.name, BAR_DESC_SIZE - 1, False)
         ss = tqdm(ss, desc=title,
@@ -196,12 +212,12 @@ def cmd_generate(args):
     if not args.format:
         markov.formatter = lambda x: x
 
-    if args.word_separator:
-        markov.scanner.join = args.word_separator.join
-
     for _ in ss:
-        data = markov(args.words,
-                      state_size=args.state_size,
-                      start=args.start)
+        data = markov(
+            args.words,
+            state_size=args.state_size,
+            reply_to=args.reply_to,
+            reply_mode=args.reply_mode
+        )
         if data:
             print(data)

@@ -9,6 +9,14 @@ RE_FLAGS = 'AILMSUX'
 RE_CUSTOM_FLAGS = 'O'
 
 
+class ReplyMode(enum.IntEnum):
+    """Text reply mode.
+    """
+    END = 0
+    START = 1
+    REPLY = 2
+
+
 class CharCase(enum.IntEnum):
     """Character case."""
     PRESERVE = 0
@@ -17,6 +25,27 @@ class CharCase(enum.IntEnum):
     LOWER = 3
 
     def convert(self, string):
+        """Return a copy of string converted to case.
+
+        Parameters
+        ----------
+        string : `str`
+
+        Returns
+        -------
+        `str`
+
+        Examples
+        --------
+        >>> CharCase.LOWER.convert('sTr InG')
+        'str ing'
+        >>> CharCase.UPPER.convert('sTr InG')
+        'STR ING'
+        >>> CharCase.TITLE.convert('sTr InG')
+        'Str ing'
+        >>> CharCase.PRESERVE.convert('sTr InG')
+        'sTr InG'
+        """
         if self == self.__class__.TITLE:
             return capitalize(string)
         if self == self.__class__.UPPER:
@@ -140,8 +169,8 @@ def re_flags(flags, custom=ReFlags):
     ----------
     flags: `str`
         Flag string.
-    custom: `type`, optional
-        Custom flags (default: None).
+    custom: `IntEnum`, optional
+        Custom flag enum (default: None).
 
     Returns
     -------
