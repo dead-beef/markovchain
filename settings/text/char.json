@@ -1,6 +1,7 @@
 {
     "storage": {
-        "state_separator": ""
+        "state_separator": "",
+        "backward": false
     },
     "markov": {
         "parser": {
@@ -14,6 +15,9 @@
         "formatter": {
             "__class__": "Formatter",
             "case": "preserve"
+        },
+        "rank": {
+            "__class__": "Const"
         }
     }
 }

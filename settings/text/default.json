@@ -1,6 +1,7 @@
 {
     "storage": {
-        "state_separator": " "
+        "state_separator": " ",
+        "backward": false
     },
     "markov": {
         "parser": {
@@ -27,6 +28,9 @@
                 ["([])}>])(\\w)", "\\1 \\2"],
                 ["(\\w)([-+*]+)(\\w)", "\\1 \\2 \\3"]
             ]
+        },
+        "rank": {
+            "__class__": "Const"
         }
     }
 }

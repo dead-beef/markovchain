@@ -3,7 +3,7 @@
         "state_separator": ""
     },
     "markov": {
-        "levels": 5,
+        "levels": 2,
         "imgtype": {
             "__class__": "Indexed",
             "palette": [ 8, 4, 8 ],
@@ -11,23 +11,30 @@
             "dither": true
         },
         "parser": {
-            "__class__": "Parser",
-            "state_sizes": [ 1, 4 ],
-            "reset_on_sentence_end": true
+            "__class__": "LevelParser",
+            "parsers": [
+                {
+                    "__class__": "Parser",
+                    "state_sizes": [ 16 ]
+                },
+                {
+                    "__class__": "Parser",
+                    "state_sizes": [ 4 ]
+                }
+            ]
         },
         "scanner": {
             "__class__": "ImageScanner",
             "resize": null,
             "scale": "BICUBIC",
-            "level_scale": [ 3, 3, 3, 3 ],
+            "level_scale": [ 16 ],
             "traversal": [
                 {
-                    "__class__": "HLines",
-                    "reverse": 2
+                    "__class__": "Hilbert"
                 },
                 {
                     "__class__": "Spiral",
-                    "reverse": false
+                    "reverse": true
                 }
             ]
         }
