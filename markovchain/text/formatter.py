@@ -41,7 +41,7 @@ class Formatter(FormatterBase):
     Attributes
     ----------
     case : `markovchain.text.util.CharCase`
-        Output character case.
+        Character case.
     replace : `list` of (_sre.SRE_Pattern, `str`, `int`)
         List of regular expressions to replace.
     end_chars : `str`
@@ -94,7 +94,7 @@ class Formatter(FormatterBase):
 
     def save(self):
         data = super().save()
-        data['case'] = self.case
+        data['case'] = self.case.name
         data['replace'] = [
             (expr.pattern, repl, re_flags_str(expr.flags, flags))
             for expr, repl, flags in self.replace

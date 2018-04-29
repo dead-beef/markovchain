@@ -1,6 +1,6 @@
 import pytest
 
-from markovchain.text.format import Noop, Formatter
+from markovchain.text.formatter import Noop, Formatter
 
 
 @pytest.mark.parametrize('test', [

@@ -1,5 +1,5 @@
 from .markov import MarkovText
-from .format import FormatterBase, Noop as NoopFormatter, Formatter
+from .formatter import FormatterBase, Noop as NoopFormatter, Formatter
 from .rank import Rank, Const as ConstRank, Test as TestRank
 from .scanner import CharScanner, RegExpScanner
 from ..scanner import Scanner
