@@ -182,12 +182,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for markovchain.text.markov</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">islice</span><span class="p">,</span> <span class="n">tee</span>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">islice</span><span class="p">,</span> <span class="n">cycle</span>
 
-<span class="kn">from</span> <span class="nn">..scanner</span> <span class="k">import</span> <span class="n">CharScanner</span><span class="p">,</span> <span class="n">RegExpScanner</span>
+<span class="kn">from</span> <span class="nn">.formatter</span> <span class="k">import</span> <span class="n">FormatterBase</span><span class="p">,</span> <span class="n">Formatter</span>
+<span class="kn">from</span> <span class="nn">.rank</span> <span class="k">import</span> <span class="n">Rank</span><span class="p">,</span> <span class="n">Const</span>
+<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">RegExpScanner</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_words</span><span class="p">,</span> <span class="n">ReplyMode</span>
 <span class="kn">from</span> <span class="nn">..parser</span> <span class="k">import</span> <span class="n">Parser</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">Markov</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">format_sentence</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">state_size_dataset</span>
 
 
 <div class="viewcode-block" id="MarkovText"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText">[docs]</a><span class="k">class</span> <span class="nc">MarkovText</span><span class="p">(</span><span class="n">Markov</span><span class="p">):</span>
@@ -196,6 +200,29 @@
 
     <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">RegExpScanner</span>
     <span class="n">DEFAULT_PARSER</span> <span class="o">=</span> <span class="n">Parser</span>
+    <span class="n">DEFAULT_FORMATTER</span> <span class="o">=</span> <span class="n">Formatter</span>
+    <span class="n">DEFAULT_RANK</span> <span class="o">=</span> <span class="n">Const</span>
+
+<div class="viewcode-block" id="MarkovText.__init__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">scanner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">formatter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">scanner</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">storage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">Rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_RANK</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span> <span class="n">FormatterBase</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_FORMATTER</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">markov</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">markov</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">rank</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">==</span> <span class="n">markov</span><span class="o">.</span><span class="n">formatter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MarkovText.get_settings_json"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.get_settings_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_settings_json</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;formatter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="MarkovText.data"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.data">[docs]</a>    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -210,40 +237,158 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MarkovText.do_format"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.do_format">[docs]</a>    <span class="k">def</span> <span class="nf">do_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Format a sentence.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        string : `str`</span>
-<span class="sd">            Sentence to format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">format_sentence</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="MarkovText.format"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Format a sentence.</span>
+        <span class="sd">&quot;&quot;&quot;Format generated text.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        parts : `iterable` of `str`</span>
-<span class="sd">            Sentence parts.</span>
+<span class="sd">            Text parts.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">,</span> <span class="n">CharScanner</span><span class="p">):</span>
-                <span class="n">join_with</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">join_with</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="n">join_with</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_format</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">state_separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MarkovText.get_cont_state"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.get_cont_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_cont_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get initial states from input string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string : `str` or `None`</span>
+<span class="sd">        backward : `bool`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `tuple` of `str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">backward</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">break</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+<div class="viewcode-block" id="MarkovText.get_reply_states"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.get_reply_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_reply_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get initial states from input string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string : `str`</span>
+<span class="sd">            Input string.</span>
+<span class="sd">        dataset : `str`</span>
+<span class="sd">            Dataset key.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `list` of `list` of `str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">get_words</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">long_word</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">long_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">long_word</span><span class="p">]</span>
+        <span class="n">short_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">long_word</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">words</span> <span class="ow">in</span> <span class="p">(</span><span class="n">long_words</span><span class="p">,</span> <span class="n">short_words</span><span class="p">):</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">states</span>
+                <span class="k">for</span> <span class="n">states</span> <span class="ow">in</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_states</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">states</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="MarkovText.generate_cont"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.generate_cont">[docs]</a>    <span class="k">def</span> <span class="nf">generate_cont</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span>
+                      <span class="n">reply_to</span><span class="p">,</span> <span class="n">backward</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate texts from start/end.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_length : `int` or `None`</span>
+<span class="sd">            Maximum sentence length.</span>
+<span class="sd">        state_size : `int`</span>
+<span class="sd">            State size.</span>
+<span class="sd">        reply_to : `str` or `None`</span>
+<span class="sd">            Input string.</span>
+<span class="sd">        backward : `bool`</span>
+<span class="sd">            `True` to generate text start.</span>
+<span class="sd">        dataset: `str`</span>
+<span class="sd">            Dataset key prefix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of `str`</span>
+<span class="sd">            Generated texts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cont_state</span><span class="p">(</span><span class="n">reply_to</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reply_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
+                    <span class="n">parts</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">parts</span><span class="p">)),</span> <span class="p">(</span><span class="n">reply_to</span><span class="p">,))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parts</span> <span class="o">=</span> <span class="n">chain</span><span class="p">((</span><span class="n">reply_to</span><span class="p">,),</span> <span class="n">parts</span><span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MarkovText.generate_replies"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.generate_replies">[docs]</a>    <span class="k">def</span> <span class="nf">generate_replies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">reply_to</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate replies.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_length : `int` or `None`</span>
+<span class="sd">            Maximum sentence length.</span>
+<span class="sd">        state_size : `int`</span>
+<span class="sd">            State size.</span>
+<span class="sd">        reply_to : `str`</span>
+<span class="sd">            Input string.</span>
+<span class="sd">        dataset: `str`</span>
+<span class="sd">            Dataset key prefix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `generator` of `str`</span>
+<span class="sd">            Generated texts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_sets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reply_states</span><span class="p">(</span>
+            <span class="n">reply_to</span><span class="p">,</span>
+            <span class="n">dataset</span> <span class="o">+</span> <span class="n">state_size_dataset</span><span class="p">(</span><span class="n">state_size</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state_sets</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_cont</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span>
+                                          <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">state_sets</span><span class="p">)</span>
+
+        <span class="n">generate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="n">state_size</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="p">,</span> <span class="n">backward</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">states</span> <span class="ow">in</span> <span class="n">cycle</span><span class="p">(</span><span class="n">state_sets</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span>
+                <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">generate</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">True</span><span class="p">))),</span>
+                <span class="p">(</span><span class="n">state</span><span class="p">,),</span>
+                <span class="n">generate</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MarkovText.__call__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.markov.MarkovText.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">max_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">start</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">reply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">reply_mode</span><span class="o">=</span><span class="n">ReplyMode</span><span class="o">.</span><span class="n">END</span><span class="p">,</span>
                  <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a sentence.</span>
+        <span class="sd">&quot;&quot;&quot;Generate text.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -251,38 +396,37 @@
 <span class="sd">            Maximum sentence length (default: None).</span>
 <span class="sd">        state_size : `int`, optional</span>
 <span class="sd">            State size (default: parser.state_sizes[0]).</span>
-<span class="sd">        start : `str` or `iterable` of `str`, optional</span>
-<span class="sd">            Starting state (default: []).</span>
+<span class="sd">        reply_to : `str` or `None`, optional</span>
+<span class="sd">            Input string (default: None).</span>
+<span class="sd">        reply_mode : `markovchain.text.util.ReplyMode`, optional</span>
+<span class="sd">            Reply mode (default: `markovchain.text.util.ReplyMode.END`)</span>
 <span class="sd">        dataset: `str`, optional</span>
 <span class="sd">            Dataset key prefix (default: &#39;&#39;).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        `str`</span>
-<span class="sd">            Generated sentence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reply_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">reply_mode</span> <span class="o">=</span> <span class="n">ReplyMode</span><span class="o">.</span><span class="n">END</span>
+
+        <span class="k">if</span> <span class="n">state_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">state_size</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">state_sizes</span><span class="p">))</span>
+
         <span class="k">if</span> <span class="n">max_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">max_length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="kc">True</span><span class="p">):</span>
-                <span class="k">pass</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">reply_mode</span> <span class="o">==</span> <span class="n">ReplyMode</span><span class="o">.</span><span class="n">REPLY</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_replies</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span>
+                                         <span class="n">reply_to</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">state</span><span class="p">,</span> <span class="n">start</span> <span class="o">=</span> <span class="n">tee</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+            <span class="n">backward</span> <span class="o">=</span> <span class="n">reply_mode</span> <span class="o">==</span> <span class="n">ReplyMode</span><span class="o">.</span><span class="n">START</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_cont</span><span class="p">(</span><span class="n">max_length</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span>
+                                      <span class="n">reply_to</span><span class="p">,</span> <span class="n">backward</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
 
-        <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="n">chain</span><span class="p">((</span><span class="n">start</span><span class="p">,),</span> <span class="n">parts</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">parts</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div></div>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

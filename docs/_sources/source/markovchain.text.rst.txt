@@ -4,10 +4,34 @@ markovchain\.text package
 Submodules
 ----------
 
+markovchain\.text\.formatter module
+-----------------------------------
+
+.. automodule:: markovchain.text.formatter
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 markovchain\.text\.markov module
 --------------------------------
 
 .. automodule:: markovchain.text.markov
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+markovchain\.text\.rank module
+------------------------------
+
+.. automodule:: markovchain.text.rank
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+markovchain\.text\.scanner module
+---------------------------------
+
+.. automodule:: markovchain.text.scanner
     :members:
     :undoc-members:
     :show-inheritance:

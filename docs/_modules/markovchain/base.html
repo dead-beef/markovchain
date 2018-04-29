@@ -182,11 +182,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for markovchain.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span>
-
-<span class="kn">from</span> <span class="nn">.storage</span> <span class="k">import</span> <span class="n">JsonStorage</span>
-<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">Scanner</span><span class="p">,</span> <span class="n">CharScanner</span>
+<span></span><span class="kn">from</span> <span class="nn">.storage</span> <span class="k">import</span> <span class="n">JsonStorage</span>
+<span class="kn">from</span> <span class="nn">.scanner</span> <span class="k">import</span> <span class="n">Scanner</span>
 <span class="kn">from</span> <span class="nn">.parser</span> <span class="k">import</span> <span class="n">ParserBase</span><span class="p">,</span> <span class="n">Parser</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">DOC_INHERIT</span><span class="p">,</span> <span class="n">state_size_dataset</span>
 
@@ -206,7 +203,7 @@
 <span class="sd">    parser : `markovchain.parser.ParserBase`</span>
 <span class="sd">    storage : `markovchain.storage.Storage`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">CharScanner</span>
+    <span class="n">DEFAULT_SCANNER</span> <span class="o">=</span> <span class="n">Scanner</span>
     <span class="n">DEFAULT_PARSER</span> <span class="o">=</span> <span class="n">Parser</span>
     <span class="n">DEFAULT_STORAGE</span> <span class="o">=</span> <span class="n">JsonStorage</span>
 
@@ -255,7 +252,7 @@
         <span class="n">links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">part</span><span class="p">),</span> <span class="n">part</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">add_links</span><span class="p">(</span><span class="n">links</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Markov.generate"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="p">(),</span> <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Markov.generate"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="p">(),</span> <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a sequence.</span>
 
 <span class="sd">        Parameters</span>
@@ -264,8 +261,10 @@
 <span class="sd">            State size (default: parser.state_sizes[0]).</span>
 <span class="sd">        start : `str` or `iterable` of `str`, optional</span>
 <span class="sd">            Initial state (default: ()).</span>
-<span class="sd">        dataset: `str`, optional</span>
+<span class="sd">        dataset : `str`, optional</span>
 <span class="sd">            Dataset key prefix.</span>
+<span class="sd">        backward : `bool`, optional</span>
+<span class="sd">            Link direction.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -282,7 +281,7 @@
         <span class="c1">#    raise ValueError(&#39;invalid state size: {0}: not in {1}&#39;</span>
         <span class="c1">#                     .format(state_size, self.parser.state_sizes))</span>
         <span class="n">dataset</span> <span class="o">+=</span> <span class="n">state_size_dataset</span><span class="p">(</span><span class="n">state_size</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">state_size</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">backward</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Markov.get_settings_json"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.get_settings_json">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert generator settings to JSON.</span>
@@ -308,8 +307,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;markov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_settings_json</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Markov.load"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.load">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
+<div class="viewcode-block" id="Markov.from_storage"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.from_storage">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_storage</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load from storage.</span>
 
 <span class="sd">        Parameters</span>
@@ -322,7 +321,45 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">storage</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;markov&#39;</span><span class="p">,</span> <span class="p">{}))</span>
         <span class="n">args</span><span class="p">[</span><span class="s1">&#39;storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">storage</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Markov.from_file"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.from_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load from file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fp : `str` or `file`</span>
+<span class="sd">            File or path.</span>
+<span class="sd">        storage : `type`, optional</span>
+<span class="sd">            Storage class (default: cls.DEFAULT_STORAGE)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `markovchain.Markov`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">storage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT_STORAGE</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_storage</span><span class="p">(</span><span class="n">storage</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Markov.from_settings"><a class="viewcode-back" href="../../source/markovchain.html#markovchain.base.Markov.from_settings">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_settings</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create from settings.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        settings : `dict`, optional</span>
+<span class="sd">            Settings (default: None).</span>
+<span class="sd">        storage : `type`, optional</span>
+<span class="sd">            Storage class (default: cls.DEFAULT_STORAGE)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `markovchain.Markov`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">storage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">storage</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DEFAULT_STORAGE</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_storage</span><span class="p">(</span><span class="n">storage</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>

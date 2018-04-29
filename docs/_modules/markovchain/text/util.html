@@ -183,21 +183,78 @@
             
   <h1>Source code for markovchain.text.util</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">enum</span>
 
-<span class="n">FORMAT_REPLACE</span> <span class="o">=</span> <span class="p">[(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">expr</span><span class="p">),</span> <span class="n">repl</span><span class="p">)</span> <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span>               <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39; &#39;</span>       <span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s*([^\w\s]+)\s*&#39;</span>  <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1&#39;</span>      <span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([,.?!])(\w)&#39;</span>      <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\w,.?!])([[({&lt;])&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([])}&gt;])(\w)&#39;</span>      <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w)([-+*]+)(\w)&#39;</span>  <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2 \3&#39;</span><span class="p">),</span> <span class="c1"># pylint:disable=bad-whitespace</span>
-<span class="p">]]</span>
 
 <span class="n">RE_PUNCT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^[^\w\s]+$&#39;</span><span class="p">)</span>
+<span class="n">RE_WORD</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\w+&#39;</span><span class="p">)</span>
+
+<span class="n">RE_FLAGS</span> <span class="o">=</span> <span class="s1">&#39;AILMSUX&#39;</span>
+<span class="n">RE_CUSTOM_FLAGS</span> <span class="o">=</span> <span class="s1">&#39;O&#39;</span>
+
+
+<div class="viewcode-block" id="ReplyMode"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.ReplyMode">[docs]</a><span class="k">class</span> <span class="nc">ReplyMode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Text reply mode.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">END</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">REPLY</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="CharCase"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.CharCase">[docs]</a><span class="k">class</span> <span class="nc">CharCase</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Character case.&quot;&quot;&quot;</span>
+    <span class="n">PRESERVE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">TITLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">UPPER</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">LOWER</span> <span class="o">=</span> <span class="mi">3</span>
+
+<div class="viewcode-block" id="CharCase.convert"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.CharCase.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of string converted to case.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string : `str`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `str`</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; CharCase.LOWER.convert(&#39;sTr InG&#39;)</span>
+<span class="sd">        &#39;str ing&#39;</span>
+<span class="sd">        &gt;&gt;&gt; CharCase.UPPER.convert(&#39;sTr InG&#39;)</span>
+<span class="sd">        &#39;STR ING&#39;</span>
+<span class="sd">        &gt;&gt;&gt; CharCase.TITLE.convert(&#39;sTr InG&#39;)</span>
+<span class="sd">        &#39;Str ing&#39;</span>
+<span class="sd">        &gt;&gt;&gt; CharCase.PRESERVE.convert(&#39;sTr InG&#39;)</span>
+<span class="sd">        &#39;sTr InG&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">TITLE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">capitalize</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">UPPER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">LOWER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">string</span></div></div>
+
+
+<div class="viewcode-block" id="ReFlags"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.ReFlags">[docs]</a><span class="k">class</span> <span class="nc">ReFlags</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Custom regexp flags.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    O : `int`</span>
+<span class="sd">    OVERLAP : `int`</span>
+<span class="sd">        Replace overlapping occurrences of pattern.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">O</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">OVERLAP</span> <span class="o">=</span> <span class="mi">1</span></div>
+
 
 <div class="viewcode-block" id="ispunct"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.ispunct">[docs]</a><span class="k">def</span> <span class="nf">ispunct</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return `True` if all characters in a string are punctuation</span>
-<span class="sd">       and it is not empty.</span>
+<span class="sd">    and it is not empty.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -206,8 +263,37 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `bool`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ispunct(&#39;.,?&#39;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; ispunct(&#39;.x.&#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; ispunct(&#39;. &#39;)</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; ispunct(&#39;&#39;)</span>
+<span class="sd">    False</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">RE_PUNCT</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_words"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.get_words">[docs]</a><span class="k">def</span> <span class="nf">get_words</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find all words in a string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    string : `str`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `list` of `str`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; get_words(&#39;  ..?!word  ,  (Word)..  word&#39;)</span>
+<span class="sd">    [&#39;word&#39;, &#39;Word&#39;, &#39;word&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">RE_WORD</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="lstrip_ws_and_chars"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.lstrip_ws_and_chars">[docs]</a><span class="k">def</span> <span class="nf">lstrip_ws_and_chars</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">chars</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Remove leading whitespace and characters from a string.</span>
@@ -259,83 +345,89 @@
         <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="format_sentence_string"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.format_sentence_string">[docs]</a><span class="k">def</span> <span class="nf">format_sentence_string</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">end_chars</span><span class="o">=</span><span class="s1">&#39;.?!&#39;</span><span class="p">,</span> <span class="n">default_end</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Format a sentence.</span>
+
+<div class="viewcode-block" id="re_flags"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.re_flags">[docs]</a><span class="k">def</span> <span class="nf">re_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">custom</span><span class="o">=</span><span class="n">ReFlags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse regexp flag string.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    flags: `str`</span>
+<span class="sd">        Flag string.</span>
+<span class="sd">    custom: `IntEnum`, optional</span>
+<span class="sd">        Custom flag enum (default: None).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (`int`, `int`)</span>
+<span class="sd">        (flags for `re.compile`, custom flags)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">re_</span><span class="p">,</span> <span class="n">custom_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">flags</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">re_</span> <span class="o">|=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">re</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">custom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">custom_</span> <span class="o">|=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid custom flag &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">flag</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid regexp flag &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">flag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">re_</span><span class="p">,</span> <span class="n">custom_</span></div>
+
+<div class="viewcode-block" id="re_flags_str"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.re_flags_str">[docs]</a><span class="k">def</span> <span class="nf">re_flags_str</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">custom_flags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert regexp flags to string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    flags : `int`</span>
+<span class="sd">        Flags.</span>
+<span class="sd">    custom_flags : `int`</span>
+<span class="sd">        Custom flags.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `str`</span>
+<span class="sd">        Flag string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">RE_FLAGS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">re</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">flag</span>
+    <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">RE_CUSTOM_FLAGS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">custom_flags</span> <span class="o">&amp;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ReFlags</span><span class="p">,</span> <span class="n">flag</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">+=</span> <span class="n">flag</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="re_sub"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.re_sub">[docs]</a><span class="k">def</span> <span class="nf">re_sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">custom_flags</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replace regular expression.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pattern : `str` or `_sre.SRE_Pattern`</span>
+<span class="sd">        Compiled regular expression.</span>
+<span class="sd">    repl : `str` or `function`</span>
+<span class="sd">        Replacement.</span>
 <span class="sd">    string : `str`</span>
-<span class="sd">        Sentence.</span>
-<span class="sd">    end_chars : `str`, optional</span>
-<span class="sd">        Sentence ending characters (default: &#39;.?!&#39;).</span>
-<span class="sd">    default_end : `str`, optional</span>
-<span class="sd">        Default sentence ending character (default: &#39;.&#39;).</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        Formatted sentence.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence_string(&#39;  ..?!word  ,  (word)..  word&#39;)</span>
-<span class="sd">    &#39;Word, (word).. word.&#39;</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence_string(&#39;word WORD&#39;, default_end=&#39;?&#39;)</span>
-<span class="sd">    &#39;Word word?&#39;</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence_string(&#39;word,&#39;, end_chars=&#39;,&#39;)</span>
-<span class="sd">    &#39;Word,&#39;</span>
+<span class="sd">        Input string.</span>
+<span class="sd">    count: `int`</span>
+<span class="sd">        Maximum number of pattern occurrences.</span>
+<span class="sd">    flags : `int`</span>
+<span class="sd">        Flags.</span>
+<span class="sd">    custom_flags : `int`</span>
+<span class="sd">        Custom flags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">string</span> <span class="o">=</span> <span class="n">lstrip_ws_and_chars</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">end_chars</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">string</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">custom_flags</span> <span class="o">&amp;</span> <span class="n">ReFlags</span><span class="o">.</span><span class="n">OVERLAP</span><span class="p">:</span>
+        <span class="n">prev_string</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">string</span> <span class="o">!=</span> <span class="n">prev_string</span><span class="p">:</span>
+            <span class="n">prev_string</span> <span class="o">=</span> <span class="n">string</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string</span>
-
-    <span class="k">if</span> <span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">end_chars</span><span class="p">:</span>
-        <span class="n">string</span> <span class="o">+=</span> <span class="n">default_end</span>
-
-    <span class="n">string</span> <span class="o">=</span> <span class="n">capitalize</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span> <span class="ow">in</span> <span class="n">FORMAT_REPLACE</span><span class="p">:</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">string</span></div>
-
-<div class="viewcode-block" id="format_sentence"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.util.format_sentence">[docs]</a><span class="k">def</span> <span class="nf">format_sentence</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">join_with</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">end_chars</span><span class="o">=</span><span class="s1">&#39;.?!&#39;</span><span class="p">,</span> <span class="n">default_end</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Format a sentence.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parts : `str` or `iterable` of `str`</span>
-<span class="sd">        Sentence parts.</span>
-<span class="sd">    join_with : `str`, optional</span>
-<span class="sd">        Part separator (default: &#39; &#39;).</span>
-<span class="sd">    end_chars : `str`, optional</span>
-<span class="sd">        Sentence ending characters (default: &#39;.?!&#39;).</span>
-<span class="sd">    default_end : `str`, optional</span>
-<span class="sd">        Default sentence ending character (default: &#39;.&#39;).</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    str</span>
-<span class="sd">        Formatted sentence.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence(&#39;word WORD&#39;, default_end=&#39;?&#39;)</span>
-<span class="sd">    &#39;Word word?&#39;</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence(&#39;word,&#39;, end_chars=&#39;,&#39;)</span>
-<span class="sd">    &#39;Word,&#39;</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence(&#39;word&#39; for _ in range(3))</span>
-<span class="sd">    &#39;Word word word.&#39;</span>
-<span class="sd">    &gt;&gt;&gt; format_sentence((&#39;word&#39; for _ in range(3)), join_with=&#39;,&#39;)</span>
-<span class="sd">    &#39;Word, word, word.&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">sentence</span> <span class="o">=</span> <span class="n">parts</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">sentence</span> <span class="o">=</span> <span class="n">join_with</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">format_sentence_string</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">end_chars</span><span class="p">,</span> <span class="n">default_end</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

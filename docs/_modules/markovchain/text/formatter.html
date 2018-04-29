@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>markovchain.text.formatter &mdash; markovchain 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="markovchain 0.2.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> markovchain
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    <a href="../../../index.html">
+        README
+    </a>
+    <a href="../../../genindex.html">
+        Index
+    </a>
+    
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.cli.html">markovchain.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.image.html">markovchain.image package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.storage.html">markovchain.storage package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../source/markovchain.text.html">markovchain.text package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.base">markovchain.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.info">markovchain.info module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.parser">markovchain.parser module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.scanner">markovchain.scanner module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain.util">markovchain.util module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../source/markovchain.html#module-markovchain">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">markovchain</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>markovchain.text.formatter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for markovchain.text.formatter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">SaveLoad</span><span class="p">,</span> <span class="n">int_enum</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">CharCase</span><span class="p">,</span> <span class="n">lstrip_ws_and_chars</span><span class="p">,</span>
+    <span class="n">re_flags</span><span class="p">,</span> <span class="n">re_flags_str</span><span class="p">,</span> <span class="n">re_sub</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="FormatterBase"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.FormatterBase">[docs]</a><span class="k">class</span> <span class="nc">FormatterBase</span><span class="p">(</span><span class="n">SaveLoad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Text formatter base class.&quot;&quot;&quot;</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="FormatterBase.__call__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.FormatterBase.__call__">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Format a string.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        string : `str`</span>
+<span class="sd">            String to format.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        `str`</span>
+<span class="sd">            Formatted string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="Noop"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Noop">[docs]</a><span class="k">class</span> <span class="nc">Noop</span><span class="p">(</span><span class="n">FormatterBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;No-op formatter.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Noop.__call__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Noop.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">string</span></div></div>
+
+
+<div class="viewcode-block" id="Formatter"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Formatter">[docs]</a><span class="k">class</span> <span class="nc">Formatter</span><span class="p">(</span><span class="n">FormatterBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Default formatter.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    case : `markovchain.text.util.CharCase`</span>
+<span class="sd">        Character case.</span>
+<span class="sd">    replace : `list` of (_sre.SRE_Pattern, `str`, `int`)</span>
+<span class="sd">        List of regular expressions to replace.</span>
+<span class="sd">    end_chars : `str`</span>
+<span class="sd">        Sentence ending characters.</span>
+<span class="sd">    default_end : `None` or `str`</span>
+<span class="sd">        Default sentence ending character.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint:disable=bad-whitespace</span>
+    <span class="n">DEFAULT_REPLACE</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span>               <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39; &#39;</span>       <span class="p">),</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s*([^\w\s]+)\s*&#39;</span>  <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1&#39;</span>      <span class="p">),</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([,.?!])(\w)&#39;</span>      <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\w,.?!])([[({&lt;])&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([])}&gt;])(\w)&#39;</span>      <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2&#39;</span>   <span class="p">),</span>
+        <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\w)([-+*]+)(\w)&#39;</span>  <span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 \2 \3&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="c1"># pylint:enable=bad-whitespace</span>
+<div class="viewcode-block" id="Formatter.__init__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Formatter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">case</span><span class="o">=</span><span class="n">CharCase</span><span class="o">.</span><span class="n">TITLE</span><span class="p">,</span>
+                 <span class="n">replace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">end_chars</span><span class="o">=</span><span class="s1">&#39;.?!&#39;</span><span class="p">,</span>
+                 <span class="n">default_end</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Formatter constructor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        case : `int` or `str` or `markovchain.text.util.CharCase`, optional</span>
+<span class="sd">            Character case (default: `markovchain.text.util.CharCase.TITLE`).</span>
+<span class="sd">        end_chars : `str`, optional</span>
+<span class="sd">            Sentence ending characters (default: &#39;.?!&#39;).</span>
+<span class="sd">        default_end : `None` or `str`, optional</span>
+<span class="sd">            Default sentence ending character (default: &#39;.&#39;).</span>
+<span class="sd">        replace : `list` of ((`str`, `str`) or (`str`, `str`, `str`)), optional</span>
+<span class="sd">            List of regular expressions to replace (default: DEFAULT_REPLACE).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">replace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">replace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_REPLACE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="n">int_enum</span><span class="p">(</span><span class="n">CharCase</span><span class="p">,</span> <span class="n">case</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span> <span class="o">=</span> <span class="n">end_chars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">=</span> <span class="n">default_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">replace</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">rule</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span> <span class="o">=</span> <span class="n">rule</span>
+                <span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39;u&#39;</span>
+            <span class="n">flags</span><span class="p">,</span> <span class="n">custom_flags</span> <span class="o">=</span> <span class="n">re_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">flags</span><span class="p">),</span> <span class="n">repl</span><span class="p">,</span> <span class="n">custom_flags</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Formatter.save"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Formatter.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;case&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;replace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">re_flags_str</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span> <span class="n">flags</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">flags</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span>
+        <span class="p">]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;end_chars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;default_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">fmt</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="n">fmt</span><span class="o">.</span><span class="n">case</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">==</span> <span class="n">fmt</span><span class="o">.</span><span class="n">replace</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span> <span class="o">==</span> <span class="n">fmt</span><span class="o">.</span><span class="n">end_chars</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="o">==</span> <span class="n">fmt</span><span class="o">.</span><span class="n">default_end</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Formatter.__call__"><a class="viewcode-back" href="../../../source/markovchain.text.html#markovchain.text.formatter.Formatter.__call__">[docs]</a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">lstrip_ws_and_chars</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">string</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_chars</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_end</span>
+
+        <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">flags</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="n">re_sub</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">custom_flags</span><span class="o">=</span><span class="n">flags</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">string</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, dead-beef.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

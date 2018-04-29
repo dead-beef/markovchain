@@ -366,6 +366,12 @@
 <dd><p><code class="xref py py-obj docutils literal"><span class="pre">int</span></code> – Minimum image size.</p>
 </dd></dl>
 
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scan</span> <span class="o">=</span> <span class="n">Scanner</span><span class="p">(</span><span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;a b c&#39;</span><span class="p">)</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="markovchain.image.scanner.ImageScanner.__call__">
 <code class="descname">__call__</code><span class="sig-paren">(</span><em>img</em>, <em>part=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/markovchain/image/scanner.html#ImageScanner.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#markovchain.image.scanner.ImageScanner.__call__" title="Permalink to this definition">¶</a></dt>
@@ -725,7 +731,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>idx</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Point index.</li>
-<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Bounding box size.</li>
+<li><strong>size</strong> (<code class="xref py py-obj docutils literal"><span class="pre">int</span></code>) – Curve size.</li>
 </ul>
 </td>
 </tr>
@@ -993,7 +999,7 @@
 
 <dl class="attribute">
 <dt>
-<code class="descname">classes</code><em class="property"> = {'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;}</em></dt>
+<code class="descname">classes</code><em class="property"> = {'VLines': &lt;class 'markovchain.image.traversal.VLines'&gt;, 'Hilbert': &lt;class 'markovchain.image.traversal.Hilbert'&gt;, 'Spiral': &lt;class 'markovchain.image.traversal.Spiral'&gt;, 'Blocks': &lt;class 'markovchain.image.traversal.Blocks'&gt;, 'HLines': &lt;class 'markovchain.image.traversal.HLines'&gt;}</em></dt>
 <dd></dd></dl>
 
 </dd></dl>

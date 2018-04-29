@@ -278,6 +278,20 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
+<div class="viewcode-block" id="SqliteStorage.get_states"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s1">&#39;SELECT DISTINCT nodes.value&#39;</span>
+            <span class="s1">&#39; FROM nodes&#39;</span>
+            <span class="s1">&#39; INNER JOIN links ON links.source = nodes.id AND links.dataset = ?&#39;</span>
+            <span class="s1">&#39; WHERE nodes.value LIKE ?&#39;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%%%s%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">string</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ret</span><span class="p">):</span>
+            <span class="n">ret</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="SqliteStorage.get_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.get_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SELECT count, bvalue, source&#39;</span>
@@ -379,13 +393,10 @@
             <span class="s1">&#39;CREATE UNIQUE INDEX IF NOT EXISTS node ON nodes (value)&#39;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_dataset ON links (dataset)&#39;</span>
+            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_source ON links (source, dataset)&#39;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_source ON links (source)&#39;</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_target ON links (target)&#39;</span>
+            <span class="s1">&#39;CREATE INDEX IF NOT EXISTS link_target ON links (target, dataset)&#39;</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SqliteStorage.do_save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.do_save">[docs]</a>    <span class="k">def</span> <span class="nf">do_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
