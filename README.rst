@@ -68,7 +68,8 @@ Text
 
 .. code:: python
 
-    from markovchain import MarkovText, JsonStorage
+    from markovchain import JsonStorage
+    from markovchain.text import MarkovText, ReplyMode
 
     markov = MarkovText()
 
@@ -77,11 +78,11 @@ Text
 
     with open('data2.txt') as fp:
         for line in fp:
-            markov.data(line, True)
-    markov.data('', False)
+            markov.data(line, part=True)
+    markov.data('', part=False)
 
     print(markov())
-    print(markov(max_length=16, start='sentence start'))
+    print(markov(max_length=16, reply_to='sentence start', reply_mode=ReplyMode.END))
 
     markov.save('markov.json')
 
@@ -93,7 +94,8 @@ Image
 .. code:: python
 
     from PIL import Image
-    from markovchain import MarkovImage, JsonStorage
+    from markovchain import JsonStorage
+    from markovchain.image import MarkovImage
 
     markov = MarkovImage()
 
@@ -150,7 +152,7 @@ Text
     markovchain text create --output text.db input1.txt input2.txt
     markovchain text update text.db input3.txt input4.txt
     markovchain text generate text.db
-    markovchain text generate --sentences 16 --start 'sentence start' text.db
+    markovchain text generate --count 16 --start 'sentence start' text.db
 
 Image
 ^^^^^
@@ -229,10 +231,10 @@ generate
 ::
 
     > markovchain text generate -h
-    usage: markovchain text generate [-h] [-P] [-nf] [-s SETTINGS]
-                                     [-ss STATE_SIZE] [-st START] [-w WORDS]
-                                     [-ws WORD_SEPARATOR]
-                                     [-S SENTENCES] [-o OUTPUT]
+    usage: markovchain text generate [-h] [-P] [-nf]
+                                     [-s SETTINGS] [-ss STATE_SIZE]
+                                     [-S START] [-E END] [-R REPLY]
+                                     [-w WORDS] [-c COUNT] [-o OUTPUT]
                                      state
 
     positional arguments:
@@ -241,21 +243,22 @@ generate
     optional arguments:
       -h, --help            show this help message and exit
       -P, --progress        show progress bar
-      -nf, --no-format      do not format sentences
+      -nf, --no-format      do not format text
       -s SETTINGS, --settings SETTINGS
                             settings json file
       -ss STATE_SIZE, --state-size STATE_SIZE
                             generator state size
-      -st START, --start START
-                            sentence start
+      -S START, --start START
+                            text start
+      -E END, --end END     text end
+      -R REPLY, --reply REPLY
+                            reply to text
       -w WORDS, --words WORDS
-                            max sentence size (default: 256)
-      -ws WORD_SEPARATOR, --word-separator WORD_SEPARATOR
-                            output word separator (default: ' ')
-      -S SENTENCES, --sentences SENTENCES
-                            number of generated sentences (default: 1)
+                            max text size (default: 256)
+      -c COUNT, --count COUNT
+                            number of generated texts (default: 1)
       -o OUTPUT, --output OUTPUT
-                            output file (default: stdout)
+                        output file (default: stdout)
 
 settings
 ^^^^^^^^
