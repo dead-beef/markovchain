@@ -269,7 +269,9 @@ def int_enum(cls, val):
     Parameters
     ----------
     cls : `type`
+        Int enum class.
     val : `int` or `str`
+        Name or value.
 
     Returns
     -------

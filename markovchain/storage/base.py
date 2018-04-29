@@ -127,7 +127,7 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         dataset = self.get_dataset(dataset)
         while True:
             link, state = self.random_link(dataset, state, backward)
-            if link is None:
+            if link is None or backward and link == '':
                 return
             yield link
 
@@ -195,7 +195,7 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
 
     @abstractmethod
     def get_state(self, state, size):
-        """Get state from node values.
+        """Convert strings to state.
 
         Parameters
         ----------

@@ -14,7 +14,7 @@ class JsonStorage(Storage):
     nodes : `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])
     backward : `None` or `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])
     """
-    def __init__(self, nodes=None, backward=False, settings=None):
+    def __init__(self, nodes=None, backward=None, settings=None):
         """JSON storage constructor.
 
         Parameters
@@ -26,7 +26,11 @@ class JsonStorage(Storage):
             nodes = {}
 
         if backward is None:
-            backward = None
+            if settings is not None:
+                if settings.get('storage', {}).get('backward', False):
+                    backward = {}
+                else:
+                    backward = None
         elif isinstance(backward, bool):
             if backward:
                 backward = {}
@@ -145,7 +149,7 @@ class JsonStorage(Storage):
     def add_links(self, links, dataset_prefix=''):
         for dataset, src, dst in links:
             forward, backward = self.get_dataset(dataset_prefix + dataset, True)
-            if backward is not None:
+            if backward is not None and dst is not None:
                 src, src2 = tee(src)
                 dst2 = next(src2)
                 src2 = self.join_state(chain(src2, (dst,)))

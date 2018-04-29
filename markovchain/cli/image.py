@@ -6,7 +6,7 @@ from functools import reduce
 from itertools import islice
 from PIL import Image
 
-from .. import JsonStorage, SqliteStorage
+from ..storage import JsonStorage, SqliteStorage
 from ..image import MarkovImage
 from ..util import ObjectWrapper, truncate
 from .util import (
