@@ -80,7 +80,7 @@ class SqliteStorage(Storage):
                 '''INSERT INTO links (dataset, source, target, value, bvalue)
                    SELECT ?, ?, ?, ?, ?
                    WHERE (SELECT Changes() = 0)''',
-                (dataset, source, target, dst, src[-1])
+                (dataset, source, target, dst, src[0])
             )
 
     def get_state(self, state, size):
