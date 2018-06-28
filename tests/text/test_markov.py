@@ -3,6 +3,7 @@ import pytest
 
 from markovchain.text import MarkovText, ReplyMode
 from markovchain.scanner import Scanner
+from markovchain.parser import Parser
 from markovchain.storage import JsonStorage
 
 
@@ -23,24 +24,25 @@ def test_markov_text_format(test, join_with):
     assert markov.format(test) == 2
     fmt.assert_called_with(join_with.join(test))
 
-@pytest.mark.parametrize('data,args,res', [
-    ([], (), KeyError),
-    ('xy', (), ['x', 'y']),
-    ('xy', (None, None, 'z'), ['z']),
-    ('xy', (None, None, 'xyx'), ['xyx', 'y']),
-    ('xy', (None, None, 'xyx', ReplyMode.START), ['xyx']),
-    ('zxy', (None, None, 'yxy', ReplyMode.START), ['z', 'x', 'yxy']),
-    ('xz', (None, None, 'y z w', ReplyMode.REPLY), ['x', 'z']),
-    ('xxxxx', (2,), ['x', 'x']),
-    ('xxxxx', (-10,), []),
-    ('xxxxx', (0,), [])
+@pytest.mark.parametrize('ss,data,args,res', [
+    (1, [], (), KeyError),
+    (1, 'xy', (), ['x', 'y']),
+    (1, 'xy', (None, None, 'z'), ['z']),
+    (1, 'xy', (None, None, 'xyx'), ['xyx', 'y']),
+    (1, 'xy', (None, None, 'xyx', ReplyMode.START), ['xyx']),
+    (1, 'zxy', (None, None, 'yxy', ReplyMode.START), ['z', 'x', 'yxy']),
+    (2, ['u', 'x', 'xz', 'v'], (None, None, 'y z w', ReplyMode.REPLY), ['u', 'x xz', 'v']),
+    (1, 'xxxxx', (2,), ['x', 'x']),
+    (1, 'xxxxx', (-10,), []),
+    (1, 'xxxxx', (0,), [])
 ])
-def test_markov_text_generate(mocker, data, args, res):
+def test_markov_text_generate(mocker, ss, data, args, res):
     fmt = mocker.patch(
         'markovchain.text.MarkovText.format',
         wraps=list
     )
     markov = MarkovText(
+        parser=Parser(state_sizes=[ss]),
         scanner=Scanner(lambda x: x),
         storage=JsonStorage(backward=True)
     )
