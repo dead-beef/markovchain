@@ -21,6 +21,8 @@ class StorageTest(Storage):
         pass
     def do_save(self, fp=None):
         pass
+    def close(self):
+        pass
     @classmethod
     def load(cls, fp):
         pass

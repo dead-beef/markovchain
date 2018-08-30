@@ -91,3 +91,13 @@ def test_markov_base_save(mocker):
     assert storage.settings == {'markov': 0}
     storage.save.assert_called_once_with(1)
     markov.get_settings_json.assert_called_once_with() # pylint:disable=no-member
+
+def test_markov_base_close():
+    storage = Mock(settings={}, close=Mock())
+    markov = Markov(
+        parser=Mock(),
+        scanner=Mock(),
+        storage=storage
+    )
+    markov.close()
+    storage.close.assert_called_once_with()

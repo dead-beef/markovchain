@@ -201,3 +201,7 @@ def test_json_storage_save_load():
     fp.seek(0)
     loaded = JsonStorage.load(fp)
     assert storage == loaded
+
+def test_json_storage_close():
+    storage = JsonStorage()
+    storage.close()

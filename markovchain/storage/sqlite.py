@@ -227,6 +227,12 @@ class SqliteStorage(Storage):
         self.update_main_table()
         self.db.commit()
 
+    def close(self):
+        self.cursor.close()
+        self.db.close()
+        self.cursor = None
+        self.db = None
+
     @classmethod
     def load(cls, fp):
         if not isinstance(fp, sqlite3.Connection):

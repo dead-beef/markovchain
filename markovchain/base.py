@@ -123,6 +123,11 @@ class Markov(metaclass=DOC_INHERIT):
         self.storage.settings['markov'] = self.get_settings_json()
         self.storage.save(fp)
 
+    def close(self):
+        """Close.
+        """
+        self.storage.close()
+
     @classmethod
     def from_storage(cls, storage):
         """Load from storage.

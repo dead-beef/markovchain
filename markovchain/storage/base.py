@@ -145,6 +145,11 @@ class Storage(metaclass=DOC_INHERIT_ABSTRACT):
         self.do_save(fp)
 
     @abstractmethod
+    def close(self):
+        """Close."""
+        pass
+
+    @abstractmethod
     def get_dataset(self, key, create=False):
         """Get data set by key.
 

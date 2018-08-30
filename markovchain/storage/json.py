@@ -207,6 +207,9 @@ class JsonStorage(Storage):
         }
         json.dump(data, fp, ensure_ascii=False)
 
+    def close(self):
+        pass
+
     @classmethod
     def load(cls, fp):
         if isinstance(fp, str):

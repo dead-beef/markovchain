@@ -129,3 +129,18 @@ def test_sqlite_storage_save_load(tmpdir):
     loaded = SqliteStorage.load(db)
     assert nodes == get_nodes(loaded.cursor)
     assert storage.state_separator == loaded.state_separator
+
+def test_sqlite_storage_close(tmpdir):
+    db = os.path.join(str(tmpdir), 'test.db')
+    storage = SqliteStorage(db=db)
+
+    storage.add_links([('0', ('x',), 'y')])
+    storage.save()
+    nodes = get_nodes(storage.cursor)
+    storage.add_links([('0', ('z',), 'u')])
+    storage.close()
+    assert storage.cursor is None
+    assert storage.db is None
+
+    loaded = SqliteStorage.load(db)
+    assert nodes == get_nodes(loaded.cursor)
