@@ -46,7 +46,7 @@ setup(name='markovchain',
               'coverage',
               'sphinx',
               'sphinx_rtd_theme',
-              'twine>=1.8.1',
+              'twine',
               'wheel'
           ]
       },
