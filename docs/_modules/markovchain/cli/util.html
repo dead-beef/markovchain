@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.cli.util &mdash; markovchain 0.2.2 documentation</title>
+  <title>markovchain.cli.util &mdash; markovchain 0.2.3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="markovchain 0.2.2 documentation" href="../../../index.html"/>
+    <link rel="top" title="markovchain 0.2.3 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
             
           
@@ -182,7 +182,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for markovchain.cli.util</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">bz2</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
@@ -360,6 +361,21 @@
                 <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">markov</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="save_image"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.save_image">[docs]</a><span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save an image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img : `PIL.Image`</span>
+<span class="sd">        Image to save.</span>
+<span class="sd">    fname : `str`</span>
+<span class="sd">        File path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">or</span> <span class="s1">&#39;png&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="set_args"><a class="viewcode-back" href="../../../source/markovchain.cli.html#markovchain.cli.util.set_args">[docs]</a><span class="k">def</span> <span class="nf">set_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set computed command arguments.</span>
@@ -562,7 +578,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.2.2',
+            VERSION:'0.2.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
