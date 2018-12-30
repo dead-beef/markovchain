@@ -12,7 +12,8 @@ from ..util import ObjectWrapper, truncate
 from .util import (
     tqdm, load, save, infiles, outfiles as _outfiles,
     check_output_format, JSON, SQLITE,
-    BAR_FORMAT, BAR_DESC_SIZE
+    BAR_FORMAT, BAR_DESC_SIZE,
+    save_image
 )
 from .util import cmd_settings # pylint:disable=unused-import
 
@@ -321,8 +322,7 @@ def cmd_generate(args):
             state_size=args.state_size,
             levels=args.level
         )
-        with open(fname, 'wb') as fp:
-            img.save(fp)
+        save_image(img, fname)
 
 def cmd_filter(args):
     """Filter an image.
@@ -372,5 +372,4 @@ def cmd_filter(args):
             start_level=args.level,
             start_image=start
         )
-        with open(fname, 'wb') as fp:
-            img.save(fp)
+        save_image(img, fname)

@@ -1,3 +1,4 @@
+import os
 import json
 import sys
 import bz2
@@ -176,6 +177,21 @@ def save(markov, fname, args):
                 markov.save(fp)
     else:
         markov.save()
+
+def save_image(img, fname):
+    """Save an image.
+
+    Parameters
+    ----------
+    img : `PIL.Image`
+        Image to save.
+    fname : `str`
+        File path.
+    """
+    _, ext = os.path.splitext(fname)
+    ext = ext[1:] or 'png'
+    with open(fname, 'wb') as fp:
+        img.save(fp, ext)
 
 def set_args(args):
     """Set computed command arguments.
