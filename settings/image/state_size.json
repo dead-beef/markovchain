@@ -13,7 +13,7 @@
         },
         "scanner": {
             "__class__": "ImageScanner",
-            "resize": [256, 256],
+            "resize": [320, 320],
             "traversal": {
                 "__class__": "Hilbert"
             }
