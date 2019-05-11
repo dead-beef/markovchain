@@ -198,14 +198,20 @@ class JsonStorage(Storage):
         fp : `file` or `str`, optional
             Output file (default: stdout).
         """
-        if fp is None:
-            fp = sys.stdout
+
         data = {
             'settings': self.settings,
             'nodes': self.nodes,
             'backward': self.backward
         }
-        json.dump(data, fp, ensure_ascii=False)
+
+        if fp is None:
+            json.dump(data, sys.stdout, ensure_ascii=False)
+        elif isinstance(fp, str):
+            with open(fp, 'w+') as fp2:
+                json.dump(data, fp2, ensure_ascii=False)
+        else:
+            json.dump(data, fp, ensure_ascii=False)
 
     def close(self):
         pass
