@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>markovchain.storage.sqlite &mdash; markovchain 0.2.4 documentation</title>
+  <title>markovchain.storage.sqlite &mdash; markovchain 0.2.5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="markovchain 0.2.4 documentation" href="../../../index.html"/>
+    <link rel="top" title="markovchain 0.2.5 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
             
           
@@ -214,8 +214,7 @@
             <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">isolation_level</span><span class="o">=</span><span class="s1">&#39;IMMEDIATE&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_node_tables</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_main_table</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT key, id FROM datasets&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span></div>
 
@@ -352,21 +351,21 @@
         <span class="sd">&quot;&quot;&quot;Write generator settings to database.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">),)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">            CREATE TABLE IF NOT EXISTS main (</span>
-<span class="s1">                settings TEXT NOT NULL DEFAULT &quot;</span><span class="si">{}</span><span class="s1">&quot;</span>
-<span class="s1">            )</span>
-<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM main&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;INSERT INTO main (settings) VALUES (?)&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;UPDATE main SET settings=?&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SqliteStorage.create_node_tables"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.create_node_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_node_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create node and link tables if they don&#39;t exist.</span>
+<div class="viewcode-block" id="SqliteStorage.create_tables"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.sqlite.SqliteStorage.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create tables if they don&#39;t exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;PRAGMA foreign_keys=1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS main (</span>
+<span class="s1">                settings TEXT NOT NULL DEFAULT &quot;</span><span class="si">{}</span><span class="s1">&quot;</span>
+<span class="s1">            )</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">            CREATE TABLE IF NOT EXISTS datasets (</span>
 <span class="s1">                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,</span>
@@ -428,7 +427,9 @@
         <span class="n">cursor</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT settings FROM main&#39;</span><span class="p">)</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">settings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">OperationalError</span><span class="p">:</span>
             <span class="n">settings</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -469,7 +470,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.2.4',
+            VERSION:'0.2.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
