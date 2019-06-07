@@ -167,6 +167,8 @@ class SqliteStorage(Storage):
     def update_main_table(self):
         """Write generator settings to database.
         """
+        if not self.settings:
+            return
         data = (json.dumps(self.settings),)
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS main (
