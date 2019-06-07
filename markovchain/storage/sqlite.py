@@ -243,7 +243,9 @@ class SqliteStorage(Storage):
         cursor = fp.cursor()
         try:
             cursor.execute('SELECT settings FROM main')
-            settings = json.loads(cursor.fetchone()[0])
+            settings = cursor.fetchone()
+            if settings is not None:
+                settings = json.loads(settings[0])
         except sqlite3.OperationalError:
             settings = None
 
