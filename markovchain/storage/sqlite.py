@@ -30,7 +30,7 @@ class SqliteStorage(Storage):
             db = sqlite3.connect(db, isolation_level='IMMEDIATE')
         self.db = db
         self.cursor = db.cursor()
-        self.create_node_tables()
+        self.create_tables()
         self.cursor.execute('SELECT key, id FROM datasets')
         self.datasets = dict(self.cursor.fetchall())
 
@@ -167,21 +167,21 @@ class SqliteStorage(Storage):
         """Write generator settings to database.
         """
         data = (json.dumps(self.settings),)
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS main (
-                settings TEXT NOT NULL DEFAULT "{}"
-            )
-        ''')
         self.cursor.execute('SELECT * FROM main')
         if self.cursor.fetchall() == []:
             self.cursor.execute('INSERT INTO main (settings) VALUES (?)', data)
         else:
             self.cursor.execute('UPDATE main SET settings=?', data)
 
-    def create_node_tables(self):
-        """Create node and link tables if they don't exist.
+    def create_tables(self):
+        """Create tables if they don't exist.
         """
         self.cursor.execute('PRAGMA foreign_keys=1')
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS main (
+                settings TEXT NOT NULL DEFAULT "{}"
+            )
+        ''')
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS datasets (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
