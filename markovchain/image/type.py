@@ -1,10 +1,10 @@
 from PIL import Image
 
 from .util import convert, palette as default_palette
-from ..util import SaveLoad, DOC_INHERIT
+from ..util import SaveLoad
 
 
-class ImageType(SaveLoad, metaclass=DOC_INHERIT):
+class ImageType(SaveLoad):
     """Base image type class.
 
     Attributes
