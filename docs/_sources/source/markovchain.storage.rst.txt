@@ -1,38 +1,37 @@
-markovchain\.storage package
-============================
+markovchain.storage package
+===========================
 
 Submodules
 ----------
 
-markovchain\.storage\.base module
----------------------------------
+markovchain.storage.base module
+-------------------------------
 
 .. automodule:: markovchain.storage.base
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.storage\.json module
----------------------------------
+markovchain.storage.json module
+-------------------------------
 
 .. automodule:: markovchain.storage.json
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.storage\.sqlite module
------------------------------------
+markovchain.storage.sqlite module
+---------------------------------
 
 .. automodule:: markovchain.storage.sqlite
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: markovchain.storage
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

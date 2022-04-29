@@ -5,60 +5,60 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
-    markovchain.cli
-    markovchain.image
-    markovchain.storage
-    markovchain.text
+   markovchain.cli
+   markovchain.image
+   markovchain.storage
+   markovchain.text
 
 Submodules
 ----------
 
-markovchain\.base module
-------------------------
+markovchain.base module
+-----------------------
 
 .. automodule:: markovchain.base
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.info module
-------------------------
+markovchain.info module
+-----------------------
 
 .. automodule:: markovchain.info
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.parser module
---------------------------
+markovchain.parser module
+-------------------------
 
 .. automodule:: markovchain.parser
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.scanner module
----------------------------
+markovchain.scanner module
+--------------------------
 
 .. automodule:: markovchain.scanner
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.util module
-------------------------
+markovchain.util module
+-----------------------
 
 .. automodule:: markovchain.util
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: markovchain
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,46 +1,45 @@
-markovchain\.cli package
-========================
+markovchain.cli package
+=======================
 
 Submodules
 ----------
 
-markovchain\.cli\.image module
-------------------------------
+markovchain.cli.image module
+----------------------------
 
 .. automodule:: markovchain.cli.image
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.cli\.main module
------------------------------
+markovchain.cli.main module
+---------------------------
 
 .. automodule:: markovchain.cli.main
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.cli\.text module
------------------------------
+markovchain.cli.text module
+---------------------------
 
 .. automodule:: markovchain.cli.text
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.cli\.util module
------------------------------
+markovchain.cli.util module
+---------------------------
 
 .. automodule:: markovchain.cli.util
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: markovchain.cli
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

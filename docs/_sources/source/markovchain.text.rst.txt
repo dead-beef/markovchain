@@ -1,54 +1,53 @@
-markovchain\.text package
-=========================
+markovchain.text package
+========================
 
 Submodules
 ----------
 
-markovchain\.text\.formatter module
------------------------------------
-
-.. automodule:: markovchain.text.formatter
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-markovchain\.text\.markov module
---------------------------------
-
-.. automodule:: markovchain.text.markov
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-markovchain\.text\.rank module
-------------------------------
-
-.. automodule:: markovchain.text.rank
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-markovchain\.text\.scanner module
+markovchain.text.formatter module
 ---------------------------------
 
-.. automodule:: markovchain.text.scanner
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: markovchain.text.formatter
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-markovchain\.text\.util module
+markovchain.text.markov module
 ------------------------------
 
-.. automodule:: markovchain.text.util
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: markovchain.text.markov
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
+markovchain.text.rank module
+----------------------------
+
+.. automodule:: markovchain.text.rank
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+markovchain.text.scanner module
+-------------------------------
+
+.. automodule:: markovchain.text.scanner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+markovchain.text.util module
+----------------------------
+
+.. automodule:: markovchain.text.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: markovchain.text
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

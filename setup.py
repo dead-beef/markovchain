@@ -12,7 +12,7 @@ except IOError:
     README = ''
 
 setup(name='markovchain',
-      version='0.2.5',
+      version='0.2.6',
       description='Markov chain generator',
       long_description=README,
       classifiers=[

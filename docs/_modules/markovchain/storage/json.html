@@ -1,76 +1,34 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>markovchain.storage.json &mdash; markovchain 0.2.6 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>markovchain.storage.json &mdash; markovchain 0.2.5 documentation</title>
-  
-
-  
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="markovchain 0.2.5 documentation" href="../../../index.html"/>
-        <link rel="up" title="Module code" href="../../index.html"/> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
+        <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> markovchain
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.2.5
+                0.2.6
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -78,12 +36,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
     <a href="../../../index.html">
         README
     </a>
@@ -91,11 +44,6 @@
         Index
     </a>
     
-            
-            
-              
-            
-            
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../source/modules.html">markovchain</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../source/markovchain.html">markovchain package</a><ul>
@@ -119,78 +67,41 @@
 </li>
 </ul>
 
-            
-          
 
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">markovchain</a>
-        
       </nav>
 
-
-      
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
       <li>markovchain.storage.json</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for markovchain.storage.json</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">tee</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">tee</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">Storage</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Storage</span>
 
 
-<div class="viewcode-block" id="JsonStorage"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage">[docs]</a><span class="k">class</span> <span class="nc">JsonStorage</span><span class="p">(</span><span class="n">Storage</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage">[docs]</a><span class="k">class</span> <span class="nc">JsonStorage</span><span class="p">(</span><span class="n">Storage</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;JSON storage.</span>
 
 <span class="sd">    Attributes</span>
@@ -198,7 +109,7 @@
 <span class="sd">    nodes : `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])</span>
 <span class="sd">    backward : `None` or `dict` of `dict` of ([`int`, `str`] or [`list` of `int`, `list` of `str`])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="JsonStorage.__init__"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.__init__"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;JSON storage constructor.</span>
 
 <span class="sd">        Parameters</span>
@@ -225,12 +136,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">=</span> <span class="n">backward</span></div>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">==</span> <span class="n">storage</span><span class="o">.</span><span class="n">nodes</span>
                 <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span> <span class="o">==</span> <span class="n">storage</span><span class="o">.</span><span class="n">backward</span>
                 <span class="ow">and</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">storage</span><span class="p">))</span>
 
-<div class="viewcode-block" id="JsonStorage.do_replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.do_replace_state_separator">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonStorage.do_replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.do_replace_state_separator">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">do_replace_state_separator</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Replace state separator.</span>
 
@@ -249,7 +160,7 @@
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.do_get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.do_get_dataset">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonStorage.do_get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.do_get_dataset">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">do_get_dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a dataset.</span>
 
@@ -278,7 +189,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="JsonStorage.add_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.add_link">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="JsonStorage.add_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.add_link">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a link.</span>
 
@@ -311,7 +222,7 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="n">dataset</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">count</span><span class="p">,</span> <span class="n">target</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="JsonStorage.replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.replace_state_separator">[docs]</a>    <span class="k">def</span> <span class="nf">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.replace_state_separator"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.replace_state_separator">[docs]</a>    <span class="k">def</span> <span class="nf">replace_state_separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_separator</span><span class="p">,</span> <span class="n">new_separator</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">do_replace_state_separator</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span>
             <span class="n">old_separator</span><span class="p">,</span>
@@ -324,13 +235,13 @@
                 <span class="n">new_separator</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.get_dataset"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">do_get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="p">),</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">do_get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">create</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.add_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.add_links">[docs]</a>    <span class="k">def</span> <span class="nf">add_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">dataset_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.add_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.add_links">[docs]</a>    <span class="k">def</span> <span class="nf">add_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">dataset_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
             <span class="n">forward</span><span class="p">,</span> <span class="n">backward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_prefix</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">backward</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -341,15 +252,15 @@
             <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">join_state</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">forward</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.get_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.get_state"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">deque</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">state</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">size</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.get_states"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.get_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.get_states"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.get_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span></div>
 
-<div class="viewcode-block" id="JsonStorage.get_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.get_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.get_links"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.get_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -366,7 +277,7 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="JsonStorage.follow_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.follow_link">[docs]</a>    <span class="k">def</span> <span class="nf">follow_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.follow_link"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.follow_link">[docs]</a>    <span class="k">def</span> <span class="nf">follow_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">backward</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">link</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">backward</span><span class="p">:</span>
             <span class="n">state</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -374,7 +285,7 @@
             <span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">state</span></div>
 
-<div class="viewcode-block" id="JsonStorage.do_save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.do_save">[docs]</a>    <span class="k">def</span> <span class="nf">do_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.do_save"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.do_save">[docs]</a>    <span class="k">def</span> <span class="nf">do_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save to file.</span>
 
 <span class="sd">        Parameters</span>
@@ -397,10 +308,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="JsonStorage.close"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="JsonStorage.close"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="JsonStorage.load"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.base.JsonStorage.load">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="JsonStorage.load"><a class="viewcode-back" href="../../../source/markovchain.storage.html#markovchain.storage.json.JsonStorage.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s1">&#39;rt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp2</span><span class="p">:</span>
@@ -411,65 +322,30 @@
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, dead-beef.
-
-    </p>
+    <p>&#169; Copyright 2017, dead-beef.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'0.2.5',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
