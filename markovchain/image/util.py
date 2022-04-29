@@ -1,6 +1,30 @@
 from colorsys import hsv_to_rgb
 from math import floor
 
+from PIL import Image
+try:
+    Resampling = Image.Resampling
+    IMAGE_ENUMS = True
+except AttributeError:
+    Resampling = Image
+    IMAGE_ENUMS = False
+
+def get_image_scale(scale):
+    """Get image scale mode by name.
+
+    Parameters
+    ----------
+    scale : `str` or `int`
+
+    Returns
+    -------
+    `int`
+    """
+    if not isinstance(scale, str):
+        return scale
+    if IMAGE_ENUMS:
+        return Resampling[scale]
+    return getattr(Image, scale)
 
 def pixel_to_state(px):
     """Convert pixel value to generator state.

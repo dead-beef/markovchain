@@ -132,7 +132,7 @@ def test_image_scanner_scan_levels(image_test):
 
 @pytest.mark.parametrize('test', [
     (),
-    ((4, 4), 2, 2, Image.NEAREST, [HLines(), VLines()])
+    ((4, 4), 2, 2, 'NEAREST', [HLines(), VLines()])
 ])
 def test_image_scanner_save_load(test):
     scanner = ImageScanner(*test)

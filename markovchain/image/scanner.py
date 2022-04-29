@@ -1,12 +1,12 @@
 from math import floor
 from itertools import islice
 from functools import reduce
-from PIL import Image
+
 
 from ..scanner import Scanner
 from ..util import fill, to_list, load
 from .traversal import Traversal, HLines
-from .util import pixel_to_state
+from .util import get_image_scale, pixel_to_state, Resampling
 
 
 class ImageScanner(Scanner):
@@ -23,7 +23,7 @@ class ImageScanner(Scanner):
                  resize=None,
                  levels=1,
                  level_scale=4,
-                 scale=Image.BICUBIC,
+                 scale=Resampling.BICUBIC,
                  traversal=None):
         """Image scanner constructor.
 
@@ -59,7 +59,7 @@ class ImageScanner(Scanner):
         self.levels = levels
         self.level_scale = level_scale
         if isinstance(scale, str):
-            scale = Image.__getattribute__(scale)
+            scale = get_image_scale(scale)
         self.scale = scale
         self.traversal = traversal
 
